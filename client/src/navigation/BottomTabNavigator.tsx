@@ -22,6 +22,7 @@ export default function BottomTabNavigator() {
         name="TabOne"
         component={TabOneNavigator}
         options={{
+          // eslint-disable-next-line react/display-name
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
@@ -29,6 +30,7 @@ export default function BottomTabNavigator() {
         name="TabTwo"
         component={TabTwoNavigator}
         options={{
+          // eslint-disable-next-line react/display-name
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
