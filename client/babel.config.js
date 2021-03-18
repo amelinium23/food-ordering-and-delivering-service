@@ -2,8 +2,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 module.exports = function (api) {
   api.cache(true);
+
+  const presets = ["babel-preset-expo"];
+  const plugins = ["@babel/plugin-proposal-class-properties"];
+
   return {
-    presets: ["babel-preset-expo"],
-    plugins: ["@babel/plugin-proposal-class-properties"],
+    presets,
+    plugins,
   };
 };

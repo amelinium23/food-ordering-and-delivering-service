@@ -13,12 +13,11 @@
     "react/react-in-jsx-scope": 0,
     "@typescript-eslint/no-empty-function": 0
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "import", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "tsconfig.json",
-    "tsconfigRootDir": "./food-ordering-and-delivering-service/client",
-    "ecmaVersion": 2020,
+    "project": "./client/tsconfig.json",
+    "ecmaVersion": 2021,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
