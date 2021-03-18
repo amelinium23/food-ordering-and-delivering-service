@@ -1,6 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,vscode,python,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,vscode,python,node
 
+.expo/*
 ### Node ###
 # Logs
 logs
