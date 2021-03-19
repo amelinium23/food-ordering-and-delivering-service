@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # frontend:
+  #   build: ./client
+  #   restart: always
+  #   stdin_open: true
+  #   ports:
+  #     - "19002:19002"
+  #     - "19000:19000"
+  #     - "19001:19001"
+  #   env_file: .env
+  #   networks:
+  #     - rdp-app
+  #   volumes:
+  #     - ./client/:/usr/src/app/client/
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "54322:5432"
+    networks:
+      - rdp-app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  backend:
+    build: ./server
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    networks:
+      - rdp-app
+    depends_on:
+      - db
+    env_file: .env
+networks:
+  rdp-app:
+    driver: bridge
+volumes:
+  postgres_data:
+    driver: local
