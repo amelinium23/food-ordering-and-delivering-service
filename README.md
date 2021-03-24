@@ -4,7 +4,7 @@ Application for managing ordering and delivering food from restaurants built wit
 
 
 ### Co robi aplikacja?
-#### User:
+### User:
 * otwiera aplikacje
 * ekran logowania się do aplikacji (autoryzacja Sign Up with apple i Google)
 * wyświetlenie listy restauracji na zasadzie geolokalizacji (wpisanie adresu)
@@ -18,19 +18,19 @@ Application for managing ordering and delivering food from restaurants built wit
 * dostanie powiadomienia o potwierdzone/odrzucone zamówienie
 
 
-#### Restauracja:
-### Obsługa zamówień
+### Restauracja:
+#### Obsługa zamówień
 * przyjmuje albo odrzuca zamówienie
 * wybór dostawcy
 * przy braku dostawców przez jakiś czas, anuluje zamówienie
 * po odebraniu zamówienia przez dostawcę, jest ono odznaczane jako wydane
 
-### Edytowanie menu
+#### Edytowanie menu
 * dodawanie dań
 * edytowanie dań (cena, warianty, zdjęcie poglądowe(?))
 * usuwanie dań
 
-### Edytowanie restauracji
+#### Edytowanie restauracji
 * zmiana lokalizacji
 * zmiana szczegółów o restaruacji
 
@@ -43,9 +43,9 @@ Application for managing ordering and delivering food from restaurants built wit
 
 
 
-### Wymagania funkcjonalne:
+#### Wymagania funkcjonalne:
 * 
 
 
-### Wymagania niefunkcjonalne:
+#### Wymagania niefunkcjonalne:
 * Telefon: Android min. Android 6, iOS min. 10
