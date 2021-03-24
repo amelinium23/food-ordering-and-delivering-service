@@ -32,7 +32,14 @@ Application for managing ordering and delivering food from restaurants built wit
 
 #### Edytowanie restauracji
 * zmiana lokalizacji
-* zmiana szczegółów o restaruacji
+* zmiana szczegółów o restauracji
+
+
+### Administrator systemu:
+#### Dodawanie/usuwanie restauracji
+* generowanie konta restauracji (typ użytkownika systemu)
+* usuwanie resturacji
+
 
 ### Dostawca (to be confirmed)
 * Daje sygnał o dostępności
