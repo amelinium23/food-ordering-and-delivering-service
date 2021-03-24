@@ -6,10 +6,10 @@ Application for managing ordering and delivering food from restaurants built wit
 ### Co robi aplikacja?
 ### User:
 * otwiera aplikacje
-* ekran logowania się do aplikacji (autoryzacja Sign Up with apple i Google)
+* ekran logowania się do aplikacji (autoryzacja Sign Up with Apple i Google)
 * wyświetlenie listy restauracji na zasadzie geolokalizacji (wpisanie adresu)
-* wybranie restauracje, wyświetla się lista dań
-* wybranie i konfiguracje dania 
+* wybranie restauracji, wyświetla się lista dań
+* wybranie i konfiguracja dania 
 * koszyk, do którego dodajemy dania = zamówienie
 * płatność/zamów zakończenie transakcji (gotówka, ew. waluta wewnętrzna przypisana do konta) 
 * graficzny wskaźnik statusu zamówienia (dopóki restauracja nie zaakceptuje zamówienia)
