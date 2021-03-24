@@ -34,7 +34,7 @@ Application for managing ordering and delivering food from restaurants built wit
 * zmiana lokalizacji
 * zmiana szczegółów o restaruacji
 
-#### Dostawca (to be confirmed)
+### Dostawca (to be confirmed)
 * Daje sygnał o dostępności
 * Uruchamiana jest jego geolokalizacja
 * Dostaje powiadomienia od restauracji o dostępnym zamówieniu
@@ -43,9 +43,9 @@ Application for managing ordering and delivering food from restaurants built wit
 
 
 
-#### Wymagania funkcjonalne:
+### Wymagania funkcjonalne:
 * 
 
 
-#### Wymagania niefunkcjonalne:
+### Wymagania niefunkcjonalne:
 * Telefon: Android min. Android 6, iOS min. 10
