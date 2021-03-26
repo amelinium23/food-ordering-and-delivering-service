@@ -7,7 +7,7 @@ services:
     command: expo start --web -c
     stdin_open: true
     environment: 
-      REACT_NATIVE_PACKAGER_HOSTNAME: "192.168.0.2"
+      REACT_NATIVE_PACKAGER_HOSTNAME: ${IP}
     ports:
       - "19000:19000"
       - "19001:19001"
