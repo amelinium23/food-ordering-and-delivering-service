@@ -1,19 +1,23 @@
 version: "3.9"
 
 services:
-  # frontend:
-  #   build: ./client
-  #   restart: always
-  #   stdin_open: true
-  #   ports:
-  #     - "19002:19002"
-  #     - "19000:19000"
-  #     - "19001:19001"
-  #   env_file: .env
-  #   networks:
-  #     - rdp-app
-  #   volumes:
-  #     - ./client/:/usr/src/app/client/
+  frontend:
+    build: ./client
+    restart: always
+    command: expo start --web -c
+    stdin_open: true
+    environment: 
+      REACT_NATIVE_PACKAGER_HOSTNAME: "192.168.0.2"
+    ports:
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+      - "19006:19006"
+    env_file: .env
+    networks:
+      - rdp-app
+    volumes:
+      - ./client/:/usr/src/app/client/
   db:
     image: postgres
     environment:
