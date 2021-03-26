@@ -4,10 +4,11 @@ services:
   frontend:
     build: ./client
     restart: always
-    command: expo start --web -c
+    command: expo start -c
     stdin_open: true
     environment: 
       REACT_NATIVE_PACKAGER_HOSTNAME: ${IP}
+      EXPO_DEVTOOLS_LISTEN_ADDRESS: "0.0.0.0"
     ports:
       - "19000:19000"
       - "19001:19001"
