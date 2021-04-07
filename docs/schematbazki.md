@@ -1,3 +1,5 @@
+```plantuml
+
 ' restauracja: nazwa, 'tagi' kuchni, koszt dostawy, logo, miasto, ulica
 ' menu restauracji: nazwa dania, typ dania, skład, cena
 ' typy dania encją? 
@@ -138,3 +140,4 @@ Zamowienie }|--|| StatusZamowienia
 Zamowienie }o--|| Kupon
 
 @enduml
+```

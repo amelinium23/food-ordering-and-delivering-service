@@ -1,3 +1,4 @@
+```plantuml
 @startuml activity
 "Finalizacja zamówienia" --> (*)
 partition Klient #LightSkyBlue {
@@ -20,3 +21,4 @@ partition Dostawca #Pink {
     --> "Finalizacja zamówienia"
 }
 @enduml
+```
