@@ -10,12 +10,14 @@ usecase "Edycja Menu" as uc2
 usecase "Wybór dostawcy" as uc3
 usecase "Rejestrowanie restauracji" as uc4
 usecase "Zmiana kosztów dostawy" as uc5
+usecase "Przyjmowanie zamówienia" as uc6
 
 Ad --> uc4
-(uc4) .> (uc1) : include
+Ad --> uc2
+Ad --> uc1
+(uc6) ..> (uc3) : include
 Res --> uc1
-Res --> uc2
-Res --> uc3
+Res --> uc6
 Res --> uc5
 
 @enduml
