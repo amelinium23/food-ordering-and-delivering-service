@@ -49,10 +49,33 @@ Application for managing ordering and delivering food from restaurants built wit
 * Dostawca może przeglądać swoją historię dostaw
 
 
-
+# Założenie projektu
+Stworzenie systemu obsługującego zamawanie posiłków z restauracji z wieloma endpointami.
 ### Wymagania funkcjonalne:
-* 
+* Założenie konta
+* Logowanie
+#### Użytkownik:
+* Sprawdzenie historii zamówień
+* Złożenie zamówienia
+* Sprawdzenie listy restauracji w okolicy oraz informacji o nich
+#### Dostawca:
+* Otrzymuje informacje z restauracji o zamówieniu do odebrania
+* Otrzymuje trasę do restauracji oraz od restauracji do klienta
+#### Restaurator:
+* Przyjmowanie zamówień do realizacji
+* Odrzucanie zamówień
+#### Administrator:
+* Dodawanie restauracji
+* Dodawanie i edytowanie dań oraz menu restauracji
+* Zmiana uprawnień użytkowników(?)
+* Tworzenie kont restauracji
 
 
 ### Wymagania niefunkcjonalne:
+* Backend stworzony jako REST API z pomocą frameworku Django
+* Baza danych w PostgreSQL
+* Frontend jako aplikacja mobilna napisana w React Native z Expo
+* Autoryzacja i uwierzytalnie za pomocą JWT tokenów oraz Google i Apple
+* Aplikacja mobilna przeznaczona dla normalnych klientów, restauratorów oraz dostawców
+* Menu administratora jako strona internetowa
 * Telefon: Android min. Android 6, iOS min. 10
