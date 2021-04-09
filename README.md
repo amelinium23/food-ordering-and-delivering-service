@@ -49,7 +49,7 @@ Application for managing ordering and delivering food from restaurants built wit
 * Dostawca może przeglądać swoją historię dostaw
 
 
-### Założenie projektu
+# Założenie projektu
 Stworzenie systemu obsługującego zamawanie posiłków z restauracji z wieloma endpointami.
 ### Wymagania funkcjonalne:
 * Założenie konta
