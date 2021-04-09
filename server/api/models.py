@@ -5,13 +5,13 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 class Restaurant(models.Model):
     class CUISINE_TYPE_CHOICES(models.TextChoices):
-        OTHER = 'def', _('inne')
-        CHINESE = 'ch', _('chińska')
+        OTHER = 'other', _('inne')
+        CHINESE = 'cn', _('chińska')
         ITALIAN = 'it', _('włoska')
-        TURKISH = 'tu', _('turecka')
-        POLISH = 'po', _('polska')
+        TURKISH = 'tr', _('turecka')
+        POLISH = 'pl', _('polska')
         INDIAN = 'in', _('indyjska')
-        JEWISH = 'je', _('żydowska')
+        JEWISH = 'il', _('żydowska')
     name = models.CharField(max_length=50)
     logo = models.URLField()
     address = models.CharField(max_length=80)
@@ -49,10 +49,11 @@ class ExtraGroup(models.Model):
         BOOL = 2
     name = models.CharField(max_length=30)
     extra_type = models.IntegerField(choices=TYPE_CHOICES.choices)
+    dish_id = models.ForeignKey('Dish', on_delete=models.CASCADE)
 
 
 class Extra(models.Model):
-    category_id = models.ForeignKey('Dish', on_delete=models.CASCADE)
+    category_id = models.ForeignKey('ExtraGroup', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
     description = models.TextField(blank=True)

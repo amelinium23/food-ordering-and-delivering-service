@@ -38,13 +38,20 @@ entity Danie {
    opis: text
    ' * możliweDodatki: json
 }
+entity ExtraGroup {
+   * group_id: number <<generated>>
+   * dish_id: number <<FK>>
+   --
+   * name: text
+   * extra_type: number
+}
 entity Dodatek {
    * id_dodatku: number <<generated>>
-   * id_dania: number <<FK>>
+   * category_id: number <<FK>>
    --
-   * nazwa: text
-   * cena: number
-   opis: text
+   * name: text
+   * added_price: number
+   description: text
 }
 
 entity Zamowienie {
@@ -112,17 +119,7 @@ entity DniTygodnia {
       -sobota
       -niedziela
 }
-entity Kupon {
-   * id_kupon: number <<generated>>
-   * id_restauracji: number <<FK>>
-   --
-   * kod: text
-   * nazwa: text
-   * wartoscZnizki: number
-   * liczbaUzyc: number
-}
 
-Kupon }|--o| Restauracja
 Restauracja ||--o{ GodzinyDzialania
 DniTygodnia ||--o{ GodzinyDzialania
 
@@ -130,14 +127,14 @@ Restauracja ||--o{ Zamowienie
 Restauracja ||--o| Menu
 Menu ||--|{ GrupaMenu
 GrupaMenu ||--|{ Danie
-Danie ||--o{ Dodatek
+Danie ||--o{ ExtraGroup
+ExtraGroup ||--o{ Dodatek
 Danie ||--o{ ZamowioneDanie
 ZamowioneDanie ||--o{ ZamowionyDodatek
 Dodatek ||--o{ ZamowionyDodatek
 User ||--o{ Zamowienie
 ZamowioneDanie }|--o| Zamowienie
 Zamowienie }|--|| StatusZamowienia
-Zamowienie }o--|| Kupon
 
 @enduml
 ```
