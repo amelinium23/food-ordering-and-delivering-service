@@ -1,7 +1,7 @@
 ```plantuml
 @startuml history
 actor Użytkownik as user
-participant "API aplikacji" as api
+participant "OrderComponent" as api
 participant "Baza danych" as db
 
 

@@ -1,7 +1,7 @@
 ```plantuml
 @startuml login
 actor Użytkownik as user
-participant "Ekran logowania" as log
+participant "AuthenticationComponent" as log
 participant "Baza użytkowników" as db
 
 user -> log : otwiera ekran logowania
