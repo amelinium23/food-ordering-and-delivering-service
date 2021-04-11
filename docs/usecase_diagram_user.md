@@ -20,7 +20,7 @@ Kli --> uc5
 uc3 -[hidden]d-> uc4
 
 (uc5) ..> (uc4) : include
-(uc1) ..> (uc6) : extend
+(uc1) <.. (uc6) : extend
 (uc1) ..> (uc7) : include
 
 @enduml

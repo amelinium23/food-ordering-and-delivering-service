@@ -54,23 +54,11 @@ package "API" {
 
 database "PSQLDatabase" {
     interface PostgreSQL
-    frame "tables" as tables{
-    component Restaurant
-    component OpeningHours
-    component Menu
-    component MenuGroup
-    component Dish
-    component ExtraGroup
-    component Extra
-    component Order
-    component OrderedDish
-    component OrderedExtra
-    }
 }
 frontend --> HTTP : uses
 DjangoModels --> PostgreSQL : use
 endpoints -d- HTTP
-PostgreSQL -[hidden]d- tables
+endpoints --> serializers
 
 
 @enduml
