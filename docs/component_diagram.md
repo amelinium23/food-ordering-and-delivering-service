@@ -5,10 +5,10 @@ package "frontend" as frontend {
     component store
     component utils
     package "layout" as layout {
-        component authentication
-        component restaurant
-        component order
-        component delivery
+        component authenticationComponent
+        component restaurantComponent
+        component orderComponent
+        component deliveryComponent
     }
 
     layout -> utils : uses
@@ -16,7 +16,6 @@ package "frontend" as frontend {
     }
 package "API" as API {
     frame "serializers" as serializers {
-        component DjangoModels
         component RestaurantSerializer
         component OpeningHoursSerializer
         component DishSerializer
@@ -29,6 +28,7 @@ package "API" as API {
         component OrderedItemSerializer
         component OrderedExtraSerializer
         component UserSerializer
+        component DjangoModels
     }
     together {
     interface HTTP
@@ -42,14 +42,19 @@ package "API" as API {
 }
 }
 
-database "PSQLDatabase" {
+database "Database" {
     interface PostgreSQL
 }
 frontend -> HTTP : uses
 frontend -[hidden]d- [debug]
 hide debug
-DjangoModels -> PostgreSQL : use
-endpoints - HTTP
+DjangoModels --> PostgreSQL : use
+HTTP <-- endpoints : use
+HTTP -[hidden]d- [debug3]
+hide debug3
+endpoints -> serializers : use
+endpoints -[hidden]d- [debug2]
+hide debug2
 
 
 @enduml

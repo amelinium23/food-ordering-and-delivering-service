@@ -57,6 +57,7 @@ entity Dodatek {
 entity Zamowienie {
    * id_zamowienia: number <<generated>>
    * id_user: number <<FK>>
+   * id_dostawcy: number <<FK>>
    * id_status_zamowienia: number <<FK>>
    * id_restauracji: number <<FK>>
    id_coupon: number <<FK>>
