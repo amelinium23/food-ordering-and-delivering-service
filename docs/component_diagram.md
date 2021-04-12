@@ -19,7 +19,6 @@ package "API" as API {
         component RestaurantSerializer
         component OpeningHoursSerializer
         component DishSerializer
-        component MenuSerializer
         component MenuGroupSerializer
         component ExtraGroupSerializer
         component MenuGroupSerializer
@@ -32,12 +31,14 @@ package "API" as API {
     }
     together {
     interface HTTP
-    frame "endpoints" as endpoints {
-        component login
-        component register
-        component restaurants
-        component orders
-        component editProfile
+    frame "views" as endpoints {
+        component TokenObtainPairView
+        component UserCreate
+        component RestaurantList
+        component RestaurantDetails
+        component OrdersDetails
+        component OrdersList
+        component UserDetails
     }
 }
 }

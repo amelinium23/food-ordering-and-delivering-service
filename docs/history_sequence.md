@@ -1,17 +1,21 @@
 ```plantuml
 @startuml history
 actor Użytkownik as user
-participant "OrderComponent" as api
+participant "OrderComponent" as front
+participant "OrdersList" as api
 participant "Baza danych" as db
 
 
-user -> api : wybiera opcję do wyświetlania historii zamówień
-api -> db : wysyła zapytanie o historię zamówień
+user -> front : wybiera opcję do wyświetlania historii zamówień
+front -> api : wysyła zapytanie o historię zamówień
+api -> db : pobiera listę zamówień
+db -> api : zwraca listę zamówień użytkownika
 alt brak historii zamówień
-    api <- db : wysyła pustą odpowiedź
-    user <- api : komunikat: brak zamówień w historii
+    db -> api : wysyła pustą odpowiedź
+    front <- api : wysyła pusty obiekt zamówień
+    user <- front : komunikat: brak zamówień w historii
 end
-api <- db : wysyła historię zamówień
-user <- api : wyświetla historię zamówień
+front <- api : wysyła historię zamówień
+user <- front : wyświetla historię zamówień
 @enduml
 ```

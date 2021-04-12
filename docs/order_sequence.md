@@ -1,36 +1,61 @@
 ```plantuml
 @startuml order
 actor Użytkownik as user
+
+participant UserComponent as userview
+participant RestaurantComponent as rest
+participant DeliveryComponent as courier
+participant RestaurantList as restaurantList
+participant OrdersList as orderlist
+participant OrderDetails as orderdetails
 participant "Baza danych" as db
-participant Restauracja as rest
-participant Dostawca as courier
-user -> db : loguje się do aplikacji
-alt brak restauracji
-    user <- db : komunikat: brak dostępnych restauracji
-end
+
+user -> userview : loguje się do aplikacji
 alt brak połączenia z internetem
-    user <- db : komunikat: brak połączenia z internetem
+    user <- userview : komunikat: brak połączenia z internetem
+end
+userview -> restaurantList : wysyła zapytanie o listę restauracji
+restaurantList -> db : pobiera listę najbliższych restauracji
+alt brak restauracji
+    restaurantList <- db : pusta odpowiedź
+    userview <- restaurantList : odpowiedź: pusty obiekt restauracji
+    user <- userview : komunikat: brak dostępnych restauracji
 end
 
-db -> user : zwraca listę restauracji
-user -> rest : wybiera restaurację
-db <- rest  : pobiera listę dań
-user <- db : wyświetla listę dań
+
+db -> restaurantList : zwraca listę restauracji
+restaurantList -> userview : odpowiedź: lista restauracji
+userview -> user : wyświetla restauracje
+user -> userview : wybiera restaurację
+db <- restaurantList  : pobiera listę dań
+db -> restaurantList : zwraca listę dań
+restaurantList -> userview : odpowiedź: lista dań
+user <- userview : wyświetla listę dań
 loop
-    user -> rest : wybiera dania i dodatki
+    user -> userview : wybiera dania i dodatki
 end
+user -> userview: zatwierdza zamówienie
+userview -> orderlist : wysyła zamówienie
+orderlist -> db : dodaje zamówienie do bazy
+db -> orderlist : zwraca zamówienia restauracji
+orderlist -> rest : wysyła zamówienia restauracji
 alt
-user <- rest : odrzuca zamówienie
+orderdetails <- rest : odrzuca zamówienie
+orderdetails -> userview : odpowiedź: zamówienie odrzucone
+userview -> user : komunikat: odrzucono zamówienie
 end
-user <- rest : potwierdza zamówienie
+orderdetails <- rest : potwierdza zamówienie
 loop
-    rest -> courier : zleca dostawę
+    rest -> orderdetails : wybiera dostawcę
+    orderdetails -> courier : wysyła informację o zamówieniu do dostawcy
+    alt dostawca odrzuca zlecenie
+    courier -> orderdetails : odrzuca zamówienie
 end
-alt dostawca odrzuca zlecenie
-    rest <- courier : odrzuca zamówienie
 end
-rest <- courier : potwierdza zlecenie
-rest <- courier : odbiera zamówienie
-user <- courier : dostarcza zamówienie
+
+courier -> orderdetails : potwierdza zlecenie
+rest -> orderdetails : potwierdza odbiór zamówienia
+userview <- orderdetails : odpowiedź: zamówienie w drodze
+userview -> user : komunikat: jedzenie w drodze
 @enduml
 ```

@@ -19,12 +19,9 @@ entity Restauracja {
    * czyAktywna: boolean
    opis: text
 }
-entity Menu {
-   * id_menu: number <<generated>>
-}
 entity GrupaMenu {
    * id_grupa_menu: number <<generated>>
-   * id_menu: number <<FK>>
+   * id_restauracji: number <<FK>>
    --
    * nazwa: text
    ' przechowujemy liczbe okreslajaca w jakiej kolejnosci wyswietlamy rozne grupymenu/potrawy?'
@@ -88,6 +85,8 @@ entity User {
    --
    * username: text
    * passwordHash: text
+   * czy_dostawca: boolean
+   * czy_restaurator: boolean
    email: text
 }
 entity StatusZamowienia {
@@ -125,8 +124,6 @@ Restauracja ||--o{ GodzinyDzialania
 DniTygodnia ||--o{ GodzinyDzialania
 
 Restauracja ||--o{ Zamowienie
-Restauracja ||--o| Menu
-Menu ||--|{ GrupaMenu
 GrupaMenu ||--|{ Danie
 Danie ||--o{ ExtraGroup
 ExtraGroup ||--o{ Dodatek
