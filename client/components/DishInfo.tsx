@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
-  ListRenderItem,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import DishType from "../types/DishType";
 
 const DISHES = [
@@ -36,18 +29,18 @@ const DISHES = [
   },
 ];
 
-const Dish = (): JSX.Element => {
+const DishInfo: React.FunctionComponent = () => {
   return (
     <View style={styles.container}>
       <FlatList
         data={DISHES}
-        renderItem={({ item }: { item: DishType }) => {
+        renderItem={({ item }: { item: DishType }) => (
           <Pressable style={styles.container}>
             <Text style={styles.heading}>{item.nazwa}</Text>
             <Text style={styles.text}>Cena: {item.cena} zł</Text>
             <Text style={styles.text}>Opis: {item.opis}</Text>
-          </Pressable>;
-        }}
+          </Pressable>
+        )}
       />
     </View>
   );
@@ -73,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Dish;
+export default DishInfo;

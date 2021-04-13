@@ -20,7 +20,7 @@ services:
     volumes:
       - ./client/:/usr/src/app/client/
   db:
-    image: postgres
+    image: kartoza/postgis
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -30,7 +30,7 @@ services:
     networks:
       - rdp-app
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgis-data:/var/lib/postgresql
   backend:
     build: ./server
     command: python manage.py runserver 0.0.0.0:8000
@@ -47,5 +47,4 @@ networks:
   rdp-app:
     driver: bridge
 volumes:
-  postgres_data:
-    driver: local
+  postgis-data:
