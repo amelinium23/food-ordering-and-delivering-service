@@ -20,13 +20,15 @@ services:
     volumes:
       - ./client/:/usr/src/app/client/
   db:
-    image: kartoza/postgis
+    image: kartoza/postgis:13.0
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=gis
+      - POSTGRES_USER=docker
+      - POSTGRES_PASS=docker
+      - ALLOW_IP_RANGE=0.0.0.0/0
+      - POSTGRES_MULTIPLE_EXTENSIONS=postgis,hstore,postgis_topology,postgis_raster,pgrouting
     ports:
-      - "54322:5432"
+      - "5432:5432"
     networks:
       - rdp-app
     volumes:
