@@ -5,13 +5,13 @@ interface IProps {
   name: string;
 }
 
-export default function DishCategory({ name }: IProps): JSX.Element {
+const DishCategory: React.FunctionComponent<IProps> = ({ name }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{name}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -26,3 +26,5 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
+
+export default DishCategory;

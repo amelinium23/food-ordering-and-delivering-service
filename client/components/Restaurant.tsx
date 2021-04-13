@@ -10,7 +10,7 @@ const RESTAURANTS = [
   },
 ];
 
-export default function Restaurant(): JSX.Element {
+const Restaurant: React.FunctionComponent = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{RESTAURANTS[0].nazwa}</Text>
@@ -21,7 +21,7 @@ export default function Restaurant(): JSX.Element {
       </Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -46,3 +46,5 @@ const styles = StyleSheet.create({
     height: 150,
   },
 });
+
+export default Restaurant;
