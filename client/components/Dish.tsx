@@ -9,7 +9,7 @@ const DISHES = [
   },
 ];
 
-const Dish = (): JSX.Element => {
+const Dish: React.FunctionComponent = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>{DISHES[0].nazwa}</Text>
