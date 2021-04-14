@@ -58,3 +58,31 @@ class Extra(models.Model):
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
     description = models.TextField(blank=True)
 
+class Order(models.Model):
+    class ORDER_STATUS(models.IntegerChoices):
+        ORDER_PLACED = 1
+        LOOKING_FOR_DELIVERY = 2
+        PROCESSING = 3
+        IN_DELIVERY = 4
+        DELIVERED = 5
+        CANCELLED = 6
+    user_id = models.ForeignKey('User')
+    restaurant_id = models.ForeignKey()
+    delivery_id = models.ForeignKey('User', null=True, blank=True)
+    status = models.IntegerField(choices=ORDER_STATUS)
+    order_placement_date = models.DateTimeField(auto_now_add=True)
+    order_preparation_date = models.DateTimeField(null=True, blank=True)
+    order_delivery_date = models.DateTimeField(null=True, blank=True)
+    order_cost = models.DecimalField(decimal_places=2)
+
+class OrderedDish(models.Model):
+    dish_id = models.ForeignKey('Dish', on_delete=models.CASCADE)
+    order_id = models.ForeignKey('Order', on_delete=models.CASCADE)
+
+class OrderedExtra(models.Model):
+    extra_id = models.ForeignKey('Extra', on_delete=models.CASCADE)
+    dish_id = models.ForeignKey('OrderedDish', on_delete=models.CASCADE)
+
+
+
+

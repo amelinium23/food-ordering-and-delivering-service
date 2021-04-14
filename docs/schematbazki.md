@@ -63,22 +63,16 @@ entity Zamowienie {
    dataPrzygotowania: date
    dataOdebrania: date
    * kwota: number
-   * czyZaplacono: boolean
-   uwaga: text
 }
 entity ZamowioneDanie {
    * id_zamowionego_dania: number <<generated>>
    * id_zamowienia: number <<FK>>
    * id_dania: number <<FK>>
-   --
-   * ilosc: number 
 }
 entity ZamowionyDodatek {
    * id_zamowionego_dodatku: number <<generated>>
    * id_zamowionego_dania: number <<FK>>
    * id_dodatku: number <<FK>>
-   --
-   * ilosc: number
 }
 entity User {
    * id_user: number <<generated>>
@@ -87,6 +81,9 @@ entity User {
    * passwordHash: text
    * czy_dostawca: boolean
    * czy_restaurator: boolean
+   * imie: text
+   * nazwisko: text
+   * adres: text
    email: text
 }
 entity StatusZamowienia {
@@ -94,6 +91,7 @@ entity StatusZamowienia {
    --
    * nazwa: text [enum]
       -zlozono_zamowienie
+      -poszukiwanie_dostawcy
       -przyjeto_do_realizacji
       -w_trakcie_dostawy
       -zrealizowano
