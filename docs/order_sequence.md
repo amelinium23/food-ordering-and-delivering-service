@@ -2,13 +2,19 @@
 @startuml order
 actor Użytkownik as user
 
-participant UserComponent as userview
-participant RestaurantComponent as rest
-participant DeliveryComponent as courier
-participant RestaurantList as restaurantList
-participant OrdersList as orderlist
-participant OrderDetails as orderdetails
+participant UserComponent as userview #99FF99
+participant RestaurantComponent as rest #99FF99
+participant DeliveryComponent as courier #99FF99
+participant RestaurantList as restaurantList #FF6347
+participant OrdersList as orderlist #FF6347
+participant OrderDetails as orderdetails #FF6347
 participant "Baza danych" as db
+note over userview, courier #99FF99
+Frontend
+end note
+note over restaurantList, orderdetails #FF6347
+Backend
+end note
 
 user -> userview : loguje się do aplikacji
 alt brak połączenia z internetem

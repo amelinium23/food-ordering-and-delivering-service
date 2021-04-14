@@ -1,9 +1,15 @@
 ```plantuml
 @startuml history
 actor Użytkownik as user
-participant "OrderComponent" as front
-participant "OrdersList" as api
+participant "OrderComponent" as front #99FF99
+participant "OrdersList" as api #FF6347
 participant "Baza danych" as db
+note over front #99FF99
+Frontend
+end note
+note over api #FF6347
+Backend
+end note
 
 
 user -> front : wybiera opcję do wyświetlania historii zamówień

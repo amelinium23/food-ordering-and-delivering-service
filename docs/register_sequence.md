@@ -1,9 +1,15 @@
 ```plantuml
 @startuml authister
 actor Użytkownik as user
-participant "AuthenticationComponent" as auth
-participant "UserCreate" as register
+participant "AuthenticationComponent" as auth #99FF99
+participant "UserCreate" as register #FF6347
 participant "Baza użytkowników" as db
+note over auth #99FF99
+Frontend
+end note
+note over register #FF6347
+Backend
+end note
 
 user -> auth : otwiera ekran rejestracji
 user <- auth : wyświetla formularz rejestracji

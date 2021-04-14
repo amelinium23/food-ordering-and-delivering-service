@@ -1,9 +1,15 @@
 ```plantuml
 @startuml login
 actor Użytkownik as user
-participant "AuthenticationComponent" as log
-participant "TokenObtainPairView" as api
+participant "AuthenticationComponent" as log #99FF99
+participant "TokenObtainPairView" as api #FF6347
 participant "Baza użytkowników" as db
+note over log #99FF99
+Frontend
+end note
+note over api #FF6347
+Backend
+end note
 
 user -> log : otwiera ekran logowania
 user <- log : prosi o login i hasło
