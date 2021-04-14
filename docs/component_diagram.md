@@ -2,7 +2,6 @@
 @startuml components
 
 package "frontend" as frontend {
-    component store
     component utils
     package "layout" as layout {
         component authenticationComponent

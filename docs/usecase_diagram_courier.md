@@ -9,7 +9,6 @@ usecase "Otrzymanie trasy do klienta" as uc3
 usecase "Logowanie się do aplikacji" as uc4
 usecase "Rejestrowanie się do aplikacji" as uc5
 usecase "Przyjmowanie zamówienia" as uc6
-usecase "Wylogowanie się z aplikacji" as uc7
 
 courier --> uc1
 courier --> uc4
@@ -18,6 +17,6 @@ courier --> uc4
 (uc6) ..> (uc3) : include
 courier --> uc5
 (uc5) .> (uc4) : include
-(uc4) <.. (uc7) : extend
+
 @enduml
 ```
