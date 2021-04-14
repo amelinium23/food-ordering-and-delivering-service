@@ -14,13 +14,11 @@ usecase "Przyjmowanie zamówienia" as uc6
 usecase "Odrzucenie zamówienia" as uc7
 usecase "Edycja dania" as uc8
 usecase "Edycja dodatku" as uc9
-usecase "Wylogowanie się z aplikacji" as uc10
 usecase "Zmiana godzin otwarcia" as uc11
 
 Ad --> uc4
 Ad --> uc2
 Ad --> uc1
-(uc1) <.. (uc10) : extend 
 (uc6) ..> (uc3) : include
 (uc6) <.. (uc7) : extend
 Res --> uc1
