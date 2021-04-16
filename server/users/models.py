@@ -21,7 +21,7 @@ class AccountManager(BaseUserManager):
 
         if other_fields.get('is_staff') is not True:
             raise ValueError('User must be staff')
-        if other_fields.get('account_type') is not 4:
+        if other_fields.get('account_type') != 4:
             raise ValueError('Admin must be admin')
         if other_fields.get('is_superuser') is not True:
             raise ValueError(
@@ -38,12 +38,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     user_name = models.CharField(max_length=50, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
-    address = models.CharField(max_length=100)
+    address = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     account_type = models.IntegerField(choices=Status.choices)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
     objects = AccountManager()
 
     USERNAME_FIELD = 'user_name'
