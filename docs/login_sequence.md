@@ -19,20 +19,20 @@ loop
     end
     user -> log : wprowadza dane logowania
     log -> api : wysyła login do sprawdzenia
- api -> db : sprawdza obecność loginu w bazie
+    api -> db : sprawdza obecność loginu w bazie
     alt login nie istnieje w bazie
         db -> api : wysyła pustą odpowiedź
         log <- api : odpowiedź: brak loginu w bazie
         user <- log : komunikat: niepoprawne dane logowania
-    end
-    alt hasło jest błędne
+    else hasło jest błędne
         db -> api : niepasujący hash hasła
         log <- api : odpowiedź: błędne hasło
         user <- log : komunikat: niepoprawne dane logowania
-    end
+    break dane są poprawne
+        api <- db: poprawne dane uwierzytelniające
+        log <- api: zwraca token uwierzytelniający
+        user <- log: komunikat: poprawnie zalogowano do aplikacji
+    end 
 end
-api <- db: poprawne dane uwierzytelniające
-log <- api: zwraca token uwierzytelniający
-user <- log: komunikat: poprawnie zalogowano do aplikacji
 @enduml
 ```

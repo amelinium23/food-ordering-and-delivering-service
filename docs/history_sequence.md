@@ -20,8 +20,9 @@ alt brak historii zamówień
     db -> api : wysyła pustą odpowiedź
     front <- api : wysyła pusty obiekt zamówień
     user <- front : komunikat: brak zamówień w historii
+    else Historia zamówień istnieje
+    front <- api : wysyła historię zamówień
+    user <- front : wyświetla historię zamówień
 end
-front <- api : wysyła historię zamówień
-user <- front : wyświetla historię zamówień
 @enduml
 ```

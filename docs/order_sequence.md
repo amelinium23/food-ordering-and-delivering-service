@@ -26,12 +26,12 @@ alt brak restauracji
     restaurantList <- db : pusta odpowiedź
     userview <- restaurantList : odpowiedź: pusty obiekt restauracji
     user <- userview : komunikat: brak dostępnych restauracji
+    else Restauracja występuje w bazie
+        db -> restaurantList : zwraca listę restauracji
+        restaurantList -> userview : odpowiedź: lista restauracji
+        userview -> user : wyświetla restauracje
 end
 
-
-db -> restaurantList : zwraca listę restauracji
-restaurantList -> userview : odpowiedź: lista restauracji
-userview -> user : wyświetla restauracje
 user -> userview : wybiera restaurację
 db <- restaurantList  : pobiera listę dań
 db -> restaurantList : zwraca listę dań
@@ -46,22 +46,23 @@ orderlist -> db : dodaje zamówienie do bazy
 db -> orderlist : zwraca zamówienia restauracji
 orderlist -> rest : wysyła zamówienia restauracji
 alt
-orderdetails <- rest : odrzuca zamówienie
-orderdetails -> userview : odpowiedź: zamówienie odrzucone
-userview -> user : komunikat: odrzucono zamówienie
-end
-orderdetails <- rest : potwierdza zamówienie
-loop
+    orderdetails <- rest : odrzuca zamówienie
+    orderdetails -> userview : odpowiedź: zamówienie odrzucone
+    userview -> user : komunikat: odrzucono zamówienie
+else Potwierdzenie zamówienia
+    orderdetails <- rest : potwierdza zamówienie
+    loop
     rest -> orderdetails : wybiera dostawcę
     orderdetails -> courier : wysyła informację o zamówieniu do dostawcy
     alt dostawca odrzuca zlecenie
     courier -> orderdetails : odrzuca zamówienie
+    break Potwierdzenie dostawy
+        courier -> orderdetails : potwierdza zlecenie
+        rest -> orderdetails : potwierdza odbiór zamówienia
+        userview <- orderdetails : odpowiedź: zamówienie w drodze
+        userview -> user : komunikat: jedzenie w drodze
+    end
+    end
 end
-end
-
-courier -> orderdetails : potwierdza zlecenie
-rest -> orderdetails : potwierdza odbiór zamówienia
-userview <- orderdetails : odpowiedź: zamówienie w drodze
-userview -> user : komunikat: jedzenie w drodze
 @enduml
 ```
