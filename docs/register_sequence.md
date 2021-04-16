@@ -21,14 +21,16 @@ loop
         register <- db : znaleziono użytkownika o takim loginie
         auth <- register : odpowiedź: login jest już w użytku
         user <- auth : komunikat: zajęta nazwa użytkownika
+    else hasło zbyt słabe
+         user <- auth : komunikat: hasło zbyt słabe
+    break Poprawne dane logowania
+        auth -> register : wysyła dane do wpisania do bazy
+        register -> db : zapisuje nowego użytkownika w bazie
+        auth <- register : odpowiedź: pomyślnie utworzono konto
+        user <- auth: komunikat: konto zostało utworzone
     end
-    alt hasło zbyt słabe
-        user <- auth : komunikat: hasło zbyt słabe
     end
 end
-auth -> register : wysyła dane do wpisania do bazy
-register -> db : zapisuje nowego użytkownika w bazie
-auth <- register : odpowiedź: pomyślnie utworzono konto
-user <- auth: komunikat: konto zostało utworzone
+
 @enduml
 ```
