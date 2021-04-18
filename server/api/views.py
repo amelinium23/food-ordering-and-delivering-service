@@ -3,16 +3,32 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, Http404
+from rest_framework import generics
 from api.models import Restaurant
 from api.serializers import RestaurantSerializer
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
+
 
 # Create your views here.
 def index(request):
     return HttpResponse("co jest????")
 
 class RestaurantList(generics.ListCreateAPIView):
-    queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    def get_queryset(self):
+        queryset = Restaurant.objects.all()
+        try:
+            longitude = float(self.request.query_params.get('longitude', None))
+            latitude = float(self.request.query_params.get('latitude', None))
+        except:
+            return queryset.filter(is_active=True)
+        else:
+            user_location = Point(longitude, latitude, srid=4326)
+            queryset = Restaurant.objects.annotate(distance=Distance('location',
+            user_location)
+            ).order_by('distance')
+            return queryset.filter(is_active=True)
 
 class RestaurantDetails(APIView):
     """
