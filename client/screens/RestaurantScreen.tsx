@@ -4,6 +4,8 @@ import { RootStackParamList } from "../types/RootStackParamList";
 import DishHeader from "../components/DishHeader";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import RestaurantBasket from "../components/RestaurantBasket";
+import { Dish as DishType } from "../types/Dish";
 
 const DISHES = [
   {
@@ -105,6 +107,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const details = route.params.restaurantInfo;
+  const [dishList, setDishList] = React.useState<DishType[]>([]);
 
   return (
     <View>
@@ -119,6 +122,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
           <DishHeader name={item.name} price={item.price} image={item.image} />
         )}
       />
+      <RestaurantBasket setDishes={setDishList} />
     </View>
   );
 };
