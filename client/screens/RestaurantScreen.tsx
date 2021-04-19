@@ -1,11 +1,12 @@
 import * as React from "react";
-import { View, Text, SectionList, StyleSheet } from "react-native";
+import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
 import DishHeader from "../components/DishHeader";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RestaurantBasket from "../components/RestaurantBasket";
 import { Dish as DishType } from "../types/Dish";
+import { DishProvider } from "../contexts/DishContext";
 
 const DISHES = [
   {
@@ -119,10 +120,22 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
           <Text style={styles.categoryHeader}>{category}</Text>
         )}
         renderItem={({ item }) => (
-          <DishHeader name={item.name} price={item.price} image={item.image} />
+          <Pressable
+            onPress={() => {
+              setDishList(dishList.concat(item));
+            }}
+          >
+            <DishHeader
+              name={item.name}
+              price={item.price}
+              image={item.image}
+            />
+          </Pressable>
         )}
       />
-      <RestaurantBasket setDishes={setDishList} />
+      <DishProvider value={[dishList, setDishList]}>
+        <RestaurantBasket setDishes={setDishList} />
+      </DishProvider>
     </View>
   );
 };

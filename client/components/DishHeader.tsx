@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   dishNameText: {
     fontSize: 20,
     fontWeight: "400",
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
   image: {
     height: "100%",

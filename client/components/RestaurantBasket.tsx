@@ -4,6 +4,7 @@ import { Dish as DishType } from "../types/Dish";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useState } from "react";
 import Modal from "react-native-modal";
+import DishContext from "../contexts/DishContext";
 
 interface IProps {
   setDishes: React.Dispatch<React.SetStateAction<DishType[]>>;
@@ -11,6 +12,11 @@ interface IProps {
 
 const RestaurantBasket: React.FunctionComponent<IProps> = ({ setDishes }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [dishList, setDishList] = React.useContext(DishContext);
+  let id = 1;
+
+  const renderDishes = (dishes: DishType[]) =>
+    dishes.map((dish) => <Text key={`${dish.name}${id++}`}>{dish.name}</Text>);
 
   return (
     <View>
@@ -26,9 +32,13 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({ setDishes }) => {
         }}
       >
         <View style={styles.modal}>
-          <Text style={{ fontStyle: "italic", color: "grey" }}>
-            Twój koszyk jest pusty
-          </Text>
+          {dishList.length ? (
+            renderDishes(dishList)
+          ) : (
+            <Text style={{ fontStyle: "italic", color: "grey" }}>
+              Twój koszyk jest pusty{" "}
+            </Text>
+          )}
         </View>
       </Modal>
       <Pressable
@@ -36,6 +46,27 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({ setDishes }) => {
         onPress={() => setModalVisible(!modalVisible)}
       >
         <FontAwesome5 name="shopping-basket" size={24} color="white" />
+        {dishList.length && !modalVisible ? (
+          <View
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              marginTop: -5,
+              marginRight: -5,
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              backgroundColor: "rgb(239, 68, 68)",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 15, color: "white" }}>
+              {dishList.length}
+            </Text>
+          </View>
+        ) : null}
       </Pressable>
     </View>
   );
