@@ -13,7 +13,10 @@ const RestaurantBasket: React.FunctionComponent = () => {
 
   const renderDishes = (dishes: DishType[]) =>
     dishes.map((dish) => (
-      <Text key={`${dish.name}${id++}`} style={styles.text}>
+      <Text
+        key={`${dish.name}${id++}`}
+        style={{ fontSize: 14, color: "black" }}
+      >
         {dish.name}: {dish.price} zł
       </Text>
     ));
@@ -35,15 +38,23 @@ const RestaurantBasket: React.FunctionComponent = () => {
       >
         <View style={styles.modal}>
           {dishList.length ? (
-            renderDishes(dishList)
+            <View>
+              {renderDishes(dishList)}
+              <View style={styles.summaryContainer}>
+                <Text style={styles.summaryText}>
+                  Suma:{" "}
+                  {dishList
+                    .reduce((current, e) => current + e.price, 0)
+                    .toFixed(2)}{" "}
+                  zł
+                </Text>
+              </View>
+            </View>
           ) : (
             <Text style={{ fontStyle: "italic", color: "grey" }}>
               Twój koszyk jest pusty{" "}
             </Text>
           )}
-          <View style={styles.summary}>
-            <Text>Coś</Text>
-          </View>
         </View>
       </Modal>
       <Pressable
@@ -115,9 +126,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 14,
+  summaryText: {
+    fontSize: 18,
     fontWeight: "bold",
+  },
+  summaryContainer: {
+    borderTopColor: "grey",
+    borderTopWidth: 2,
+    flex: 1,
   },
 });
 
