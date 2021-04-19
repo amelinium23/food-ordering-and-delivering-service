@@ -1,7 +1,10 @@
 # food-ordering-and-delivering-service
 ### Glove
-Application for managing ordering and delivering food from restaurants built with React and Django
-
+Application for managing ordering and delivering food from restaurants built with React and Django.  
+Run with Docker:
+```
+  docker compose up --build
+```
 
 ### Co robi aplikacja?
 ### User:
