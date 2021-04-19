@@ -6,11 +6,7 @@ import { useState } from "react";
 import Modal from "react-native-modal";
 import DishContext from "../contexts/DishContext";
 
-interface IProps {
-  setDishes: React.Dispatch<React.SetStateAction<DishType[]>>;
-}
-
-const RestaurantBasket: React.FunctionComponent<IProps> = ({ setDishes }) => {
+const RestaurantBasket: React.FunctionComponent = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dishList, setDishList] = React.useContext(DishContext);
   let id = 1;
