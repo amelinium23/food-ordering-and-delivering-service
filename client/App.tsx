@@ -81,6 +81,7 @@ const App: React.FunctionComponent = () => {
           headerStyle: {
             backgroundColor: "rgb(59, 108, 212)",
           },
+          headerTitleAlign: "center",
           headerTintColor: "white",
           headerTitleStyle: {
             textAlign: "center",
