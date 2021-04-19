@@ -41,4 +41,3 @@ class MenuGroupSerializer(serializers.ModelSerializer):
    class Meta:
       model = models.MenuGroup
       fields = ['name', 'data']
-
