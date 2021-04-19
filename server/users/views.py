@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from api.models import User
-from api.serializers import UserSerializer
+from users.models import User
+from users.serializers import UserSerializer
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 from rest_framework import generics, status
