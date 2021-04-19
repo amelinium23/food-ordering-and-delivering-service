@@ -8,28 +8,24 @@ from api.models import Restaurant
 from api.serializers import RestaurantSerializer
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-
+from datetime import datetime
 
 # Create your views here.
 def index(request):
+    print(datetime.today().weekday())
     return HttpResponse("co jest????")
-
 class RestaurantList(generics.ListCreateAPIView):
     serializer_class = RestaurantSerializer
     def get_queryset(self):
-        queryset = Restaurant.objects.all()
+        queryset = Restaurant.objects.are_open()
         try:
             longitude = float(self.request.query_params.get('longitude', None))
             latitude = float(self.request.query_params.get('latitude', None))
         except:
-            return queryset.filter(is_active=True)
+            return queryset
         else:
             user_location = Point(longitude, latitude, srid=4326)
-            queryset = Restaurant.objects.annotate(distance=Distance('location',
-            user_location)
-            ).order_by('distance')
-            return queryset.filter(is_active=True)
-
+            return queryset.annotate(distance=Distance('location',user_location)).order_by('distance')
 class RestaurantDetails(APIView):
     """
     Retrieve or update(delivery_cost) a restaurant instance.

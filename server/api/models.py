@@ -1,10 +1,17 @@
+from datetime import datetime, timezone
 from django.contrib.gis.db import models
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+import pytz
 
 
 # Create your models here.
+class RestaurantManager(models.Manager):
+    def are_open(self):
+        open_restaurants_ids = [restaurant.id for restaurant in self.filter(is_active=True)
+        if restaurant.is_open(restaurant.id)]
+        return self.filter(id__in=open_restaurants_ids)
 class Restaurant(models.Model):
     class CUISINE_TYPE_CHOICES(models.TextChoices):
         OTHER = 'other', _('inne')
@@ -22,23 +29,44 @@ class Restaurant(models.Model):
     delivery_cost = models.DecimalField(max_digits=4, decimal_places=2)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True)
+    objects = RestaurantManager()
 
-class OpeningHours(models.Model):
-    class WEEKDAY(models.TextChoices):
-        MONDAY = 1, _('Poniedziałek')
-        TUESDAY = 2, _('Wtorek')
-        WEDNESDAY = 3, _('Środa')
-        THURSDAY = 4, _('Czwartek')
-        FRIDAY = 5, _('Piątek')
-        SATURDAY = 6, _('Sobota')
-        SUNDAY = 7, _('Niedziela')
-    weekday = models.IntegerField(choices=WEEKDAY.choices)
-    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
-    openingHour = models.CharField(max_length=5)
-    closingHour = models.CharField(max_length=5)
+    def is_open(self, id):
+        today = datetime.today().weekday()
+        if today == 0:
+            prev_day = 6
+        else:
+            prev_day = today - 1
+        obj = OpeningHours.objects.get(weekday=today, restaurant=id)
+        current_time = datetime.now(tz=pytz.timezone('Europe/Warsaw')).time()
+        if obj.opening_hour < obj.closing_hour:
+            if obj.opening_hour < current_time < obj.closing_hour:
+                return True
+        elif obj.opening_hour < current_time:
+                return True
+        obj = OpeningHours.objects.get(weekday=prev_day, restaurant=id)
+        if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
+            return True
+        return False
 
     def __str__(self) -> str:
-        return f'{self.openingHour} - {self.closingHour}'
+        return f'{self.name} - {self.address}' 
+class OpeningHours(models.Model):
+    class WEEKDAY(models.IntegerChoices):
+        MONDAY = 0, _('Poniedziałek')
+        TUESDAY = 1, _('Wtorek')
+        WEDNESDAY = 2, _('Środa')
+        THURSDAY = 3, _('Czwartek')
+        FRIDAY = 4, _('Piątek')
+        SATURDAY = 5, _('Sobota')
+        SUNDAY = 6, _('Niedziela')
+    weekday = models.IntegerField(choices=WEEKDAY.choices)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
+    opening_hour = models.TimeField()
+    closing_hour = models.TimeField()
+
+    def __str__(self) -> str:
+        return f'{self.restaurant.name} - {self.weekday}'
 class MenuGroup(models.Model):
     restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
