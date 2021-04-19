@@ -21,6 +21,8 @@ const RestaurantBasket: React.FunctionComponent = () => {
         animationOut="slideOutRight"
         isVisible={modalVisible}
         onBackdropPress={() => setModalVisible(!modalVisible)}
+        onSwipeComplete={() => setModalVisible(false)}
+        swipeDirection="right"
         coverScreen={true}
         backdropOpacity={0}
         style={{
