@@ -30,7 +30,7 @@ const RestaurantBasket: React.FunctionComponent = () => {
         onBackdropPress={() => setModalVisible(!modalVisible)}
         onSwipeComplete={() => setModalVisible(false)}
         swipeDirection="right"
-        coverScreen={false}
+        coverScreen={true}
         backdropOpacity={0}
         style={{
           margin: 0,
@@ -57,12 +57,24 @@ const RestaurantBasket: React.FunctionComponent = () => {
               </Text>
             )}
           </View>
-          <Pressable
-            style={styles.exitButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Entypo name="cross" size={28} color="gray" />
-          </Pressable>
+          <View style={styles.basketControls}>
+            <Pressable
+              style={styles.exitButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Entypo name="cross" size={28} color="gray" />
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  opacity: pressed ? 0.4 : 1,
+                },
+                styles.checkoutButton,
+              ]}
+            >
+              <Text style={styles.checkoutButtonText}>Zamów</Text>
+            </Pressable>
+          </View>
         </View>
       </Modal>
       <Pressable
@@ -100,7 +112,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: "absolute",
-    width: "80%",
+    width: "85%",
     minHeight: 100,
     right: 0,
     bottom: 0,
@@ -117,10 +129,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 5,
+    justifyContent: "space-between",
     flexDirection: "row",
+  },
+  basketControls: {
     alignContent: "center",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   dishCounter: {
     position: "absolute",
@@ -145,12 +160,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   exitButton: {
-    alignSelf: "flex-start",
+    alignSelf: "flex-end",
     padding: 7,
   },
   basketList: {
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingLeft: 25,
+  },
+  checkoutButton: {
+    backgroundColor: "rgb(59, 108, 212)",
+    alignSelf: "flex-end",
+    padding: 7,
+    margin: 10,
+    borderRadius: 10,
+  },
+  checkoutButtonText: {
+    fontSize: 20,
+    color: "white",
   },
 });
 
