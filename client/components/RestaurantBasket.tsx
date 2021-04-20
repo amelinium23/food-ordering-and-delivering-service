@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { Dish as DishType } from "../types/Dish";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import { useState } from "react";
 import Modal from "react-native-modal";
 import DishContext from "../contexts/DishContext";
@@ -30,31 +30,39 @@ const RestaurantBasket: React.FunctionComponent = () => {
         onBackdropPress={() => setModalVisible(!modalVisible)}
         onSwipeComplete={() => setModalVisible(false)}
         swipeDirection="right"
-        coverScreen={true}
+        coverScreen={false}
         backdropOpacity={0}
         style={{
           margin: 0,
         }}
       >
         <View style={styles.modal}>
-          {dishList.length ? (
-            <View>
-              {renderDishes(dishList)}
-              <View style={styles.summaryContainer}>
-                <Text style={styles.summaryText}>
-                  Suma:{" "}
-                  {dishList
-                    .reduce((current, e) => current + e.price, 0)
-                    .toFixed(2)}{" "}
-                  zł
-                </Text>
+          <View style={styles.basketList}>
+            {dishList.length ? (
+              <View>
+                {renderDishes(dishList)}
+                <View style={styles.summaryContainer}>
+                  <Text style={styles.summaryText}>
+                    Suma:{" "}
+                    {dishList
+                      .reduce((current, e) => current + e.price, 0)
+                      .toFixed(2)}{" "}
+                    zł
+                  </Text>
+                </View>
               </View>
-            </View>
-          ) : (
-            <Text style={{ fontStyle: "italic", color: "grey" }}>
-              Twój koszyk jest pusty{" "}
-            </Text>
-          )}
+            ) : (
+              <Text style={{ fontStyle: "italic", color: "grey" }}>
+                Twój koszyk jest pusty{" "}
+              </Text>
+            )}
+          </View>
+          <Pressable
+            style={styles.exitButton}
+            onPress={() => setModalVisible(false)}
+          >
+            <Entypo name="cross" size={28} color="gray" />
+          </Pressable>
         </View>
       </Modal>
       <Pressable
@@ -63,21 +71,7 @@ const RestaurantBasket: React.FunctionComponent = () => {
       >
         <FontAwesome5 name="shopping-basket" size={24} color="white" />
         {dishList.length && !modalVisible ? (
-          <View
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              marginTop: -5,
-              marginRight: -5,
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              backgroundColor: "rgb(239, 68, 68)",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.dishCounter}>
             <Text style={{ fontSize: 15, color: "white" }}>
               {dishList.length}
             </Text>
@@ -107,13 +101,13 @@ const styles = StyleSheet.create({
   modal: {
     position: "absolute",
     width: "80%",
+    minHeight: 100,
     right: 0,
     bottom: 0,
     marginRight: 20,
     marginBottom: 20,
-    paddingVertical: 100,
     backgroundColor: "white",
-    borderRadius: 50,
+    borderRadius: 25,
     borderBottomRightRadius: 0,
     shadowColor: "#000",
     shadowOffset: {
@@ -123,7 +117,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 1,
     elevation: 5,
+    flexDirection: "row",
     alignContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  dishCounter: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    marginTop: -5,
+    marginRight: -5,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "rgb(239, 68, 68)",
+    justifyContent: "center",
     alignItems: "center",
   },
   summaryText: {
@@ -134,6 +143,14 @@ const styles = StyleSheet.create({
     borderTopColor: "grey",
     borderTopWidth: 2,
     flex: 1,
+  },
+  exitButton: {
+    alignSelf: "flex-start",
+    padding: 7,
+  },
+  basketList: {
+    paddingVertical: 5,
+    paddingLeft: 25,
   },
 });
 
