@@ -83,7 +83,10 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({ navigation }) => {
                 styles.checkoutButton,
               ]}
               onPress={() => {
-                navigation.navigate("Order", { orderInfo: dishList });
+                if (dishList.length > 0) {
+                  setModalVisible(false);
+                  navigation.navigate("Order", { orderInfo: dishList });
+                }
               }}
             >
               <Text style={styles.checkoutButtonText}>Zamów</Text>
