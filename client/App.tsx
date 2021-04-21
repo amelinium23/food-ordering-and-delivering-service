@@ -1,7 +1,7 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListScreen from "./types/ListScreen";
+import ListScreen from "./screens/ListScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
