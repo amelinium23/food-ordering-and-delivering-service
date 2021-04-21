@@ -134,7 +134,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
         )}
       />
       <DishProvider value={[dishList, setDishList]}>
-        <RestaurantBasket navigation={navigation} />
+        <RestaurantBasket route={route} navigation={navigation} />
       </DishProvider>
     </View>
   );

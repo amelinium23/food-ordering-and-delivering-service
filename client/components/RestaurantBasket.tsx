@@ -7,6 +7,9 @@ import Modal from "react-native-modal";
 import DishContext from "../contexts/DishContext";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/RootStackParamList";
+import { RouteProp } from "@react-navigation/native";
+
+type RestaurantScreenRouteProp = RouteProp<RootStackParamList, "Restaurant">;
 
 type RestaurantScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -14,12 +17,17 @@ type RestaurantScreenNavigationProp = StackNavigationProp<
 >;
 
 interface IProps {
+  route: RestaurantScreenRouteProp;
   navigation: RestaurantScreenNavigationProp;
 }
 
-const RestaurantBasket: React.FunctionComponent<IProps> = ({ navigation }) => {
+const RestaurantBasket: React.FunctionComponent<IProps> = ({
+  route,
+  navigation,
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dishList, setDishList] = React.useContext(DishContext);
+  const deliveryCost = route.params.restaurantInfo.cost;
   let id = 1;
 
   const renderDishes = (dishes: DishType[]) =>
@@ -52,11 +60,12 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({ navigation }) => {
             {dishList.length ? (
               <View>
                 {renderDishes(dishList)}
+                <Text>Dostawa: {deliveryCost} zł</Text>
                 <View style={styles.summaryContainer}>
                   <Text style={styles.summaryText}>
                     Suma:{" "}
                     {dishList
-                      .reduce((current, e) => current + e.price, 0)
+                      .reduce((current, e) => current + e.price, deliveryCost)
                       .toFixed(2)}{" "}
                     zł
                   </Text>
@@ -85,7 +94,10 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({ navigation }) => {
               onPress={() => {
                 if (dishList.length > 0) {
                   setModalVisible(false);
-                  navigation.navigate("Order", { orderInfo: dishList });
+                  navigation.navigate("Order", {
+                    orderInfo: dishList,
+                    deliveryCost: route.params.restaurantInfo.cost,
+                  });
                 }
               }}
             >

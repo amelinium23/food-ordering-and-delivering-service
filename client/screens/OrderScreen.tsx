@@ -22,6 +22,7 @@ const OrderScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const orderDishList = route.params.orderInfo;
+  const deliveryCost = route.params.deliveryCost;
   return (
     <View style={styles.container}>
       <FlatList
@@ -34,7 +35,7 @@ const OrderScreen: React.FunctionComponent<IProps> = ({
       <View style={styles.footer}>
         <Text>
           {`Suma: ${orderDishList
-            .reduce((current, e) => current + e.price, 0)
+            .reduce((current, e) => current + e.price, deliveryCost)
             .toFixed(2)} zł`}
         </Text>
       </View>
