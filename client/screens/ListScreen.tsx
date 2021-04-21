@@ -5,6 +5,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import RestaurantHeader from "../components/RestaurantHeader";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
@@ -25,13 +26,17 @@ interface IProps {
 
 const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
   const restaurants = route.params.restaurants;
+  const [cuisineType, setCuisineType] = React.useState("");
   const [restList, setRestList] = React.useState(restaurants);
 
+  // Wyszukiwarka nie działa, do naprawy
   const updateList = (filter: string) => {
     setRestList(
-      filter.length > 0
-        ? restaurants.filter((r) =>
-            r.key.toLowerCase().includes(filter.toLowerCase())
+      filter.length > 0 || cuisineType !== ""
+        ? restaurants.filter(
+            (r) =>
+              r.key.toLowerCase().includes(filter.toLowerCase()) &&
+              r.type.includes(cuisineType)
           )
         : restaurants
     );
@@ -49,6 +54,25 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
         }}
         placeholder="Wpisz nazwę restauracji"
       />
+      <Picker
+        style={styles.picker}
+        selectedValue={cuisineType}
+        onValueChange={(itemValue, itemIndex) => {
+          setCuisineType(itemValue);
+          console.log(cuisineType);
+        }}
+      >
+        {Array.from(
+          new Set(
+            restaurants.reduce(
+              (current, e) => current.concat(e.type),
+              [] as string[]
+            )
+          )
+        ).map((e) => (
+          <Picker.Item label={e} value={e} key={e} />
+        ))}
+      </Picker>
       <FlatList
         data={restList}
         keyExtractor={(item) => item.key}
@@ -99,6 +123,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 6,
     elevation: 5,
+  },
+  picker: {
+    height: 50,
   },
 });
 
