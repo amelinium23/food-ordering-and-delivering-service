@@ -1,9 +1,10 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ListScreen from "./screens/ListScreen";
+import ListScreen from "./types/ListScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
+import OrderScreen from "./screens/OrderScreen";
 
 const RESTAURANTS = [
   {
@@ -103,6 +104,7 @@ const App: React.FunctionComponent = () => {
           component={RestaurantScreen}
           options={({ route }) => ({ title: route.params.restaurantInfo.key })}
         />
+        <Stack.Screen name="Order" component={OrderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -5,8 +5,19 @@ import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import { useState } from "react";
 import Modal from "react-native-modal";
 import DishContext from "../contexts/DishContext";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/RootStackParamList";
 
-const RestaurantBasket: React.FunctionComponent = () => {
+type RestaurantScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Restaurant"
+>;
+
+interface IProps {
+  navigation: RestaurantScreenNavigationProp;
+}
+
+const RestaurantBasket: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dishList, setDishList] = React.useContext(DishContext);
   let id = 1;
@@ -71,6 +82,9 @@ const RestaurantBasket: React.FunctionComponent = () => {
                 },
                 styles.checkoutButton,
               ]}
+              onPress={() => {
+                navigation.navigate("Order", { orderInfo: dishList });
+              }}
             >
               <Text style={styles.checkoutButtonText}>Zamów</Text>
             </Pressable>

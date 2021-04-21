@@ -6,7 +6,7 @@ import {
   Pressable,
 } from "react-native";
 import RestaurantHeader from "../components/RestaurantHeader";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { RootStackParamList } from "./RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
