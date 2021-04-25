@@ -26,42 +26,50 @@ interface IProps {
 
 const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
   const restaurants = route.params.restaurants;
+  const [filter, setFilter] = React.useState("");
   const [cuisineType, setCuisineType] = React.useState("");
   const [restList, setRestList] = React.useState(restaurants);
 
-  // Wyszukiwarka nie działa, do naprawy
-  const updateList = (filter: string) => {
-    setRestList(
-      filter.length > 0 || cuisineType !== ""
-        ? restaurants.filter(
-            (r) =>
-              r.key.toLowerCase().includes(filter.toLowerCase()) &&
-              r.type.includes(cuisineType)
+  React.useEffect(() => {
+    void updateList();
+  }, [filter, cuisineType]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const updateList = () => {
+    const search =
+      filter.length > 0
+        ? restaurants.filter((r) =>
+            r.key.toLowerCase().includes(filter.toLowerCase())
           )
-        : restaurants
-    );
+        : restaurants;
+    const picker =
+      cuisineType !== ""
+        ? restaurants.filter((r) => r.type.includes(cuisineType))
+        : restaurants;
+
+    setRestList(search.filter((e) => picker.includes(e)));
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
+        value={filter}
         style={styles.header}
         autoCapitalize="none"
         autoCorrect={false}
         clearButtonMode="always"
         onChangeText={(text) => {
-          updateList(text);
+          setFilter(text);
         }}
         placeholder="Wpisz nazwę restauracji"
       />
       <Picker
         style={styles.picker}
         selectedValue={cuisineType}
-        onValueChange={(itemValue, itemIndex) => {
+        onValueChange={(itemValue) => {
           setCuisineType(itemValue);
-          console.log(cuisineType);
         }}
       >
+        <Picker.Item label="Wszystkie" value="" />
         {Array.from(
           new Set(
             restaurants.reduce(
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   picker: {
-    height: 50,
+    // height: 50,
   },
 });
 
