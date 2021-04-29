@@ -4,13 +4,16 @@ import {
   SafeAreaView,
   TextInput,
   Pressable,
+  View,
+  Text,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import RNPickerSelect from "react-native-picker-select";
 import RestaurantHeader from "../components/RestaurantHeader";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
+import { AntDesign } from "@expo/vector-icons";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "RestaurantList">;
 
@@ -51,36 +54,59 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
-        value={filter}
-        style={styles.header}
-        autoCapitalize="none"
-        autoCorrect={false}
-        clearButtonMode="always"
-        onChangeText={(text) => {
-          setFilter(text);
-        }}
-        placeholder="Wpisz nazwę restauracji"
-      />
-      <Picker
-        style={styles.picker}
-        selectedValue={cuisineType}
-        onValueChange={(itemValue) => {
-          setCuisineType(itemValue);
-        }}
-      >
-        <Picker.Item label="Wszystkie" value="" />
-        {Array.from(
-          new Set(
-            restaurants.reduce(
-              (current, e) => current.concat(e.type),
-              [] as string[]
+      {/* Część z wyszukiwaniem i filtrowaniem, do wydzielenia jako osobny komponent */}
+      <View style={styles.header}>
+        <TextInput
+          value={filter}
+          style={styles.searchBar}
+          autoCapitalize="none"
+          autoCorrect={false}
+          clearButtonMode="always"
+          onChangeText={(text) => {
+            setFilter(text);
+          }}
+          placeholder="Wpisz nazwę restauracji"
+        />
+        <RNPickerSelect
+          placeholder={{ label: "Wszystko", value: "" }}
+          items={Array.from(
+            new Set(
+              restaurants.reduce(
+                (current, e) => current.concat(e.type),
+                [] as string[]
+              )
             )
-          )
-        ).map((e) => (
-          <Picker.Item label={e} value={e} key={e} />
-        ))}
-      </Picker>
+          ).map((e) => ({ label: e, value: e, key: e }))}
+          onValueChange={(item) => {
+            setCuisineType(item);
+          }}
+        >
+          <View style={styles.picker}>
+            <Text
+              style={[
+                styles.pickerText,
+                cuisineType.length
+                  ? { color: "black" }
+                  : { color: "lightgrey" },
+              ]}
+            >
+              {cuisineType.length ? cuisineType : "Typ kuchni"}
+            </Text>
+            <AntDesign
+              name="down"
+              size={15}
+              color="lightgrey"
+              style={[
+                { textAlign: "center", alignSelf: "center" },
+                cuisineType.length
+                  ? { color: "black" }
+                  : { color: "lightgrey" },
+              ]}
+            />
+          </View>
+        </RNPickerSelect>
+      </View>
+      {/* Tutaj koniec części wyszukiwarki i filtrowania */}
       <FlatList
         data={restList}
         keyExtractor={(item) => item.key}
@@ -131,9 +157,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 6,
     elevation: 5,
+    flexDirection: "row",
+  },
+  searchBar: {
+    flex: 1,
   },
   picker: {
-    // height: 50,
+    flexDirection: "row",
+    borderColor: "lightgrey",
+    borderLeftWidth: 1,
+  },
+  pickerText: {
+    paddingHorizontal: 5,
   },
 });
 

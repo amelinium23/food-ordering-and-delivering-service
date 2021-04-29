@@ -59,7 +59,7 @@ const RESTAURANTS = [
     key: "DaGrasso",
     type: ["Włoska", "Pizza"],
     cost: 3.5,
-    image: "https://cdn.dagrasso.pl/static/themes/3/assets-412/logo-home.png",
+    image: "https://cdn.dagrasso.pl/static/themes/3/assets-413/logo-home.png",
     distance: 8.11,
   },
   {
