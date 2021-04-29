@@ -69,6 +69,7 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
         />
         <RNPickerSelect
           placeholder={{ label: "Wszystko", value: "" }}
+          useNativeAndroidPickerStyle={false}
           items={Array.from(
             new Set(
               restaurants.reduce(
@@ -158,11 +159,14 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 5,
     flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
   },
   searchBar: {
     flex: 1,
   },
   picker: {
+    backgroundColor: "white",
     flexDirection: "row",
     borderColor: "lightgrey",
     borderLeftWidth: 1,
