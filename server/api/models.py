@@ -37,21 +37,21 @@ class Restaurant(models.Model):
             prev_day = 6
         else:
             prev_day = today - 1
-        obj = OpeningHours.objects.get(weekday=today, restaurant=id)
+        obj = OpeningHour.objects.get(weekday=today, restaurant=id)
         current_time = datetime.now(tz=pytz.timezone('Europe/Warsaw')).time()
         if obj.opening_hour < obj.closing_hour:
             if obj.opening_hour < current_time < obj.closing_hour:
                 return True
         elif obj.opening_hour < current_time:
                 return True
-        obj = OpeningHours.objects.get(weekday=prev_day, restaurant=id)
+        obj = OpeningHour.objects.get(weekday=prev_day, restaurant=id)
         if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
             return True
         return False
 
     def __str__(self) -> str:
         return f'{self.name} - {self.address}' 
-class OpeningHours(models.Model):
+class OpeningHour(models.Model):
     class WEEKDAY(models.IntegerChoices):
         MONDAY = 0, _('Poniedziałek')
         TUESDAY = 1, _('Wtorek')
@@ -60,6 +60,8 @@ class OpeningHours(models.Model):
         FRIDAY = 4, _('Piątek')
         SATURDAY = 5, _('Sobota')
         SUNDAY = 6, _('Niedziela')
+    class Meta:
+        unique_together = ['weekday', 'restaurant']
     weekday = models.IntegerField(choices=WEEKDAY.choices)
     restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
     opening_hour = models.TimeField()
@@ -74,8 +76,8 @@ class MenuGroup(models.Model):
 class Dish(models.Model):
     group =  models.ForeignKey('MenuGroup', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
+    image = models.URLField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
-    description = models.TextField(blank=True)
 
 class ExtraGroup(models.Model):
     class TYPE_CHOICES(models.IntegerChoices):
@@ -90,7 +92,6 @@ class Extra(models.Model):
     category = models.ForeignKey('ExtraGroup', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
-    description = models.TextField(blank=True)
 
 class Order(models.Model):
     class ORDER_STATUS(models.IntegerChoices):

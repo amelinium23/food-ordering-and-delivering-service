@@ -1,12 +1,29 @@
 from django.contrib.gis import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from .models import OpeningHours, Restaurant
+from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant
+import nested_admin
 
 # Register your models here.
+
+class OpeningHourInline(nested_admin.NestedTabularInline):
+    model = OpeningHour
+class ExtraInline(nested_admin.NestedTabularInline):
+    model = Extra
+class ExtraGroupInline(nested_admin.NestedTabularInline):
+    model = ExtraGroup
+    inlines = [ExtraInline]
+class DishInline(nested_admin.NestedTabularInline):
+    model = Dish
+    inlines = [ExtraGroupInline]
+class MenuGroupInline(nested_admin.NestedTabularInline):
+    model = MenuGroup
+    inlines = [DishInline]
+
 @admin.register(Restaurant)
-class RestaurantAdmin(OSMGeoAdmin):
+class RestaurantAdmin(OSMGeoAdmin, nested_admin.NestedModelAdmin):
+    inlines = [
+        OpeningHourInline,
+        MenuGroupInline,
+    ]
     list_display = ('name', 'location')
 
-@admin.register(OpeningHours)
-class OpeningHoursAdmin(admin.ModelAdmin):
-    pass

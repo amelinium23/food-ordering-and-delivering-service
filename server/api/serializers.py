@@ -13,10 +13,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
          return round(instance.distance.km, 3)
       return 0
 
-class OpeningHoursSerializer(serializers.ModelSerializer):
+class OpeningHourSerializer(serializers.ModelSerializer):
    weekday = serializers.CharField(source='get_weekday_display')
    class Meta:
-      model = models.OpeningHours
+      model = models.OpeningHour
       fields = ['weekday', 'openingHour', 'closingHour']
 
 
