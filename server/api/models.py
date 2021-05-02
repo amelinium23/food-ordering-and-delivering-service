@@ -6,12 +6,12 @@ from django.conf import settings
 import pytz
 
 
-# Create your models here.
 class RestaurantManager(models.Manager):
     def are_open(self):
         open_restaurants_ids = [restaurant.id for restaurant in self.filter(is_active=True)
         if restaurant.is_open(restaurant.id)]
         return self.filter(id__in=open_restaurants_ids)
+
 class Restaurant(models.Model):
     class CUISINE_TYPE_CHOICES(models.TextChoices):
         OTHER = 'other', _('inne')
@@ -51,6 +51,7 @@ class Restaurant(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} - {self.address}' 
+
 class OpeningHour(models.Model):
     class WEEKDAY(models.IntegerChoices):
         MONDAY = 0, _('Poniedziałek')
@@ -69,6 +70,7 @@ class OpeningHour(models.Model):
 
     def __str__(self) -> str:
         return f'{self.restaurant.name} - {self.weekday}'
+
 class MenuGroup(models.Model):
     restaurant = models.ForeignKey(Restaurant, related_name='restaurant', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -86,7 +88,6 @@ class ExtraGroup(models.Model):
     dish = models.ForeignKey(Dish, related_name='extras_group', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     extra_type = models.IntegerField(choices=TYPE_CHOICES.choices)
-
 
 class Extra(models.Model):
     category = models.ForeignKey(ExtraGroup, related_name='extras', on_delete=models.CASCADE)

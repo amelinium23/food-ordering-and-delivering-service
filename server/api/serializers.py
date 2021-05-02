@@ -38,7 +38,7 @@ class DishSerializer(serializers.ModelSerializer):
    extras_group = ExtraGroupSerializer(many=True, read_only=True)
    class Meta:
       model = models.Dish
-      fields = ['name', 'price', 'extras_group']
+      fields = ['name', 'image', 'price', 'extras_group']
 
 
 class MenuGroupSerializer(serializers.ModelSerializer):
