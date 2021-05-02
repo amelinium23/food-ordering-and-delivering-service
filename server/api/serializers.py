@@ -42,7 +42,7 @@ class DishSerializer(serializers.ModelSerializer):
 
 
 class MenuGroupSerializer(serializers.ModelSerializer):
-   dishes = DishSerializer(many=True, read_only=True)
+   data = DishSerializer(many=True, read_only=True)
    class Meta:
       model = models.MenuGroup
-      fields = ['name', 'dishes']
+      fields = ['name', 'data']

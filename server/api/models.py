@@ -76,7 +76,7 @@ class MenuGroup(models.Model):
     name = models.CharField(max_length=50)
 
 class Dish(models.Model):
-    group = models.ForeignKey(MenuGroup, related_name='dishes', on_delete=models.CASCADE)
+    group = models.ForeignKey(MenuGroup, related_name='data', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     image = models.URLField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
