@@ -13,6 +13,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
          return round(instance.distance.km, 3)
       return 0
 
+
 class OpeningHourSerializer(serializers.ModelSerializer):
    weekday = serializers.CharField(source='get_weekday_display')
    class Meta:
@@ -23,21 +24,25 @@ class OpeningHourSerializer(serializers.ModelSerializer):
 class ExtraSerializer(serializers.ModelSerializer):
    class Meta:
       model = models.Extra
-      fields = ['name', 'added_price', 'description']
+      fields = ['name', 'added_price']
+
 
 class ExtraGroupSerializer(serializers.ModelSerializer):
    extras = ExtraSerializer(many=True, read_only=True)
    class Meta:
       model = models.ExtraGroup
       fields = ['name', 'extra_type', 'extras']
+
+
 class DishSerializer(serializers.ModelSerializer):
    extras_group = ExtraGroupSerializer(many=True, read_only=True)
    class Meta:
       model = models.Dish
-      fields = ['name', 'price', 'description', 'extras_group']
+      fields = ['name', 'price', 'extras_group']
+
 
 class MenuGroupSerializer(serializers.ModelSerializer):
-   data = DishSerializer(many=True, read_only=True)
+   dishes = DishSerializer(many=True, read_only=True)
    class Meta:
       model = models.MenuGroup
-      fields = ['name', 'data']
+      fields = ['name', 'dishes']

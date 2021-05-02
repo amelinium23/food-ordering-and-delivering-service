@@ -8,8 +8,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import Restaurant
-from api.serializers import RestaurantSerializer
+from api.models import Restaurant, MenuGroup
+from api.serializers import RestaurantSerializer, MenuGroupSerializer
 
 # Create your views here.
 
@@ -57,3 +57,23 @@ class RestaurantDetails(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RestaurantMenu(APIView):
+    """
+    Retrieve a restaurant menu.
+    """
+
+    def get_object(self, pk):
+        try:
+            return MenuGroup.objects.get(restaurant = pk)
+        except Restaurant.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        menugroup = self.get_object(pk)
+        serializer = MenuGroupSerializer(menugroup)
+        return Response(serializer.data)
+
+
+

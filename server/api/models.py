@@ -26,7 +26,7 @@ class Restaurant(models.Model):
     address = models.CharField(max_length=80)
     location = models.PointField()
     cuisine_type = models.CharField(max_length=5, choices=CUISINE_TYPE_CHOICES.choices)
-    delivery_cost = models.DecimalField(max_digits=4, decimal_places=2)
+    delivery_cost = models.DecimalField(max_digits=4, decimal_places=1)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True)
     objects = RestaurantManager()
@@ -70,11 +70,11 @@ class OpeningHour(models.Model):
     def __str__(self) -> str:
         return f'{self.restaurant.name} - {self.weekday}'
 class MenuGroup(models.Model):
-    restaurant = models.ForeignKey('Restaurant', on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, related_name='restaurant', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
 class Dish(models.Model):
-    group =  models.ForeignKey('MenuGroup', on_delete=models.CASCADE)
+    group = models.ForeignKey(MenuGroup, related_name='dishes', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     image = models.URLField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
@@ -83,13 +83,13 @@ class ExtraGroup(models.Model):
     class TYPE_CHOICES(models.IntegerChoices):
         LIST = 1
         BOOL = 2
+    dish = models.ForeignKey(Dish, related_name='extras_group', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     extra_type = models.IntegerField(choices=TYPE_CHOICES.choices)
-    dish = models.ForeignKey('Dish', on_delete=models.CASCADE)
 
 
 class Extra(models.Model):
-    category = models.ForeignKey('ExtraGroup', on_delete=models.CASCADE)
+    category = models.ForeignKey(ExtraGroup, related_name='extras', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
 
