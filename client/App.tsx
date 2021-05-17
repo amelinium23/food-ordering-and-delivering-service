@@ -1,7 +1,10 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import ListScreen from "./screens/ListScreen";
+import HistoryScreen from "./screens/HistoryScreen";
+import UserScreen from "./screens/UserScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
@@ -75,6 +78,83 @@ const RESTAURANTS = [
 ];
 
 const Stack = createStackNavigator<RootStackParamList>();
+const Drawer = createDrawerNavigator<RootStackParamList>();
+
+const Restaurant = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="RestaurantList"
+        component={ListScreen}
+        initialParams={{ restaurants: RESTAURANTS }}
+        options={{
+          title: "Glove",
+        }}
+      />
+      <Stack.Screen
+        name="Restaurant"
+        component={RestaurantScreen}
+        options={({ route }) => ({ title: route.params.restaurantInfo.key })}
+      />
+      <Stack.Screen name="Order" component={OrderScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const User = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen name="User" component={UserScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const History = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen name="User" component={HistoryScreen} />
+    </Stack.Navigator>
+  );
+};
 
 const App: React.FunctionComponent = () => {
   const [session, setSession] = React.useState<SessionContextType>({
@@ -88,37 +168,23 @@ const App: React.FunctionComponent = () => {
   return (
     <NavigationContainer>
       <UserProvider value={[session, setSession]}>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: "rgb(59, 108, 212)",
-            },
-            headerTitleAlign: "center",
-            headerTintColor: "white",
-            headerTitleStyle: {
-              textAlign: "center",
-              fontSize: 25,
-              fontWeight: "400",
-            },
-          }}
-        >
-          <Stack.Screen
-            name="RestaurantList"
-            component={ListScreen}
-            initialParams={{ restaurants: RESTAURANTS }}
-            options={{
-              title: "Glove",
-            }}
-          />
-          <Stack.Screen
+        <Drawer.Navigator>
+          <Drawer.Screen
             name="Restaurant"
-            component={RestaurantScreen}
-            options={({ route }) => ({
-              title: route.params.restaurantInfo.key,
-            })}
+            options={{ title: "Restauracje" }}
+            component={Restaurant}
           />
-          <Stack.Screen name="Order" component={OrderScreen} />
-        </Stack.Navigator>
+          <Drawer.Screen
+            name="User"
+            options={{ title: "Użytkownik" }}
+            component={User}
+          />
+          <Drawer.Screen
+            name="History"
+            options={{ title: "Historia zamówień" }}
+            component={History}
+          />
+        </Drawer.Navigator>
       </UserProvider>
     </NavigationContainer>
   );
