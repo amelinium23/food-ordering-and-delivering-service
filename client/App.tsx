@@ -5,6 +5,8 @@ import ListScreen from "./screens/ListScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
+import { UserProvider } from "./contexts/UserContext";
+import { SessionContext as SessionContextType } from "./types/SessionContext";
 
 const RESTAURANTS = [
   {
@@ -75,37 +77,49 @@ const RESTAURANTS = [
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FunctionComponent = () => {
+  const [session, setSession] = React.useState<SessionContextType>({
+    state: false,
+    token: {
+      access_token: "",
+      refresh_token: "",
+    },
+  });
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: "rgb(59, 108, 212)",
-          },
-          headerTitleAlign: "center",
-          headerTintColor: "white",
-          headerTitleStyle: {
-            textAlign: "center",
-            fontSize: 25,
-            fontWeight: "400",
-          },
-        }}
-      >
-        <Stack.Screen
-          name="RestaurantList"
-          component={ListScreen}
-          initialParams={{ restaurants: RESTAURANTS }}
-          options={{
-            title: "Glove",
+      <UserProvider value={[session, setSession]}>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "rgb(59, 108, 212)",
+            },
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerTitleStyle: {
+              textAlign: "center",
+              fontSize: 25,
+              fontWeight: "400",
+            },
           }}
-        />
-        <Stack.Screen
-          name="Restaurant"
-          component={RestaurantScreen}
-          options={({ route }) => ({ title: route.params.restaurantInfo.key })}
-        />
-        <Stack.Screen name="Order" component={OrderScreen} />
-      </Stack.Navigator>
+        >
+          <Stack.Screen
+            name="RestaurantList"
+            component={ListScreen}
+            initialParams={{ restaurants: RESTAURANTS }}
+            options={{
+              title: "Glove",
+            }}
+          />
+          <Stack.Screen
+            name="Restaurant"
+            component={RestaurantScreen}
+            options={({ route }) => ({
+              title: route.params.restaurantInfo.key,
+            })}
+          />
+          <Stack.Screen name="Order" component={OrderScreen} />
+        </Stack.Navigator>
+      </UserProvider>
     </NavigationContainer>
   );
 };
