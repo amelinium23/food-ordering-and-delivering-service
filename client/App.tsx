@@ -130,7 +130,11 @@ const User = () => {
         },
       }}
     >
-      <Stack.Screen name="User" component={UserScreen} />
+      <Stack.Screen
+        name="User"
+        component={UserScreen}
+        options={{ title: "Użytkownik" }}
+      />
     </Stack.Navigator>
   );
 };
@@ -151,7 +155,11 @@ const History = () => {
         },
       }}
     >
-      <Stack.Screen name="User" component={HistoryScreen} />
+      <Stack.Screen
+        name="User"
+        component={HistoryScreen}
+        options={{ title: "Historia zamówień" }}
+      />
     </Stack.Navigator>
   );
 };
