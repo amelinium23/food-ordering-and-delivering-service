@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable, Modal } from "react-native";
 import { Octicons } from "@expo/vector-icons";
 
 const User = {
@@ -9,6 +9,11 @@ const User = {
 };
 
 const UserScreen: React.FunctionComponent = () => {
+  const [isVisable, setIsVisable] = React.useState(false);
+  const toggleModal = () => {
+    setIsVisable(!isVisable);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -22,7 +27,9 @@ const UserScreen: React.FunctionComponent = () => {
         <Text style={styles.text}>Nazwisko: {User.lastName}</Text>
         <Text style={styles.text}>Adres: {User.address}</Text>
         <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Edytuj profil</Text>
+          <Text style={styles.buttonText} onPress={toggleModal}>
+            Edytuj profil
+          </Text>
         </Pressable>
       </View>
     </View>
