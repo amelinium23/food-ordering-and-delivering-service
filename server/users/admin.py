@@ -3,20 +3,20 @@ from .models import User
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 class UserAdminConfig(UserAdmin):
-    search_fields = ('email', 'user_name',)
+    search_fields = ('email', 'username',)
     fieldsets = (
-        (None, {'fields': ('email', 'user_name', 'first_name', 'last_name')}),
+        (None, {'fields': ('email', 'username', 'first_name', 'last_name')}),
         ('Permissions', {'fields':('is_staff', 'is_active', 'account_type')}),
         ('Personal', {'fields': ('address',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide', ),
-            'fields': ('email', 'user_name', 'first_name', 'last_name', 'password1', 'password2', 'account_type')
+            'fields': ('email', 'username', 'first_name', 'last_name', 'password1', 'password2', 'account_type')
         }),
     )
-    list_filter = ('user_name', 'is_active', 'account_type')
+    list_filter = ('username', 'is_active', 'account_type')
     ordering = ('-created_at', 'account_type')
-    list_display = ('email', 'user_name', 'first_name', 'last_name', 'account_type')
+    list_display = ('email', 'username', 'first_name', 'last_name', 'account_type')
 
 admin.site.register(User, UserAdminConfig)
