@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "dj_rest_auth.registration",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.facebook"
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -65,6 +66,16 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
+    },
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['public_profile', 'email'],
+        'FIELDS': [
+            'id',
+            'email',
+            'first_name',
+            'last_name'
+        ]
     }
 }
 
