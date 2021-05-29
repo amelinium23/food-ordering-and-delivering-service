@@ -47,6 +47,12 @@ class DishSerializer(serializers.ModelSerializer):
         fields = ['name', 'image', 'price', 'extras_group']
 
 
+class DishWithoutExtrasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Dish
+        fields = ['name', 'image', 'price']
+
+
 class MenuGroupSerializer(serializers.ModelSerializer):
     data = DishSerializer(many=True, read_only=True)
 
@@ -64,7 +70,7 @@ class OrderedExtraSerializer(serializers.ModelSerializer):
 
 
 class OrderedDishSerializer(serializers.ModelSerializer):
-    dish = DishSerializer()
+    dish = DishWithoutExtrasSerializer()
     ordered_extras = OrderedExtraSerializer(many=True)
 
     class Meta:
