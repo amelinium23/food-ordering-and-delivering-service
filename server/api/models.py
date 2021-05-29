@@ -9,8 +9,9 @@ import pytz
 class RestaurantManager(models.Manager):
     def are_open(self):
         open_restaurants_ids = [restaurant.id for restaurant in self.filter(is_active=True)
-        if restaurant.is_open(restaurant.id)]
+                                if restaurant.is_open(restaurant.id)]
         return self.filter(id__in=open_restaurants_ids)
+
 
 class Restaurant(models.Model):
     class CUISINE_TYPE_CHOICES(models.TextChoices):
@@ -25,7 +26,8 @@ class Restaurant(models.Model):
     logo = models.URLField()
     address = models.CharField(max_length=80)
     location = models.PointField()
-    cuisine_type = models.CharField(max_length=5, choices=CUISINE_TYPE_CHOICES.choices)
+    cuisine_type = models.CharField(
+        max_length=5, choices=CUISINE_TYPE_CHOICES.choices)
     delivery_cost = models.DecimalField(max_digits=4, decimal_places=1)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True)
@@ -43,14 +45,15 @@ class Restaurant(models.Model):
             if obj.opening_hour < current_time < obj.closing_hour:
                 return True
         elif obj.opening_hour < current_time:
-                return True
+            return True
         obj = OpeningHour.objects.get(weekday=prev_day, restaurant=id)
         if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
             return True
         return False
 
     def __str__(self) -> str:
-        return f'{self.name} - {self.address}' 
+        return f'{self.name} - {self.address}'
+
 
 class OpeningHour(models.Model):
     class WEEKDAY(models.IntegerChoices):
@@ -61,6 +64,7 @@ class OpeningHour(models.Model):
         FRIDAY = 4, _('Piątek')
         SATURDAY = 5, _('Sobota')
         SUNDAY = 6, _('Niedziela')
+
     class Meta:
         unique_together = ['weekday', 'restaurant']
     weekday = models.IntegerField(choices=WEEKDAY.choices)
@@ -71,28 +75,37 @@ class OpeningHour(models.Model):
     def __str__(self) -> str:
         return f'{self.restaurant.name} - {self.weekday}'
 
+
 class MenuGroup(models.Model):
-    restaurant = models.ForeignKey(Restaurant, related_name='restaurant', on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(
+        Restaurant, related_name='restaurant', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
+
 class Dish(models.Model):
-    group = models.ForeignKey(MenuGroup, related_name='data', on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        MenuGroup, related_name='data', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     image = models.URLField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
+
 
 class ExtraGroup(models.Model):
     class TYPE_CHOICES(models.IntegerChoices):
         LIST = 1
         BOOL = 2
-    dish = models.ForeignKey(Dish, related_name='extras_group', on_delete=models.CASCADE)
+    dish = models.ForeignKey(
+        Dish, related_name='extras_group', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     extra_type = models.IntegerField(choices=TYPE_CHOICES.choices)
 
+
 class Extra(models.Model):
-    category = models.ForeignKey(ExtraGroup, related_name='extras', on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        ExtraGroup, related_name='extras', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
+
 
 class Order(models.Model):
     class ORDER_STATUS(models.IntegerChoices):
@@ -102,23 +115,25 @@ class Order(models.Model):
         IN_DELIVERY = 4
         DELIVERED = 5
         CANCELLED = 6
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, on_delete=SET_NULL, related_name='purchaser')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, on_delete=SET_NULL, related_name='purchaser')
     restaurant = models.ForeignKey('Restaurant', on_delete=CASCADE)
-    delivery = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=SET_NULL, related_name='delivery_man')
+    delivery = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
+                                 blank=True, on_delete=SET_NULL, related_name='delivery_man')
     status = models.IntegerField(choices=ORDER_STATUS.choices)
     order_placement_date = models.DateTimeField(auto_now_add=True)
     order_preparation_date = models.DateTimeField(null=True, blank=True)
     order_delivery_date = models.DateTimeField(null=True, blank=True)
     order_cost = models.DecimalField(max_digits=10, decimal_places=2)
 
+
 class OrderedDish(models.Model):
     dish = models.ForeignKey('Dish', on_delete=models.CASCADE)
-    order = models.ForeignKey('Order', on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        'Order', on_delete=models.CASCADE, related_name='dishes')
+
 
 class OrderedExtra(models.Model):
     extra = models.ForeignKey('Extra', on_delete=models.CASCADE)
-    dish = models.ForeignKey('OrderedDish', on_delete=models.CASCADE)
-
-
-
-
+    dish = models.ForeignKey(
+        'OrderedDish', on_delete=models.CASCADE, related_name='ordered_extras')

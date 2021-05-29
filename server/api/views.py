@@ -8,10 +8,11 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import Restaurant, MenuGroup
-from api.serializers import RestaurantSerializer, MenuGroupSerializer
+from api.models import Restaurant, MenuGroup, Order
+from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
 
 # Create your views here.
+
 
 def index(request):
     print(datetime.today().weekday())
@@ -66,7 +67,7 @@ class RestaurantMenu(APIView):
 
     def get_object(self, pk):
         try:
-            return MenuGroup.objects.get(restaurant = pk)
+            return MenuGroup.objects.get(restaurant=pk)
         except Restaurant.DoesNotExist:
             raise Http404
 
@@ -76,4 +77,8 @@ class RestaurantMenu(APIView):
         return Response(serializer.data)
 
 
-
+class OrderHistory(APIView):
+    def get(self, request, user_id):
+        orders = Order.objects.filter(user=user_id)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
