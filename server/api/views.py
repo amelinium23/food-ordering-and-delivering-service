@@ -1,14 +1,11 @@
 from datetime import datetime
-
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.http import Http404, HttpResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from api.models import Restaurant, MenuGroup, Order
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
 
 # Create your views here.
@@ -81,4 +78,22 @@ class OrderHistory(APIView):
     def get(self, request, user_id):
         orders = Order.objects.filter(user=user_id)
         serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+class OrderDetails(APIView):
+    def post(self, request):
+        restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
+        ordered_extras = []
+        order = Order(user=request.user, restaurant=restaurant,
+                      order_cost=request.data['orderCost'])
+        order.save()
+        for dish in request.data['orderedItems']:
+            ordered_dish = Dish.objects.get(pk=dish['dishId'])
+            ordered_dish_instance = OrderedDish(dish=ordered_dish, order=order)
+            ordered_dish_instance.save()
+            ordered_extras.extend(list(map(lambda x, d=ordered_dish_instance: OrderedExtra(
+                extra=Extra.objects.get(pk=x), dish=d), dish['orderedExtras'])))
+        OrderedExtra.objects.bulk_create(ordered_extras)
+        serializer = OrderSerializer(order)
         return Response(serializer.data)

@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant
+from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant, Order, OrderedDish, OrderedExtra
 import nested_admin
 
 # Register your models here.
@@ -48,3 +48,18 @@ class DishAdmin(admin.ModelAdmin):
 class ExtraAdmin(admin.ModelAdmin):
     list_display = ('id', '__str__')
     readonly_fields = ('id', )
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(OrderedDish)
+class OrderedDishAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(OrderedExtra)
+class OrderedExtraAdmin(admin.ModelAdmin):
+    pass

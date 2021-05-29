@@ -81,6 +81,9 @@ class MenuGroup(models.Model):
         Restaurant, related_name='restaurant', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
 
+    def __str__(self) -> str:
+        return f'{self.name} - {self.restaurant}'
+
 
 class Dish(models.Model):
     group = models.ForeignKey(
@@ -88,6 +91,9 @@ class Dish(models.Model):
     name = models.CharField(max_length=50)
     image = models.URLField()
     price = models.DecimalField(max_digits=4, decimal_places=2)
+
+    def __str__(self) -> str:
+        return f'{self.group} - {self.name}'
 
 
 class ExtraGroup(models.Model):
@@ -99,12 +105,18 @@ class ExtraGroup(models.Model):
     name = models.CharField(max_length=30)
     extra_type = models.IntegerField(choices=TYPE_CHOICES.choices)
 
+    def __str__(self) -> str:
+        return f'{self.dish} - {self.name}'
+
 
 class Extra(models.Model):
     category = models.ForeignKey(
         ExtraGroup, related_name='extras', on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     added_price = models.DecimalField(max_digits=4, decimal_places=2)
+
+    def __str__(self) -> str:
+        return f'{self.name} - {self.added_price}'
 
 
 class Order(models.Model):
@@ -120,11 +132,14 @@ class Order(models.Model):
     restaurant = models.ForeignKey('Restaurant', on_delete=CASCADE)
     delivery = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
                                  blank=True, on_delete=SET_NULL, related_name='delivery_man')
-    status = models.IntegerField(choices=ORDER_STATUS.choices)
+    status = models.IntegerField(choices=ORDER_STATUS.choices, default=1)
     order_placement_date = models.DateTimeField(auto_now_add=True)
     order_preparation_date = models.DateTimeField(null=True, blank=True)
     order_delivery_date = models.DateTimeField(null=True, blank=True)
     order_cost = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self) -> str:
+        return f'{self.user} - {self.order_placement_date}'
 
 
 class OrderedDish(models.Model):
@@ -132,8 +147,14 @@ class OrderedDish(models.Model):
     order = models.ForeignKey(
         'Order', on_delete=models.CASCADE, related_name='dishes')
 
+    def __str__(self) -> str:
+        return f'{self.dish} - {self.order}'
+
 
 class OrderedExtra(models.Model):
     extra = models.ForeignKey('Extra', on_delete=models.CASCADE)
     dish = models.ForeignKey(
         'OrderedDish', on_delete=models.CASCADE, related_name='ordered_extras')
+
+    def __str__(self) -> str:
+        return f'{self.extra} - {self.dish}'
