@@ -2,16 +2,14 @@ from datetime import datetime
 
 from users.models import User
 from users.serializers import UserSerializer
-from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import render
-from rest_framework import generics, status
+from django.http import Http404
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
-from django.conf import settings
 
 # Create your views here.
 
