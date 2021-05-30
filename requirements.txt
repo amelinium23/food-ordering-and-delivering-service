@@ -11,3 +11,5 @@ djangorestframework-simplejwt
 PyJWT==1.7.0
 coverage
 django-nested-admin
+gunicorn
+django-heroku
