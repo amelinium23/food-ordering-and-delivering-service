@@ -150,17 +150,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'gis',
-        'USER': 'docker',
-        'PASSWORD': 'docker',
-        'HOST': 'db',
+        'NAME': 'd4kq875spntc2k',
+        'USER': 'mqpbpefffcykmz',
+        'PASSWORD': '6aab078e67b0eb54cecf97421486baa4e4303b24c5ae2d33d2d4944a4e092e9e',
+        'HOST': 'ec2-54-220-170-192.eu-west-1.compute.amazonaws.com',
         'PORT': 5432,
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=600)
-db_from_env['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
-print(db_from_env)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# db_from_env['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
