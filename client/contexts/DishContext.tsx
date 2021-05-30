@@ -8,6 +8,12 @@ const DishContext = React.createContext<
     {
       name: "Dish",
       price: 1,
+      extras: [
+        {
+          name: "nie wiem",
+          price: 20,
+        },
+      ],
       image: "https://placeholder.com/",
     },
   ],
