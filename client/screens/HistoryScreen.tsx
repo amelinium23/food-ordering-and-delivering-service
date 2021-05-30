@@ -2,11 +2,21 @@ import * as React from "react";
 import Order from "../types/Order";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 
+const STATUSES: { [index: number]: string } = {
+  1: "Zamówiony",
+  2: "Szukam dostawcy",
+  3: "W przygotowaniu",
+  4: "W dostawie",
+  5: "Dostarczone",
+  6: "Anulowane",
+};
+
 const ORDERS: Order[] = [
   {
     id: 1,
     date: "20-05-2021",
     price: 20,
+    status: 2,
     restaurant: {
       key: "McDonalds",
       type: [],
@@ -14,10 +24,12 @@ const ORDERS: Order[] = [
       cost: 10,
       distance: 10,
     },
+    orderedDishes: [],
   },
   {
     id: 2,
     date: "21-05-2021",
+    status: 1,
     price: 21,
     restaurant: {
       key: "KFC",
@@ -26,11 +38,13 @@ const ORDERS: Order[] = [
       cost: 10,
       distance: 10,
     },
+    orderedDishes: [],
   },
   {
     id: 3,
     date: "22-05-2021",
     price: 22,
+    status: 3,
     restaurant: {
       key: "Subaway",
       type: [],
@@ -38,6 +52,7 @@ const ORDERS: Order[] = [
       cost: 10,
       distance: 10,
     },
+    orderedDishes: [],
   },
 ];
 
@@ -53,6 +68,7 @@ const HistoryScreen: React.FunctionComponent = () => {
               <Text style={styles.hearder}>
                 Restauracja: {item.restaurant.key}
               </Text>
+              <Text>Status: {STATUSES[item.status]}</Text>
               <Text>Data zamówienia: {item.date}</Text>
               <Text>Cena zamówienia: {item.price.toFixed(2)} zł</Text>
             </View>
