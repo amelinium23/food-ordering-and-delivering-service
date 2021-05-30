@@ -81,6 +81,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION="none"
 
 REST_USE_JWT = True
 
@@ -114,6 +115,10 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "dj_rest_auth.utils.JWTCookieAuthentication",
     ),
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'users.serializers.UserSerializer'
 }
 
 ROOT_URLCONF = 'config.urls'
