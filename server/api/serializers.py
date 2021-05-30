@@ -1,3 +1,4 @@
+from users.serializers import UserDetailSerializer
 from api.models import Dish, Extra
 from rest_framework import serializers
 import api.models as models
@@ -81,8 +82,8 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
     restaurant = serializers.StringRelatedField()
-
+    purchaser = UserDetailSerializer()
     class Meta:
         model = models.Order
-        fields = ['dishes', 'restaurant', 'status',
+        fields = ['purchaser', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'order_cost']
