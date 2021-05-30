@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import dj_database_url
 from datetime import timedelta
 from pathlib import Path
 import os
@@ -82,7 +83,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 SOCIALACCOUNT_EMAIL_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION="none"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 REST_USE_JWT = True
 
@@ -156,6 +157,8 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
