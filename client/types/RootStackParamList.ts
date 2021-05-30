@@ -10,4 +10,6 @@ export type RootStackParamList = {
   History: {
     Order: { orderInfo: DishType[]; deliveryCost: number; summitCost: number };
   };
+  Login: Record<string, never>;
+  Register: Record<string, never>;
 };

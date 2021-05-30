@@ -5,6 +5,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import ListScreen from "./screens/ListScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import UserScreen from "./screens/UserScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
@@ -97,11 +99,30 @@ const Restaurant = () => {
       }}
     >
       <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          title: "Glove",
+          headerLeft: () => null,
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{
+          title: "Glove",
+          gestureEnabled: false,
+        }}
+      />
+      <Stack.Screen
         name="RestaurantList"
         component={ListScreen}
         initialParams={{ restaurants: RESTAURANTS }}
         options={{
           title: "Glove",
+          headerLeft: () => null,
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
