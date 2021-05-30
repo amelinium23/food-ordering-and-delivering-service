@@ -10,6 +10,7 @@ import {
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import zxcvbn from "zxcvbn";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Register">;
 
@@ -27,9 +28,17 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   route,
   navigation,
 }) => {
+  const [password, setPassword] = React.useState("");
+  const [password2, setPassword2] = React.useState("");
+  const [safety, setSafety] = React.useState(0);
+
+  React.useEffect(() => {
+    setSafety(zxcvbn(password).score as number); //eslint-disable-line
+  }, [password]);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Logowanie</Text>
+      <Text style={styles.header}>Rejestracja</Text>
       <TextInput
         style={styles.input}
         autoCapitalize="none"
@@ -45,21 +54,35 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         placeholder="Nazwa użytkownika"
       />
       <TextInput
-        style={styles.input}
+        style={
+          password.length === 0 || safety > 1
+            ? styles.input
+            : styles.invalidInput
+        }
         autoCapitalize="none"
         secureTextEntry={true}
         autoCompleteType="password"
         textContentType="newPassword"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
         placeholder="Hasło"
       />
+      {password.length === 0 || safety > 1 ? null : (
+        <Text style={styles.notificationText}>Hasło zbyt słabe.</Text>
+      )}
       <TextInput
         style={styles.input}
         autoCapitalize="none"
         secureTextEntry={true}
         autoCompleteType="password"
         textContentType="newPassword"
+        value={password2}
+        onChangeText={(text) => setPassword2(text)}
         placeholder="Powtórz hasło"
       />
+      {password2.length === 0 || password === password2 ? null : (
+        <Text style={styles.notificationText}>Hasła są różne.</Text>
+      )}
       <TextInput
         style={styles.input}
         autoCapitalize="words"
@@ -128,6 +151,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignContent: "center",
   },
+  invalidInput: {
+    backgroundColor: "white",
+    padding: 10,
+    marginVertical: 4,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    shadowColor: "red",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+    elevation: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center",
+  },
   loginButton: {
     backgroundColor: "rgb(59, 108, 212)",
     alignSelf: "center",
@@ -151,6 +192,10 @@ const styles = StyleSheet.create({
   hypertext: {
     borderBottomWidth: 1,
     borderColor: "grey",
+  },
+  notificationText: {
+    color: "grey",
+    marginHorizontal: 20,
   },
 });
 
