@@ -206,3 +206,4 @@ STATICFILES_DIRS = (
 )
 AUTH_USER_MODEL = 'users.User'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
