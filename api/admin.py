@@ -19,21 +19,23 @@ class ExtraGroupInline(nested_admin.NestedTabularInline):
     inlines = [ExtraInline]
 
 
-class DishInline(nested_admin.NestedTabularInline):
-    model = Dish
+@admin.register(Dish)
+class DishInline(nested_admin.NestedModelAdmin):
     inlines = [ExtraGroupInline]
 
 
-class MenuGroupInline(nested_admin.NestedTabularInline):
-    model = MenuGroup
-    inlines = [DishInline]
+@admin.register(MenuGroup)
+class MenuGroupInline(nested_admin.NestedModelAdmin):
+    # model = MenuGroup
+    # inlines = [DishInline]
+    pass
 
 
 @admin.register(Restaurant)
 class RestaurantAdmin(OSMGeoAdmin, nested_admin.NestedModelAdmin):
     inlines = [
         OpeningHourInline,
-        MenuGroupInline,
+        # MenuGroupInline,
     ]
     list_display = ('name', 'location')
 
