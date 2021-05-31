@@ -1,2 +1,2 @@
-release: chmod u+x release-commands.sh ./release-commands.sh
+release: python manage.py migrate
 web: gunicorn config.wsgi
