@@ -69,8 +69,8 @@ class RestaurantMenu(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        menugroup = self.get_object(pk)
-        serializer = MenuGroupSerializer(menugroup)
+        menugroups = MenuGroup.objects.filter(restaurant=pk)
+        serializer = MenuGroupSerializer(menugroups, many=True)
         return Response(serializer.data)
 
 
