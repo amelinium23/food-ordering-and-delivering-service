@@ -14,3 +14,4 @@ django-nested-admin
 gunicorn
 django-heroku
 dj-database-url
+whitenoise
