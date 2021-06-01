@@ -1,83 +1,30 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable, Modal } from "react-native";
-import { Octicons } from "@expo/vector-icons";
-
-const User = {
-  firstName: "Andrzej",
-  lastName: "Kononowicz",
-  address: "ul. 11 Listopada 99 m. 12",
-};
+import axios from "axios";
+import UserHeader from "../components/UserHeader";
 
 const UserScreen: React.FunctionComponent = () => {
-  const [isVisable, setIsVisable] = React.useState(false);
-  const toggleModal = () => {
-    setIsVisable(!isVisable);
-  };
+  const [userData, setUserData] = React.useState({});
+  // const requestData = async () => {
+  //   const data = await axios.get(
+  //     `https://glove-backend.herokuapp.com/users/users/1`
+  //   );
+  //   console.log(data);
+  //   setUserData(data);
+  // };
+
+  // React.useEffect(() => {
+  //   requestData();
+  // }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Octicons
-          name="octoface"
-          size={42}
-          color="black"
-          style={{ alignSelf: "center" }}
-        ></Octicons>
-        <Text style={styles.text}>Imię: {User.firstName}</Text>
-        <Text style={styles.text}>Nazwisko: {User.lastName}</Text>
-        <Text style={styles.text}>Adres: {User.address}</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText} onPress={toggleModal}>
-            Edytuj profil
-          </Text>
-        </Pressable>
-      </View>
-    </View>
+    <UserHeader
+      first_name="Andrzej"
+      last_name="Nie wiem"
+      username="To się nie uda"
+      email="chuj@wp.pl"
+      address="A nie wiem o co wam chodzi, Łódź"
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    flex: 1,
-    backgroundColor: "white",
-  },
-  text: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-  infoContainer: {
-    flex: 2,
-    padding: 10,
-    marginHorizontal: 10,
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  button: {
-    alignSelf: "center",
-    backgroundColor: "rgb(59, 108, 212)",
-    padding: 10,
-    marginHorizontal: 10,
-    marginVertical: 10,
-    textAlign: "center",
-    color: "white",
-    width: 200,
-    borderRadius: 10,
-    borderColor: "black",
-    borderWidth: 1.5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-  },
-});
 
 export default UserScreen;
