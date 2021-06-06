@@ -7,7 +7,6 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dish as DishType } from "../types/Dish";

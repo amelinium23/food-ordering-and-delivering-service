@@ -20,7 +20,7 @@ const ExtraPicker: React.FunctionComponent<IProps> = ({
       {group.extra_type === 1 ? (
         <RNPickerSelect
           style={customPickerStyles}
-          placeholder={{ label: "Wybierz...", value: 0 }}
+          placeholder={{}}
           useNativeAndroidPickerStyle={false}
           items={group.extras.map((e) => ({
             label: `${e.name} (+${e.added_price.toFixed(2)} zł)`,
