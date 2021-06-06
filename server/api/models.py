@@ -167,5 +167,6 @@ class DeliveryManData(models.Model):
         OFFLINE = 3
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=DeliveryManStatus.choices, default=3)
     location = models.PointField()
     last_online = models.DateTimeField(auto_now=True)

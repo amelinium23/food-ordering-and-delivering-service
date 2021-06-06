@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour, DeliveryManData
 from users.models import User
-from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer, DeliveryManDataSerializer
+from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer, OrderForDeliverySerializer, DeliveryManDataSerializer
 
 
 def index(request):
@@ -89,6 +89,7 @@ class OrderDetails(APIView):
     """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
+
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
         ordered_extras = []
@@ -125,13 +126,16 @@ class OrderDetails(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeliveryManStatus(APIView):
     """
     Delivery man updates his status (to be visible to restaurants)
     """
+
     def patch(self, request):
-        deliveryMan = self.get_object(request.user.id)
-        serializer = DeliveryManDataSerializer(deliveryMan, data=request.data, partial=True)
+        delivery_man = self.get_object(request.user.id)
+        serializer = DeliveryManDataSerializer(
+            delivery_man, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -143,3 +147,9 @@ class DeliveryManStatus(APIView):
         except DeliveryManData.DoesNotExist:
             raise Http404
 
+
+class OrdersToAccept(APIView):
+    def get(self, request):
+        orders = Order.objects.filter(delivery=request.user.id, status=2)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
