@@ -44,6 +44,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class DeliveryManDataSerializer(serializers.ModelSerializer):
     user = UserDetailSerializer()
     location = PointField(required=False)
+    distance_to_restaurant = serializers.SerializerMethodField()
+
+    def get_distance_to_restaurant(self, instance):
+        if hasattr(instance, 'distance'):
+            return round(instance.distance.km, 3)
+        return 0
 
     class Meta:
         model = models.DeliveryManData
