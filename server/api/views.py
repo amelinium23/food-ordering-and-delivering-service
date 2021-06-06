@@ -120,7 +120,7 @@ class OrderDetails(APIView):
 
     def patch(self, request, pk):
         order = self.get_object(pk)
-        if request.user.account_type == 2:
+        if request.user.account_type == 2 and order.delivery == request.user.id:
             data_to_edit = {'status': request.data.get(
                 'status'), 'delivery': request.data.get('delivery')}
             serializer = OrderSerializer(
