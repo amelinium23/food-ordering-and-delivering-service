@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import django
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
@@ -171,16 +171,17 @@ class OrdersForRestaurant(APIView):
             raise Http404
 
     def get(self, request, format=None):
-        restaurant = RestaurantOwner.objects.get(user=request.user.id).restaurant
+        restaurant = RestaurantOwner.objects.get(
+            user=request.user.id).restaurant
         orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
 
 class AvailableDeliveries(APIView):
-    def get(self, request, pk, format=None):
+    def get(self, request, format=None):
         restaurant_location = request.user.restaurantowner.restaurant.location
-        five_minutes_ago = django.utils.timezone.now() + datetime.timedelta(minutes=-5)
+        five_minutes_ago = django.utils.timezone.now() + timedelta(minutes=-5)
         queryset = DeliveryManData.objects.filter(
             status=1, last_online__gte=five_minutes_ago).annotate(distance=Distance(
                 restaurant_location, 'location')).order_by('distance').filter(distance__lte=5000)
