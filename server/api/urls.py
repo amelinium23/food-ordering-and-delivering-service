@@ -9,6 +9,7 @@ urlpatterns = [
     path('restaurants/<int:pk>/menu', views.RestaurantMenu.as_view()),
     path('order-history/<int:user_id>/', views.OrderHistory.as_view()),
     path('orders/', views.OrderDetails.as_view()),
-    path('availableOrders/', views.OrdersToAccept.as_view()),
-    path('updateStatus/', views.DeliveryManStatus.as_view())
+    path('deliveryOrders/', views.OrdersForDeliveryMan.as_view()),
+    path('updateStatus/', views.DeliveryManStatus.as_view()),
+    path('restaurantOrders/', views.OrdersForRestaurant.as_view()),
 ]

@@ -120,7 +120,7 @@ class OrderDetails(APIView):
 
     def patch(self, request, pk):
         order = self.get_object(pk)
-        if request.user.account_type == 2:
+        if request.user.account_type == 2 and order.delivery == request.user.id:
             data_to_edit = {'status': request.data.get(
                 'status'), 'delivery': request.data.get('delivery')}
             serializer = OrderSerializer(
@@ -155,8 +155,37 @@ class DeliveryManStatus(APIView):
             raise Http404
 
 
-class OrdersToAccept(APIView):
+class OrdersForDeliveryMan(APIView):
     def get(self, request):
         orders = Order.objects.filter(delivery=request.user.id, status=2)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
+
+
+class OrdersForRestaurant(APIView):
+    def get_object(self, pk):
+        try:
+            return Order.objects.get(order=pk)
+        except Order.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        restaurant = request.user.restaurantId
+        orders = Order.objects.filter(restaurant=restaurant, status__lte=5)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+class AvailableDeliveries(APIView):
+    serializer_class = DeliveryManDataSerializer
+
+    def get_queryset(self):
+        queryset = DeliveryManData.objects.filter(status=1)
+        try:
+            # odleglosc od restauracji <5km
+            pass
+        except:
+            return queryset
+        else:
+            delivery_man_location = Point(longitude, latitude, srid=4326)
+            return queryset.annotate(distance=Distance('location', delivery_man_location)).order_by('distance')
