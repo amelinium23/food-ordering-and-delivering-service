@@ -5,9 +5,10 @@ from django.http import Http404, HttpResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour, DeliveryManData
-from users.models import User
-from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer, OrderForDeliverySerializer, DeliveryManDataSerializer
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
+from users.models import DeliveryManData, User
+from users.serializers import DeliveryManDataSerializer
+from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
 
 
 def index(request):
@@ -119,8 +120,14 @@ class OrderDetails(APIView):
 
     def patch(self, request, pk):
         order = self.get_object(pk)
-        serializer = OrderSerializer(
-            order, data=request.data, partial=True)
+        if request.user.account_type == 2:
+            data_to_edit = {'status': request.data.get(
+                'status'), 'delivery': request.data.get('delivery')}
+            serializer = OrderSerializer(
+                order, data=data_to_edit, partial=True)
+        else:
+            serializer = OrderSerializer(
+                order, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -143,7 +150,7 @@ class DeliveryManStatus(APIView):
 
     def get_object(self, pk):
         try:
-            return User.objects.get(pk=pk)
+            return User.objects.get(pk=pk).deliverymandata
         except DeliveryManData.DoesNotExist:
             raise Http404
 

@@ -1,10 +1,22 @@
 from django.contrib import admin
-from .models import User
+from django.contrib.gis.forms.widgets import OSMWidget
+from django.contrib.gis.db import models
+from .models import User, DeliveryManData
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 
+class UserProfileInline(admin.StackedInline):
+    model = DeliveryManData
+    max_num = 1
+    can_delete = False
+    formfield_overrides = {
+        models.PointField: {"widget": OSMWidget},
+    }
+
+
 class UserAdminConfig(UserAdmin):
+    inlines = [UserProfileInline]
     search_fields = ('email', 'username',)
     fieldsets = (
         (None, {'fields': ('email', 'username', 'first_name', 'last_name')}),

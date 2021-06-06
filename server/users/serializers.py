@@ -1,5 +1,6 @@
 from rest_framework import serializers
 import users.models as models
+from drf_extra_fields.geo_fields import PointField
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -38,3 +39,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class DeliveryManDataSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer()
+    location = PointField(required=False)
+
+    class Meta:
+        model = models.DeliveryManData
+        exclude = []

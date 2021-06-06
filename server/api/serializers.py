@@ -53,7 +53,7 @@ class DishSerializer(serializers.ModelSerializer):
 class DishWithoutExtrasSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Dish
-        fields = ['name', 'image', 'price']
+        fields = ['name', 'price']
 
 
 class MenuGroupSerializer(serializers.ModelSerializer):
@@ -84,11 +84,11 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
     restaurant = serializers.StringRelatedField()
-    purchaser = UserDetailSerializer()
+    user = UserDetailSerializer()
 
     class Meta:
         model = models.Order
-        fields = ['purchaser', 'dishes', 'restaurant', 'status',
+        fields = ['user', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'order_cost']
 
 
@@ -98,11 +98,3 @@ class OrderForDeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
         fields = ['restaurant']
-
-
-class DeliveryManDataSerializer(serializers.ModelSerializer):
-    location = PointField(required=False)
-
-    class Meta:
-        model = models.DeliveryManData
-        exclude = []

@@ -1,6 +1,8 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models.enums import Choices
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -59,3 +61,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+
+class DeliveryManData(models.Model):
+    class DeliveryManStatus(models.IntegerChoices):
+        ONLINE = 1
+        DELIVERING = 2
+        OFFLINE = 3
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=DeliveryManStatus.choices, default=3)
+    location = models.PointField()
+    last_online = models.DateTimeField(auto_now=True)
