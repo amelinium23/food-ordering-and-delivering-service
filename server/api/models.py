@@ -158,3 +158,14 @@ class OrderedExtra(models.Model):
 
     def __str__(self) -> str:
         return f'{self.extra} - {self.dish}'
+
+
+class DeliveryManData(models.Model):
+    class DeliveryManStatus(models.IntegerChoices):
+        ONLINE = 1
+        DELIVERING = 2
+        OFFLINE = 3
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    location = models.PointField()
+    last_online = models.DateTimeField(auto_now=True)
