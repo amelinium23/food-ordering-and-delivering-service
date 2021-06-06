@@ -117,6 +117,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "dj_rest_auth.utils.JWTCookieAuthentication",
     ),
+    "COERCE_DECIMAL_TO_STRING": False
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
