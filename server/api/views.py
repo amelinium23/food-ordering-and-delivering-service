@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
 
 # Create your views here.
@@ -99,3 +99,35 @@ class OrderDetails(APIView):
         OrderedExtra.objects.bulk_create(ordered_extras)
         serializer = OrderSerializer(order)
         return Response(serializer.data)
+
+    def get_object(self, pk):
+        try:
+            return OrderDetails.objects.get(order=pk)
+        except Order.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        order = self.get_object(pk)
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        order = self.get_object(pk)
+        serializer = OrderSerializer(
+            order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# class DeliveryManStatus(APIView):
+#     def get_object(self, pk):
+#         try:
+#             return OrderDetails.objects.get(DeliveryMan=pk)
+#         except De.DoesNotExist:
+#             raise Http404
+
+#     def get(self, request, pk, format=None):
+#         order = self.get_object(pk)
+#         serializer = OrderSerializer(order)
+#         return Response(serializer.data)
