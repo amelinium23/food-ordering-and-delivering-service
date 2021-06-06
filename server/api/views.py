@@ -5,10 +5,9 @@ from django.http import Http404, HttpResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
-from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
-
-# Create your views here.
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour, DeliveryManData
+from users.models import User
+from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer, DeliveryManDataSerializer
 
 
 def index(request):
@@ -17,6 +16,9 @@ def index(request):
 
 
 class RestaurantList(generics.ListCreateAPIView):
+    """
+    Retrieve available restaurant list.
+    """
     serializer_class = RestaurantSerializer
 
     def get_queryset(self):
@@ -82,6 +84,9 @@ class OrderHistory(APIView):
 
 
 class OrderDetails(APIView):
+    """
+    Retrieve an order details, post an order, update order status.
+    """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
     def post(self, request):
@@ -120,14 +125,21 @@ class OrderDetails(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class DeliveryManStatus(APIView):
-#     def get_object(self, pk):
-#         try:
-#             return OrderDetails.objects.get(DeliveryMan=pk)
-#         except De.DoesNotExist:
-#             raise Http404
+class DeliveryManStatus(APIView):
+    """
+    Delivery man updates his status (to be visible to restaurants)
+    """
+    def patch(self, request):
+        deliveryMan = self.get_object(request.user.id)
+        serializer = DeliveryManDataSerializer(deliveryMan, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#     def get(self, request, pk, format=None):
-#         order = self.get_object(pk)
-#         serializer = OrderSerializer(order)
-#         return Response(serializer.data)
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except DeliveryManData.DoesNotExist:
+            raise Http404
+

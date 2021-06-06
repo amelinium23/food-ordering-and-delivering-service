@@ -87,3 +87,8 @@ class OrderSerializer(serializers.ModelSerializer):
         model = models.Order
         fields = ['purchaser', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'order_cost']
+
+class DeliveryManDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DeliveryManData
+        exclude = []
