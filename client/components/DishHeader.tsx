@@ -11,79 +11,96 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dish as DishType } from "../types/Dish";
+import ExtraPicker from "../components/ExtraPicker";
 
 const DishHeader: React.FunctionComponent<DishType> = ({
   name,
   price,
   image,
-  extras,
+  extras_group,
 }) => {
   const [isPressed, setIsPressed] = React.useState(false);
-  const [countExtra, updateCountExtra] = React.useState(0);
+  const [addedPrice, setAddedPrice] = React.useState(0);
 
   return (
-    <Pressable style={styles.listItem} onPress={() => setIsPressed(!isPressed)}>
-      {isPressed ? (
-        <>
-          <View>
-            <FlatList
-              data={extras}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <View>
-                  <Text>{item.name}</Text>
-                  <Text>Cena: {item.price.toFixed(2)} zł</Text>
-                  <Pressable onPress={() => updateCountExtra(countExtra + 1)}>
-                    <AntDesign name="pluscircle" size={24} color="black" />
-                  </Pressable>
-                  <Text>{countExtra}</Text>
-                </View>
-              )}
+    <View style={styles.wrapper}>
+      <Pressable
+        style={styles.listItem}
+        onPress={() => setIsPressed(!isPressed)}
+      >
+        <View style={styles.dishDetails}>
+          <Text style={styles.dishNameText}>{name}</Text>
+          <Text>
+            <FontAwesome5
+              name="coins"
+              size={13}
+              color="black"
+              style={{ paddingRight: 3 }}
             />
-          </View>
-        </>
-      ) : (
-        <>
-          <View style={styles.dishDetails}>
-            <Text style={styles.dishNameText}>{name}</Text>
-            <Text>
-              <FontAwesome5
-                name="coins"
-                size={13}
-                color="black"
-                style={{ paddingRight: 3 }}
-              />
-              {`${price.toFixed(2)} zł`}
-            </Text>
-          </View>
-          <View style={styles.image}>
-            <ImageBackground
-              style={styles.ImgBackground}
-              source={{
-                uri: image,
-              }}
-            >
-              <LinearGradient
-                colors={["rgba(255,255,255,1)", "rgba(255,255,255,0.1)"]}
-                start={[0, 0]}
-                end={[1, 0]}
-                style={styles.gradientBackground}
-              />
-            </ImageBackground>
-          </View>
-        </>
-      )}
-    </Pressable>
+            {`${(price + addedPrice).toFixed(2)} zł`}
+          </Text>
+        </View>
+        <View style={styles.image}>
+          <ImageBackground
+            style={styles.ImgBackground}
+            source={{
+              uri: image,
+            }}
+          >
+            <LinearGradient
+              colors={["rgba(255,255,255,1)", "rgba(255,255,255,0.1)"]}
+              start={[0, 0]}
+              end={[1, 0]}
+              style={styles.gradientBackground}
+            />
+          </ImageBackground>
+        </View>
+      </Pressable>
+      {isPressed ? (
+        <View style={styles.extraGroup}>
+          <FlatList
+            data={extras_group}
+            keyExtractor={(item) => item.name}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={styles.extraText}>{item.name}:</Text>
+                <ExtraPicker
+                  group={item}
+                  price={addedPrice}
+                  setPrice={setAddedPrice}
+                />
+              </View>
+            )}
+          />
+          <Pressable
+            style={({ pressed }) => [
+              {
+                opacity: pressed ? 0.4 : 1,
+              },
+              styles.checkoutButton,
+            ]}
+            onPress={() => {}}
+          >
+            <Text style={styles.checkoutButtonText}>Dodaj</Text>
+          </Pressable>
+        </View>
+      ) : null}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   listItem: {
-    //padding: 10,
+    flexDirection: "row",
+    borderRadius: 10,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "grey",
+  },
+  wrapper: {
+    padding: 0,
     marginVertical: 7,
     marginHorizontal: 20,
-    flexDirection: "row",
-    //justifyContent: "center",
     borderRadius: 10,
     backgroundColor: "white",
     shadowColor: "#000",
@@ -126,6 +143,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
+  },
+  extraGroup: {
+    padding: 8,
+  },
+  extraText: {
+    fontSize: 20,
+    color: "rgb(59, 108, 212)",
+  },
+  checkoutButton: {
+    backgroundColor: "rgb(59, 108, 212)",
+    alignSelf: "flex-end",
+    padding: 7,
+    marginTop: 5,
+    borderRadius: 10,
+  },
+  checkoutButtonText: {
+    fontSize: 17,
+    color: "white",
   },
 });
 

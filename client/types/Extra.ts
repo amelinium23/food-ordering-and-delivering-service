@@ -1,4 +1,4 @@
 export interface Extra {
   name: string;
-  price: number;
+  added_price: number;
 }

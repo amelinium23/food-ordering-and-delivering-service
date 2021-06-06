@@ -6173,6 +6173,11 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-bouncy-checkbox@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-2.1.1.tgz#b85d3c24dde5e785d2b2565dd4b47a69c4677004"
+  integrity sha512-K3vUeI9Ig+6SW8yV+NFOCkP/Tegrk5NaJrFi3KeUT8sZu9pYOOisq0OayAFkmGxCPoRE3Xi6gqZ5Q7r9OMU9Xg==
+
 react-native-gesture-handler@~1.10.2:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"

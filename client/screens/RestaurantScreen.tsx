@@ -6,6 +6,7 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RestaurantBasket from "../components/RestaurantBasket";
 import { Dish as DishType } from "../types/Dish";
+import { IExtraType } from "../types/ExtrasGroup";
 import { DishProvider } from "../contexts/DishContext";
 
 const DISHES = [
@@ -15,10 +16,42 @@ const DISHES = [
       {
         name: "Margherita",
         price: 14.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Normalna",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+              {
+                name: "Ogromna",
+                added_price: 15.0,
+              },
+            ],
+          },
+          {
+            name: "Dodatki",
+            extra_type: 2 as IExtraType,
+            extras: [
+              {
+                name: "Dodatkowy ananas",
+                added_price: 2.5,
+              },
+              {
+                name: "Dodatkowa szynka",
+                added_price: 2.0,
+              },
+              {
+                name: "Dodatkowy ser",
+                added_price: 1.5,
+              },
+            ],
           },
         ],
         image:
@@ -27,10 +60,20 @@ const DISHES = [
       {
         name: "Pepperoni",
         price: 17.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -39,10 +82,20 @@ const DISHES = [
       {
         name: "Hawajska",
         price: 16.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -51,10 +104,20 @@ const DISHES = [
       {
         name: "Quattro formaggi",
         price: 18.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -68,10 +131,20 @@ const DISHES = [
       {
         name: "Skrzydełka",
         price: 8.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -80,6 +153,22 @@ const DISHES = [
       {
         name: "Pieczywo czosnkowe",
         price: 9.99,
+        extras_group: [
+          {
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
+          },
+        ],
         image:
           "https://www.shugarysweets.com/wp-content/uploads/2020/04/garlic-bread-4-720x540.jpg",
       },
@@ -91,10 +180,20 @@ const DISHES = [
       {
         name: "Lava cake",
         price: 12.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -103,10 +202,20 @@ const DISHES = [
       {
         name: "Szarlotka",
         price: 10.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -115,14 +224,24 @@ const DISHES = [
       {
         name: "Sernik",
         price: 10.99,
-        image:
-          "https://www.splenda.com/wp-content/themes/bistrotheme/assets/recipe-images/american-classic-cheesecake.jpg",
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
+        image:
+          "https://www.splenda.com/wp-content/themes/bistrotheme/assets/recipe-images/american-classic-cheesecake.jpg",
       },
     ],
   },
@@ -132,10 +251,20 @@ const DISHES = [
       {
         name: "Lemoniada",
         price: 8.99,
-        extras: [
+        extras_group: [
           {
-            name: "nie wiem",
-            price: 20,
+            name: "Rozmiar",
+            extra_type: 1 as IExtraType,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
           },
         ],
         image:
@@ -183,7 +312,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
               name={item.name}
               price={item.price}
               image={item.image}
-              extras={item.extras}
+              extras_group={item.extras_group}
             />
           </Pressable>
         )}

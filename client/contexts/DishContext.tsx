@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Dish as DishType } from "../types/Dish";
+import { IExtraType } from "../types/ExtrasGroup";
 
 const DishContext = React.createContext<
   [DishType[], (dishes: DishType[]) => void]
@@ -8,10 +9,20 @@ const DishContext = React.createContext<
     {
       name: "Dish",
       price: 1,
-      extras: [
+      extras_group: [
         {
-          name: "nie wiem",
-          price: 20,
+          name: "Rozmiar",
+          extra_type: 1 as IExtraType,
+          extras: [
+            {
+              name: "Mała",
+              added_price: 0.0,
+            },
+            {
+              name: "Duża",
+              added_price: 5.0,
+            },
+          ],
         },
       ],
       image: "https://placeholder.com/",
