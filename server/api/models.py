@@ -159,8 +159,3 @@ class OrderedExtra(models.Model):
     def __str__(self) -> str:
         return f'{self.extra} - {self.dish}'
 
-
-class RestaurantOwner(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    restaurant = models.OneToOneField('Restaurant', on_delete=models.CASCADE)

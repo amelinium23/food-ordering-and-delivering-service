@@ -4,9 +4,6 @@ from django.db.models.enums import Choices
 from django.conf import settings
 
 
-# Create your models here.
-
-
 class AccountManager(BaseUserManager):
     def create_user(self, username, email, first_name, last_name, password, **other_fields):
         if not email:
@@ -73,3 +70,9 @@ class DeliveryManData(models.Model):
     status = models.IntegerField(choices=DeliveryManStatus.choices, default=3)
     location = models.PointField()
     last_online = models.DateTimeField(auto_now=True)
+
+
+class RestaurantOwner(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    restaurant = models.OneToOneField('api.Restaurant', on_delete=models.CASCADE)

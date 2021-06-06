@@ -7,7 +7,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
-from users.models import DeliveryManData, User
+from users.models import DeliveryManData, User, RestaurantOwner
 from users.serializers import DeliveryManDataSerializer
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
 
@@ -170,9 +170,9 @@ class OrdersForRestaurant(APIView):
         except Order.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None):
-        restaurant = request.user.restaurantId
-        orders = Order.objects.filter(restaurant=restaurant, status__lte=5)
+    def get(self, request, format=None):
+        restaurant = RestaurantOwner.objects.get(user=request.user.id).restaurant
+        orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
