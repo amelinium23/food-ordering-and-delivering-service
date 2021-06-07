@@ -313,6 +313,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
               price={item.price}
               image={item.image}
               extras_group={item.extras_group}
+              isExtendable={true}
             />
           </Pressable>
         )}

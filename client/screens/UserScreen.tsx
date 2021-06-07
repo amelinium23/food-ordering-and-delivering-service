@@ -21,7 +21,7 @@ const UserScreen: React.FunctionComponent = () => {
       first_name="Andrzej"
       last_name="Nie wiem"
       username="To się nie uda"
-      email="chuj@wp.pl"
+      email="example@mail.com"
       address="A nie wiem o co wam chodzi, Łódź"
     />
   );

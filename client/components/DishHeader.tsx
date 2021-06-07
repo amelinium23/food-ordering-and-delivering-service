@@ -12,11 +12,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Dish as DishType } from "../types/Dish";
 import ExtraPicker from "../components/ExtraPicker";
 
-const DishHeader: React.FunctionComponent<DishType> = ({
+interface IProps extends DishType {
+  isExtendable?: boolean;
+}
+
+const DishHeader: React.FunctionComponent<IProps> = ({
   name,
   price,
   image,
   extras_group,
+  isExtendable,
 }) => {
   const [isPressed, setIsPressed] = React.useState(false);
   const [addedPrice, setAddedPrice] = React.useState(0);
@@ -25,7 +30,7 @@ const DishHeader: React.FunctionComponent<DishType> = ({
     <View style={styles.wrapper}>
       <Pressable
         style={styles.listItem}
-        onPress={() => setIsPressed(!isPressed)}
+        onPress={isExtendable ? () => setIsPressed(!isPressed) : () => null}
       >
         <View style={styles.dishDetails}>
           <Text style={styles.dishNameText}>{name}</Text>
@@ -87,6 +92,8 @@ const DishHeader: React.FunctionComponent<DishType> = ({
     </View>
   );
 };
+
+DishHeader.defaultProps = { isExtendable: false };
 
 const styles = StyleSheet.create({
   listItem: {
