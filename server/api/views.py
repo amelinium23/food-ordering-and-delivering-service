@@ -10,6 +10,8 @@ from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, O
 from users.models import DeliveryManData, User, RestaurantOwner
 from users.serializers import DeliveryManDataSerializer
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
+from rest_framework import permissions
+from api.permissions import IsRestaurantOwnerOrReadOnly, IsRestaurantOwner, IsDeliveryForOrder, IsDeliveryAccountOwner, IsRestaurantOwnerForOrder
 
 
 def index(request):
@@ -39,10 +41,14 @@ class RestaurantDetails(APIView):
     """
     Retrieve or update(delivery_cost) a restaurant instance.
     """
+    permission_classes = [permissions.IsAuthenticated,
+                          IsRestaurantOwnerOrReadOnly]
 
     def get_object(self, pk):
         try:
-            return Restaurant.objects.get(pk=pk)
+            restaurant = Restaurant.objects.get(pk=pk)
+            self.check_object_permissions(self.request, restaurant)
+            return restaurant
         except Restaurant.DoesNotExist:
             raise Http404
 
@@ -85,12 +91,14 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-class OrderDetails(APIView):
+class OrderPlacement(APIView):
     """
     Retrieve an order details, post an order, update order status.
     """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
+    permission_classes = [permissions.IsAuthenticated,
+                          IsRestaurantOwnerForOrder | IsDeliveryForOrder]
 
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
@@ -108,9 +116,16 @@ class OrderDetails(APIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data)
 
+
+class OrderDetails(APIView):
+    permission_classes = [
+        IsRestaurantOwnerForOrder | IsDeliveryForOrder]
+
     def get_object(self, pk):
         try:
-            return OrderDetails.objects.get(order=pk)
+            order = Order.objects.get(pk=pk)
+            self.check_object_permissions(self.request, order)
+            return order
         except Order.DoesNotExist:
             raise Http404
 
@@ -139,6 +154,7 @@ class DeliveryManStatus(APIView):
     """
     Delivery man updates his status (to be visible to restaurants)
     """
+    permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
 
     def patch(self, request):
         delivery_man = self.get_object(request.user.id)
@@ -157,6 +173,8 @@ class DeliveryManStatus(APIView):
 
 
 class OrdersForDeliveryMan(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
+
     def get(self, request):
         orders = Order.objects.filter(delivery=request.user.id, status=2)
         serializer = OrderSerializer(orders, many=True)
@@ -164,11 +182,7 @@ class OrdersForDeliveryMan(APIView):
 
 
 class OrdersForRestaurant(APIView):
-    def get_object(self, pk):
-        try:
-            return Order.objects.get(order=pk)
-        except Order.DoesNotExist:
-            raise Http404
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
 
     def get(self, request, format=None):
         restaurant = RestaurantOwner.objects.get(
@@ -179,6 +193,8 @@ class OrdersForRestaurant(APIView):
 
 
 class AvailableDeliveries(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
+
     def get(self, request, format=None):
         restaurant_location = request.user.restaurantowner.restaurant.location
         five_minutes_ago = django.utils.timezone.now() + timedelta(minutes=-5)

@@ -91,9 +91,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Order
-        fields = ['user', 'dishes', 'restaurant', 'status',
+        fields = ['id', 'user', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'order_cost']
-        read_only_fields = ['user', 'restaurant', 'order_placement_date']
+        read_only_fields = ['id', 'user', 'restaurant', 'order_placement_date']
 
 
 class OrderForDeliverySerializer(serializers.ModelSerializer):
