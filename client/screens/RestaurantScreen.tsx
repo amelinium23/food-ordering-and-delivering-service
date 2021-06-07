@@ -295,19 +295,15 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
 
   return (
     <View>
-      <SectionList
-        sections={DISHES}
-        keyExtractor={(item) => item.name}
-        stickySectionHeadersEnabled={false} // need to set it to false as it's true by default on iOS
-        renderSectionHeader={({ section: { category } }) => (
-          <Text style={styles.categoryHeader}>{category}</Text>
-        )}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => {
-              setDishList(dishList.concat(item));
-            }}
-          >
+      <DishProvider value={[dishList, setDishList]}>
+        <SectionList
+          sections={DISHES}
+          keyExtractor={(item) => item.name}
+          stickySectionHeadersEnabled={false} // need to set it to false as it's true by default on iOS
+          renderSectionHeader={({ section: { category } }) => (
+            <Text style={styles.categoryHeader}>{category}</Text>
+          )}
+          renderItem={({ item }) => (
             <DishHeader
               name={item.name}
               price={item.price}
@@ -315,10 +311,8 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
               extras_group={item.extras_group}
               isExtendable={true}
             />
-          </Pressable>
-        )}
-      />
-      <DishProvider value={[dishList, setDishList]}>
+          )}
+        />
         <RestaurantBasket route={route} navigation={navigation} />
       </DishProvider>
     </View>
