@@ -34,7 +34,8 @@ class ExtraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Extra
-        fields = ['name', 'category', 'added_price']
+        fields = ['id', 'name', 'category', 'added_price']
+        read_only_fiels = ['id']
 
 
 class ExtraGroupSerializer(serializers.ModelSerializer):
@@ -50,7 +51,8 @@ class DishSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Dish
-        fields = ['name', 'image', 'price', 'extras_group']
+        fields = ['id', 'name', 'image', 'price', 'extras_group']
+        read_only_fields = ['id']
 
 
 class DishWithoutExtrasSerializer(serializers.ModelSerializer):
