@@ -50,7 +50,7 @@ const OrderHeader: React.FunctionComponent<Order> = ({
         <Text style={styles.text}>Status: {STATUSES[status]}</Text>
         <Text style={styles.text}>Data zamówienia: {date}</Text>
         <Text style={styles.text}>Cena zamówienia: {price.toFixed(2)} zł</Text>
-        <Text style={styles.text}>id: {id}</Text>
+        <Text style={styles.text}>Numer zamówienia: {id}</Text>
       </View>
     </Pressable>
   );

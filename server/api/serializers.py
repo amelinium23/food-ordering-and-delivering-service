@@ -88,7 +88,7 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
-    restaurant = serializers.StringRelatedField()
+    restaurant = serializers.SlugRelatedField(read_only=True, slug_field='name')
     user = UserDetailSerializer()
 
     class Meta:
