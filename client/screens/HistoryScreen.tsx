@@ -1,6 +1,6 @@
 import * as React from "react";
 import Order from "../types/Order";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, Pressable } from "react-native";
 import OrderHeader from "../components/OrderHeader";
 
 const ORDERS: Order[] = [
@@ -76,16 +76,17 @@ const HistoryScreen: React.FunctionComponent = () => {
     <View style={styles.container}>
       <FlatList
         data={ORDERS}
-        keyExtractor={(item) => item.restaurant.key}
         renderItem={({ item }) => (
-          <OrderHeader
-            id={item.id}
-            date={item.date}
-            status={item.status}
-            price={item.price}
-            restaurant={item.restaurant}
-            orderedDishes={item.orderedDishes}
-          />
+          <Pressable key={`${item.id}`} onPress={() => null}>
+            <OrderHeader
+              id={item.id}
+              date={item.date}
+              status={item.status}
+              price={item.price}
+              restaurant={item.restaurant}
+              orderedDishes={item.orderedDishes}
+            />
+          </Pressable>
         )}
       />
     </View>
