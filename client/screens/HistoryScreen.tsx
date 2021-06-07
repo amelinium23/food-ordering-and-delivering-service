@@ -1,15 +1,7 @@
 import * as React from "react";
 import Order from "../types/Order";
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
-
-const STATUSES: { [index: number]: string } = {
-  1: "Zamówiony",
-  2: "Szukam dostawcy",
-  3: "W przygotowaniu",
-  4: "W dostawie",
-  5: "Dostarczone",
-  6: "Anulowane",
-};
+import { View, FlatList, StyleSheet } from "react-native";
+import OrderHeader from "../components/OrderHeader";
 
 const ORDERS: Order[] = [
   {
@@ -24,7 +16,30 @@ const ORDERS: Order[] = [
       cost: 10,
       distance: 10,
     },
-    orderedDishes: [],
+    orderedDishes: [
+      {
+        name: "Lemoniada",
+        price: 8.99,
+        extras_group: [
+          {
+            name: "Rozmiar",
+            extra_type: 1,
+            extras: [
+              {
+                name: "Mała",
+                added_price: 0.0,
+              },
+              {
+                name: "Duża",
+                added_price: 5.0,
+              },
+            ],
+          },
+        ],
+        image:
+          "https://images-gmi-pmc.edge-generalmills.com/2586d951-a46a-4091-aec6-eca3adefb409.jpg",
+      },
+    ],
   },
   {
     id: 2,
@@ -63,16 +78,14 @@ const HistoryScreen: React.FunctionComponent = () => {
         data={ORDERS}
         keyExtractor={(item) => item.restaurant.key}
         renderItem={({ item }) => (
-          <Pressable>
-            <View style={styles.orderContainer}>
-              <Text style={styles.hearder}>
-                Restauracja: {item.restaurant.key}
-              </Text>
-              <Text>Status: {STATUSES[item.status]}</Text>
-              <Text>Data zamówienia: {item.date}</Text>
-              <Text>Cena zamówienia: {item.price.toFixed(2)} zł</Text>
-            </View>
-          </Pressable>
+          <OrderHeader
+            id={item.id}
+            date={item.date}
+            status={item.status}
+            price={item.price}
+            restaurant={item.restaurant}
+            orderedDishes={item.orderedDishes}
+          />
         )}
       />
     </View>
