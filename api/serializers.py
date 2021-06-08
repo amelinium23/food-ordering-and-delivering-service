@@ -28,12 +28,10 @@ class OpeningHourSerializer(serializers.ModelSerializer):
 
 
 class ExtraSerializer(serializers.ModelSerializer):
-    category = serializers.SlugRelatedField(slug_field='name',
-                                            read_only=True)
 
     class Meta:
         model = models.Extra
-        fields = ['id', 'name', 'category', 'added_price']
+        fields = ['id', 'name', 'added_price']
         read_only_fiels = ['id']
 
 
