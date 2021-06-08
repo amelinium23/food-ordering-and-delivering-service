@@ -15,10 +15,10 @@ export interface RestaurantOrder {
   id: number;
   user: User;
   dishes: Dish[];
-  restaurant: string;
   status: number;
   orderPlacementDate: string;
   orderDeliveryDate: string;
+  deliveryMan: User;
   orderCost: number;
 }
 

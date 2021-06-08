@@ -1,7 +1,7 @@
 import * as React from "react";
 import { RestaurantOrder } from "../types/Order";
 import { View, FlatList, StyleSheet, Pressable } from "react-native";
-import OrderHeader from "../components/OrderHeader";
+import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
 
 const ORDERS: RestaurantOrder[] = [
   {
@@ -15,10 +15,17 @@ const ORDERS: RestaurantOrder[] = [
       account_type: 1,
     },
     dishes: [],
-    restaurant: "Siedowobie",
     status: 1,
     orderPlacementDate: "2021-06-06T22:41:22.096384+02:00",
     orderDeliveryDate: "",
+    deliveryMan: {
+      email: "",
+      username: "",
+      first_name: "",
+      last_name: "",
+      address: "",
+      account_type: 3,
+    },
     orderCost: 0.1,
   },
 ];
@@ -30,13 +37,15 @@ const OrderListScreen: React.FunctionComponent = () => {
         data={ORDERS}
         renderItem={({ item }) => (
           <Pressable key={`${item.id}`} onPress={() => null}>
-            <OrderHeader
+            <RestaurantOrderHeader
               id={item.id}
-              date={item.date}
+              user={item.user}
+              dishes={item.dishes}
               status={item.status}
-              price={item.price}
-              restaurant={item.restaurant}
-              orderedDishes={item.orderedDishes}
+              orderPlacementDate={item.orderPlacementDate}
+              orderDeliveryDate={item.orderDeliveryDate}
+              deliveryMan={item.deliveryMan}
+              orderCost={item.orderCost}
             />
           </Pressable>
         )}

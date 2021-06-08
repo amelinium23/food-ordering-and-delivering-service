@@ -18,10 +18,10 @@ const RestaurantOrderHeader: React.FunctionComponent<RestaurantOrder> = ({
   id,
   user,
   dishes,
-  restaurant,
   status,
   orderPlacementDate,
   orderDeliveryDate,
+  deliveryMan,
   orderCost,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -30,8 +30,9 @@ const RestaurantOrderHeader: React.FunctionComponent<RestaurantOrder> = ({
       <Pressable onPress={() => setIsExpanded(!isExpanded)}>
         {dishes.length > 0 ? (
           dishes.map((i) => (
-            <View key={i.name}>
+            <View key={id}>
               <DishHeader
+                id={i.id}
                 name={i.name}
                 price={i.price}
                 image={i.image}
@@ -49,11 +50,20 @@ const RestaurantOrderHeader: React.FunctionComponent<RestaurantOrder> = ({
   ) : (
     <Pressable onPress={() => setIsExpanded(!isExpanded)}>
       <View style={styles.orderContainer}>
-        <Text style={styles.header}>Restauracja: {restaurant.key}</Text>
-        <Text style={styles.text}>Status: {STATUSES[status]}</Text>
-        <Text style={styles.text}>Data zamówienia: {date}</Text>
-        <Text style={styles.text}>Cena zamówienia: {price.toFixed(2)} zł</Text>
-        <Text style={styles.text}>Numer zamówienia: {id}</Text>
+        <Text style={styles.header}>Status: {STATUSES[status]}</Text>
+        <Text style={styles.text}>
+          Data złożenia zamówienia: {orderPlacementDate}
+        </Text>
+        <Text style={styles.text}>
+          Data dostarczenia zamówienia: {orderDeliveryDate}
+        </Text>
+        <Text style={styles.text}>
+          Dostawca: {deliveryMan.username == null ? (deliveryMan.email) : (`jeszcze nie ma dostawcy`)}
+        </Text>
+        <Text style={styles.text}>
+          Cena zamówienia: {orderCost.toFixed(2)} zł
+        </Text>
+        <Text style={styles.text}>Email zamawiającego: {user.email}</Text>
       </View>
     </Pressable>
   );
