@@ -13,6 +13,13 @@ class RestaurantManager(models.Manager):
         return self.filter(id__in=open_restaurants_ids)
 
 
+class CuisineType(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Restaurant(models.Model):
     class CUISINE_TYPE_CHOICES(models.TextChoices):
         OTHER = 'other', _('inne')

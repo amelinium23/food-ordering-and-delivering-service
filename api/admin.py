@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from django.contrib.gis.admin import OSMGeoAdmin
-from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant, Order, OrderedDish, OrderedExtra
+from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant, Order, OrderedDish, OrderedExtra, CuisineType
 import nested_admin
 
 # Register your models here.
@@ -62,4 +62,9 @@ class OrderedDishAdmin(admin.ModelAdmin):
 
 @admin.register(OrderedExtra)
 class OrderedExtraAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(CuisineType)
+class CuisineTypeAdmin(admin.ModelAdmin):
     pass

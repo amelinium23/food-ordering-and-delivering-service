@@ -5,7 +5,7 @@ import api.models as models
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    cuisine_type = serializers.CharField(source='get_cuisine_type_display')
+    cuisine_type = serializers.StringRelatedField(many=True)
     distance = serializers.SerializerMethodField()
     location = PointField(required=False)
 
