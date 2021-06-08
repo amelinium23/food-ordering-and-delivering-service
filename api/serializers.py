@@ -1,5 +1,4 @@
 from users.serializers import UserDetailSerializer
-from api.models import Dish, Extra
 from rest_framework import serializers
 from drf_extra_fields.geo_fields import PointField
 import api.models as models

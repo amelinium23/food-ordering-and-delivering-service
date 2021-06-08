@@ -1,6 +1,5 @@
 from django.contrib.gis.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from django.db.models.enums import Choices
 from django.conf import settings
 
 
