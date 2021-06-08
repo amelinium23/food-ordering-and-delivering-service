@@ -33,8 +33,7 @@ class Restaurant(models.Model):
     logo = models.URLField()
     address = models.CharField(max_length=80)
     location = models.PointField()
-    cuisine_type = models.CharField(
-        max_length=5, choices=CUISINE_TYPE_CHOICES.choices)
+    cuisine_type = models.ManyToManyField('CuisineType')
     delivery_cost = models.DecimalField(max_digits=4, decimal_places=1)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True)
