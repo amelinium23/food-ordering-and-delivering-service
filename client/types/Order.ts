@@ -1,5 +1,6 @@
 import { Dish } from "./Dish";
 import { Restaurant } from "./Restaurant";
+import { User } from "./User";
 
 export interface HistoricalOrder {
   id: number;
@@ -8,6 +9,17 @@ export interface HistoricalOrder {
   price: number;
   restaurant: Restaurant;
   orderedDishes: Dish[];
+}
+
+export interface RestaurantOrder {
+  id: number;
+  user: User;
+  dishes: Dish[];
+  restaurant: string;
+  status: number;
+  orderPlacementDate: string;
+  orderDeliveryDate: string;
+  orderCost: number;
 }
 
 export default interface Order {
