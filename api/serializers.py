@@ -81,7 +81,7 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrderedDish
-        fields = ['dish']
+        fields = ['dish', 'ordered_extras']
 
 
 class OrderSerializer(serializers.ModelSerializer):
