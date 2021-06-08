@@ -85,6 +85,9 @@ SOCIALACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
 REST_USE_JWT = True
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'users.serializers.UserDetailSerializer',
+}
 
 SITE_ID = 1
 
@@ -122,7 +125,7 @@ REST_FRAMEWORK = {
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'users.serializers.UserSerializer'
+    'REGISTER_SERIALIZER': 'users.serializers.UserRegisterSerializer'
 }
 
 ROOT_URLCONF = 'config.urls'
