@@ -15,6 +15,7 @@ import { SessionContext as SessionContextType } from "./types/SessionContext";
 
 const RESTAURANTS = [
   {
+    id: 1,
     key: "Pizza Hut",
     type: ["Pizza"],
     cost: 7.99,
@@ -23,6 +24,7 @@ const RESTAURANTS = [
     distance: 1.74,
   },
   {
+    id: 2,
     key: "KFC",
     type: ["Amerykańska"],
     cost: 9.99,
@@ -31,6 +33,7 @@ const RESTAURANTS = [
     distance: 3.33,
   },
   {
+    id: 3,
     key: "McDonalds",
     type: ["Burgery", "Amerykańska"],
     cost: 5.99,
@@ -39,6 +42,7 @@ const RESTAURANTS = [
     distance: 2.22,
   },
   {
+    id: 4,
     key: "Sushi Kushi",
     type: ["Sushi", "Japońska"],
     cost: 1.99,
@@ -47,6 +51,7 @@ const RESTAURANTS = [
     distance: 2.86,
   },
   {
+    id: 5,
     key: "Biesiadowo",
     type: ["Pizza"],
     cost: 10,
@@ -55,6 +60,7 @@ const RESTAURANTS = [
     distance: 0.52,
   },
   {
+    id: 6,
     key: "Forno Pizza",
     type: ["Pizza"],
     cost: 6.99,
@@ -63,6 +69,7 @@ const RESTAURANTS = [
     distance: 10.3,
   },
   {
+    id: 7,
     key: "DaGrasso",
     type: ["Włoska", "Pizza"],
     cost: 3.5,
@@ -70,6 +77,7 @@ const RESTAURANTS = [
     distance: 8.11,
   },
   {
+    id: 8,
     key: "Starbucks",
     type: ["Kawa", "Desery"],
     cost: 1.99,

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 import { FontAwesome5, Ionicons, Entypo } from "@expo/vector-icons";
+import { Restaurant as RestaurantType } from "../types/Restaurant";
 
 interface IProps {
   name: string;

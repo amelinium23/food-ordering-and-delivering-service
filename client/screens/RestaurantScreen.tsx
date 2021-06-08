@@ -8,12 +8,14 @@ import RestaurantBasket from "../components/RestaurantBasket";
 import { Dish as DishType } from "../types/Dish";
 import { IExtraType } from "../types/ExtrasGroup";
 import { DishProvider } from "../contexts/DishContext";
+import Order from "../types/Order";
 
 const DISHES = [
   {
     category: "Pizza",
     data: [
       {
+        id: 1,
         name: "Margherita",
         price: 14.99,
         extras_group: [
@@ -22,14 +24,17 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Normalna",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
               {
+                id: 3,
                 name: "Ogromna",
                 added_price: 15.0,
               },
@@ -40,14 +45,17 @@ const DISHES = [
             extra_type: 2 as IExtraType,
             extras: [
               {
+                id: 4,
                 name: "Dodatkowy ananas",
                 added_price: 2.5,
               },
               {
+                id: 5,
                 name: "Dodatkowa szynka",
                 added_price: 2.0,
               },
               {
+                id: 6,
                 name: "Dodatkowy ser",
                 added_price: 1.5,
               },
@@ -58,6 +66,7 @@ const DISHES = [
           "https://pojedzone.eu/wp-content/uploads/2021/03/pizza-3000274_1920-marggerita.jpg",
       },
       {
+        id: 2,
         name: "Pepperoni",
         price: 17.99,
         extras_group: [
@@ -66,10 +75,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -80,6 +91,7 @@ const DISHES = [
           "https://dwormarcinkowo.pl/wp-content/uploads/2020/03/Pizza-Pepperoni.jpg",
       },
       {
+        id: 3,
         name: "Hawajska",
         price: 16.99,
         extras_group: [
@@ -88,10 +100,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -102,6 +116,7 @@ const DISHES = [
           "https://www.pogotujmy.pl/wp-content/uploads/2016/11/DSC_0442-725x1039.jpg",
       },
       {
+        id: 4,
         name: "Quattro formaggi",
         price: 18.99,
         extras_group: [
@@ -110,10 +125,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -129,6 +146,7 @@ const DISHES = [
     category: "Przystawki",
     data: [
       {
+        id: 5,
         name: "Skrzydełka",
         price: 8.99,
         extras_group: [
@@ -137,10 +155,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -151,6 +171,7 @@ const DISHES = [
           "https://jesspryles.com/wp-content/uploads/2020/01/smoked-chicken-wings-46-1440x900.jpg",
       },
       {
+        id: 6,
         name: "Pieczywo czosnkowe",
         price: 9.99,
         extras_group: [
@@ -159,10 +180,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -178,6 +201,7 @@ const DISHES = [
     category: "Desery",
     data: [
       {
+        id: 7,
         name: "Lava cake",
         price: 12.99,
         extras_group: [
@@ -186,10 +210,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -200,6 +226,7 @@ const DISHES = [
           "https://polki.pl/foto/4_3_LARGE/lava-cake-czyli-przepis-na-czekoladowy-deser-z-plynnym-srodkiem-2449537.jpg",
       },
       {
+        id: 8,
         name: "Szarlotka",
         price: 10.99,
         extras_group: [
@@ -208,10 +235,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -222,6 +251,7 @@ const DISHES = [
           "https://blix.pl/gotuj/wp-content/uploads/2018/11/szarlotka-w-style-apple-pie.jpg",
       },
       {
+        id: 9,
         name: "Sernik",
         price: 10.99,
         extras_group: [
@@ -230,10 +260,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -249,6 +281,7 @@ const DISHES = [
     category: "Napoje",
     data: [
       {
+        id: 10,
         name: "Lemoniada",
         price: 8.99,
         extras_group: [
@@ -257,10 +290,12 @@ const DISHES = [
             extra_type: 1 as IExtraType,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -305,6 +340,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
           )}
           renderItem={({ item }) => (
             <DishHeader
+              id={item.id}
               name={item.name}
               price={item.price}
               image={item.image}

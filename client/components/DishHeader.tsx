@@ -17,6 +17,7 @@ interface IProps extends DishType {
 }
 
 const DishHeader: React.FunctionComponent<IProps> = ({
+  id,
   name,
   price,
   image,
