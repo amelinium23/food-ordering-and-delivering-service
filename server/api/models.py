@@ -13,21 +13,19 @@ class RestaurantManager(models.Manager):
         return self.filter(id__in=open_restaurants_ids)
 
 
+class CuisineType(models.Model):
+    name = models.CharField(max_length=25)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Restaurant(models.Model):
-    class CUISINE_TYPE_CHOICES(models.TextChoices):
-        OTHER = 'other', _('inne')
-        CHINESE = 'cn', _('chińska')
-        ITALIAN = 'it', _('włoska')
-        TURKISH = 'tr', _('turecka')
-        POLISH = 'pl', _('polska')
-        INDIAN = 'in', _('indyjska')
-        JEWISH = 'il', _('żydowska')
     name = models.CharField(max_length=50)
     logo = models.URLField()
     address = models.CharField(max_length=80)
     location = models.PointField()
-    cuisine_type = models.CharField(
-        max_length=5, choices=CUISINE_TYPE_CHOICES.choices)
+    cuisine_type = models.ManyToManyField('CuisineType')
     delivery_cost = models.DecimalField(max_digits=4, decimal_places=1)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True)
@@ -158,4 +156,3 @@ class OrderedExtra(models.Model):
 
     def __str__(self) -> str:
         return f'{self.extra} - {self.dish}'
-

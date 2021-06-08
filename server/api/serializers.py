@@ -1,12 +1,12 @@
 from users.serializers import UserDetailSerializer
-from api.models import Dish, Extra
+from api.models import Dish, Extra, CuisineType
 from rest_framework import serializers
 from drf_extra_fields.geo_fields import PointField
 import api.models as models
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    cuisine_type = serializers.CharField(source='get_cuisine_type_display')
+    cuisine_type = serializers.StringRelatedField(many=True)
     distance = serializers.SerializerMethodField()
     location = PointField(required=False)
 
@@ -58,7 +58,8 @@ class DishSerializer(serializers.ModelSerializer):
 class DishWithoutExtrasSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Dish
-        fields = ['name', 'price']
+        fields = ['id', 'name', 'image', 'price']
+        read_only_fields = ['id']
 
 
 class MenuGroupSerializer(serializers.ModelSerializer):
@@ -88,7 +89,8 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
-    restaurant = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    restaurant = serializers.SlugRelatedField(
+        read_only=True, slug_field='name')
     user = UserDetailSerializer()
 
     class Meta:

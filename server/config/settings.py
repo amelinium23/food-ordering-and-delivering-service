@@ -109,7 +109,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True #pycha
+CORS_ORIGIN_ALLOW_ALL = True  # pycha
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -118,7 +118,8 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "dj_rest_auth.utils.JWTCookieAuthentication",
     ),
-    "COERCE_DECIMAL_TO_STRING": False
+    "COERCE_DECIMAL_TO_STRING": False,
+    'DATETIME_FORMAT': "%d-%m-%Y - %H:%M:%S"
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {

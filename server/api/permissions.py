@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 
 class IsRestaurantOwner(permissions.BasePermission):
-    def has_permission(self, request):
+    def has_permission(self, request, view):
         return request.user.account_type == 3
 
 
@@ -32,7 +32,7 @@ class IsDeliveryForOrder(permissions.BasePermission):
 
 
 class IsDeliveryAccountOwner(permissions.BasePermission):
-    def has_permission(self, request):
+    def has_permission(self, request, view):
         return request.user.account_type == 2
 
     def has_object_permission(self, request, view, obj):
