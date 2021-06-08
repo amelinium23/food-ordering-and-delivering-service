@@ -11,6 +11,8 @@ import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import zxcvbn from "zxcvbn";
+import UserContext from "../contexts/UserContext";
+import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Register">;
 
@@ -28,9 +30,56 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   route,
   navigation,
 }) => {
+  const [username, setUsername] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [password2, setPassword2] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [address, setAddress] = React.useState("");
+  const [registerError, setRegisterError] = React.useState(false);
+
   const [safety, setSafety] = React.useState(0);
+  const [session, setSession] = React.useContext(UserContext);
+
+  const register = async () => {
+    setRegisterError(false);
+    const res = await fetch(
+      "https://glove-backend.herokuapp.com/users/registration/",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          username: username,
+          email: email,
+          password: password,
+          password2: password2,
+          first_name: firstName,
+          last_name: lastName,
+          address: address,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Referer: "https://glove-backend.herokuapp.com/users/registration/",
+        },
+      }
+    );
+    if (res.ok) {
+      const json = (await res.json()) as UserLoginType;
+      navigation.navigate("Login", {});
+      const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
+      RCTNetworking.clearCookies(() => {}); //eslint-disable-line
+      setSession({
+        state: true,
+        token: {
+          access_token: json.access_token,
+          refresh_token: json.refresh_token,
+        },
+      });
+    } else {
+      console.log("Could not register");
+      setRegisterError(true);
+    }
+  };
 
   React.useEffect(() => {
     setSafety(zxcvbn(password).score as number); //eslint-disable-line
@@ -42,16 +91,20 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
       <TextInput
         style={styles.input}
         autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        placeholder="Adres e-mail"
+        autoCompleteType="username"
+        textContentType="username"
+        placeholder="Nazwa użytkownika"
+        value={username}
+        onChangeText={(text) => setUsername(text)}
       />
       <TextInput
         style={styles.input}
         autoCapitalize="none"
-        autoCompleteType="username"
-        textContentType="username"
-        placeholder="Nazwa użytkownika"
+        autoCompleteType="email"
+        textContentType="emailAddress"
+        placeholder="Adres e-mail"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
       />
       <TextInput
         style={
@@ -89,6 +142,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         autoCompleteType="name"
         textContentType="name"
         placeholder="Imię"
+        value={firstName}
+        onChangeText={(text) => setFirstName(text)}
       />
       <TextInput
         style={styles.input}
@@ -96,6 +151,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         autoCompleteType="name"
         textContentType="name"
         placeholder="Nazwisko"
+        value={lastName}
+        onChangeText={(text) => setLastName(text)}
       />
       <TextInput
         style={styles.input}
@@ -103,6 +160,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         autoCompleteType="street-address"
         textContentType="streetAddressLine1"
         placeholder="Adres"
+        value={address}
+        onChangeText={(text) => setAddress(text)}
       />
       <Pressable
         style={({ pressed }) => [
@@ -111,10 +170,16 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
           },
           styles.loginButton,
         ]}
-        onPress={() => navigation.navigate("Login", {})}
+        onPress={() => {
+          // navigation.navigate("Login", {});
+          void register();
+        }}
       >
         <Text style={styles.loginButtonText}>Zarejestruj się</Text>
       </Pressable>
+      {registerError ? (
+        <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -196,6 +261,11 @@ const styles = StyleSheet.create({
   notificationText: {
     color: "grey",
     marginHorizontal: 20,
+  },
+  errorText: {
+    margin: 2,
+    alignSelf: "center",
+    color: "red",
   },
 });
 
