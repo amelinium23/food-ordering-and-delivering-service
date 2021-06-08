@@ -1,11 +1,14 @@
+from users.serializers import UserDetailSerializer
 from api.models import Dish, Extra
 from rest_framework import serializers
+from drf_extra_fields.geo_fields import PointField
 import api.models as models
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
     cuisine_type = serializers.CharField(source='get_cuisine_type_display')
     distance = serializers.SerializerMethodField()
+    location = PointField(required=False)
 
     class Meta:
         model = models.Restaurant
@@ -26,9 +29,13 @@ class OpeningHourSerializer(serializers.ModelSerializer):
 
 
 class ExtraSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(slug_field='name',
+                                            read_only=True)
+
     class Meta:
         model = models.Extra
-        fields = ['name', 'added_price']
+        fields = ['id', 'name', 'category', 'added_price']
+        read_only_fiels = ['id']
 
 
 class ExtraGroupSerializer(serializers.ModelSerializer):
@@ -44,13 +51,15 @@ class DishSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Dish
-        fields = ['name', 'image', 'price', 'extras_group']
+        fields = ['id', 'name', 'image', 'price', 'extras_group']
+        read_only_fields = ['id']
 
 
 class DishWithoutExtrasSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Dish
-        fields = ['name', 'image', 'price']
+        fields = ['id', 'name', 'image', 'price']
+        read_only_fields = ['id']
 
 
 class MenuGroupSerializer(serializers.ModelSerializer):
@@ -75,14 +84,25 @@ class OrderedDishSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OrderedDish
-        fields = ['dish', 'ordered_extras']
+        fields = ['dish']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
-    restaurant = serializers.StringRelatedField()
+    restaurant = serializers.SlugRelatedField(
+        read_only=True, slug_field='name')
+    user = UserDetailSerializer()
 
     class Meta:
         model = models.Order
-        fields = ['dishes', 'restaurant', 'status',
+        fields = ['id', 'user', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'order_cost']
+        read_only_fields = ['id', 'user', 'restaurant', 'order_placement_date']
+
+
+class OrderForDeliverySerializer(serializers.ModelSerializer):
+    restaurant = RestaurantSerializer()
+
+    class Meta:
+        model = models.Order
+        fields = ['restaurant']

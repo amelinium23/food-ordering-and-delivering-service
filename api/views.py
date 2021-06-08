@@ -1,14 +1,17 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import django
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.http import Http404, HttpResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
+from users.models import DeliveryManData, User, RestaurantOwner
+from users.serializers import DeliveryManDataSerializer
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
-
-# Create your views here.
+from rest_framework import permissions
+from api.permissions import IsRestaurantOwnerOrReadOnly, IsRestaurantOwner, IsDeliveryForOrder, IsDeliveryAccountOwner, IsRestaurantOwnerForOrder
 
 
 def index(request):
@@ -17,6 +20,9 @@ def index(request):
 
 
 class RestaurantList(generics.ListCreateAPIView):
+    """
+    Retrieve available restaurant list.
+    """
     serializer_class = RestaurantSerializer
 
     def get_queryset(self):
@@ -35,10 +41,14 @@ class RestaurantDetails(APIView):
     """
     Retrieve or update(delivery_cost) a restaurant instance.
     """
+    permission_classes = [permissions.IsAuthenticated,
+                          IsRestaurantOwnerOrReadOnly]
 
     def get_object(self, pk):
         try:
-            return Restaurant.objects.get(pk=pk)
+            restaurant = Restaurant.objects.get(pk=pk)
+            self.check_object_permissions(self.request, restaurant)
+            return restaurant
         except Restaurant.DoesNotExist:
             raise Http404
 
@@ -69,8 +79,8 @@ class RestaurantMenu(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        menugroups = MenuGroup.objects.filter(restaurant=pk)
-        serializer = MenuGroupSerializer(menugroups, many=True)
+        menugroup = self.get_object(pk)
+        serializer = MenuGroupSerializer(menugroup)
         return Response(serializer.data)
 
 
@@ -81,9 +91,15 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-class OrderDetails(APIView):
+class OrderPlacement(APIView):
+    """
+    Retrieve an order details, post an order, update order status.
+    """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
+    permission_classes = [permissions.IsAuthenticated,
+                          IsRestaurantOwnerForOrder | IsDeliveryForOrder]
+
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
         ordered_extras = []
@@ -98,4 +114,92 @@ class OrderDetails(APIView):
                 extra=Extra.objects.get(pk=x), dish=d), dish['orderedExtras'])))
         OrderedExtra.objects.bulk_create(ordered_extras)
         serializer = OrderSerializer(order)
+        return Response(serializer.data)
+
+
+class OrderDetails(APIView):
+    permission_classes = [
+        IsRestaurantOwnerForOrder | IsDeliveryForOrder]
+
+    def get_object(self, pk):
+        try:
+            order = Order.objects.get(pk=pk)
+            self.check_object_permissions(self.request, order)
+            return order
+        except Order.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        order = self.get_object(pk)
+        serializer = OrderSerializer(order)
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        order = self.get_object(pk)
+        if request.user.account_type == 2 and order.delivery == request.user.id:
+            data_to_edit = {'status': request.data.get(
+                'status'), 'delivery': request.data.get('delivery')}
+            serializer = OrderSerializer(
+                order, data=data_to_edit, partial=True)
+        else:
+            serializer = OrderSerializer(
+                order, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeliveryManStatus(APIView):
+    """
+    Delivery man updates his status (to be visible to restaurants)
+    """
+    permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
+
+    def patch(self, request):
+        delivery_man = self.get_object(request.user.id)
+        serializer = DeliveryManDataSerializer(
+            delivery_man, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk).deliverymandata
+        except DeliveryManData.DoesNotExist:
+            raise Http404
+
+
+class OrdersForDeliveryMan(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
+
+    def get(self, request):
+        orders = Order.objects.filter(delivery=request.user.id, status=2)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+class OrdersForRestaurant(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
+
+    def get(self, request, format=None):
+        restaurant = RestaurantOwner.objects.get(
+            user=request.user.id).restaurant
+        orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+class AvailableDeliveries(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
+
+    def get(self, request, format=None):
+        restaurant_location = request.user.restaurantowner.restaurant.location
+        five_minutes_ago = django.utils.timezone.now() + timedelta(minutes=-5)
+        queryset = DeliveryManData.objects.filter(
+            status=1, last_online__gte=five_minutes_ago).annotate(distance=Distance(
+                restaurant_location, 'location')).order_by('distance').filter(distance__lte=5000)
+        serializer = DeliveryManDataSerializer(queryset, many=True)
         return Response(serializer.data)

@@ -1,8 +1,17 @@
 from rest_framework import serializers
 import users.models as models
+from drf_extra_fields.geo_fields import PointField
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['email', 'username', 'first_name',
+                  'last_name', 'address', 'account_type']
+        read_only_fields = ('email', )
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(
         style={'input_type': 'password'}, write_only=True)
 
@@ -30,3 +39,18 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class DeliveryManDataSerializer(serializers.ModelSerializer):
+    user = UserDetailSerializer()
+    location = PointField(required=False)
+    distance_to_restaurant = serializers.SerializerMethodField()
+
+    def get_distance_to_restaurant(self, instance):
+        if hasattr(instance, 'distance'):
+            return round(instance.distance.km, 3)
+        return 0
+
+    class Meta:
+        model = models.DeliveryManData
+        exclude = []
