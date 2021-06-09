@@ -104,7 +104,7 @@ class OrderPlacement(APIView):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
         ordered_extras = []
         order = Order(user=request.user, restaurant=restaurant,
-                      order_cost=request.data['orderCost'])
+                      order_cost=request.data['orderCost'], delivery_address=request.data['deliveryAddress'])
         order.save()
         for dish in request.data['orderedItems']:
             ordered_dish = Dish.objects.get(pk=dish['dishId'])

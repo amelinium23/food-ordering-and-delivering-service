@@ -135,6 +135,7 @@ class Order(models.Model):
     order_preparation_date = models.DateTimeField(null=True, blank=True)
     order_delivery_date = models.DateTimeField(null=True, blank=True)
     order_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    delivery_address = models.CharField(max_length=100, default="")
 
     def __str__(self) -> str:
         return f'{self.user} - {self.order_placement_date}'
