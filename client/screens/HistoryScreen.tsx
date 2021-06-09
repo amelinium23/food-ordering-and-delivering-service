@@ -1,15 +1,16 @@
 import * as React from "react";
-import Order from "../types/Order";
+import { HistoricalOrder as OrderType } from "../types/Order";
 import { View, FlatList, StyleSheet, Pressable } from "react-native";
 import OrderHeader from "../components/OrderHeader";
 
-const ORDERS: Order[] = [
+const ORDERS: OrderType[] = [
   {
     id: 1,
     date: "20-05-2021",
     price: 20,
     status: 2,
     restaurant: {
+      id: 1,
       key: "McDonalds",
       type: [],
       image: "",
@@ -18,6 +19,7 @@ const ORDERS: Order[] = [
     },
     orderedDishes: [
       {
+        id: 1,
         name: "Lemoniada",
         price: 8.99,
         extras_group: [
@@ -26,10 +28,12 @@ const ORDERS: Order[] = [
             extra_type: 1,
             extras: [
               {
+                id: 1,
                 name: "Mała",
                 added_price: 0.0,
               },
               {
+                id: 2,
                 name: "Duża",
                 added_price: 5.0,
               },
@@ -47,6 +51,7 @@ const ORDERS: Order[] = [
     status: 1,
     price: 21,
     restaurant: {
+      id: 2,
       key: "KFC",
       type: [],
       image: "",
@@ -61,6 +66,7 @@ const ORDERS: Order[] = [
     price: 22,
     status: 3,
     restaurant: {
+      id: 3,
       key: "Subaway",
       type: [],
       image: "",

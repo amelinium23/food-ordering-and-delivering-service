@@ -201,13 +201,15 @@ const App: React.FunctionComponent = () => {
       refresh_token: "",
     },
   });
-
+  /* tutaj zaleznie od typu konta chcialbym 3 rozne ekrany, dla
+  usera(user_status = 1): Restauracje 
+  // dla restauracji (user_status =
+  2): Zamówienia(OrderListScreen), dla dostawcy(user_status = 3): cos
+  dla dostawcy*/
   return (
     <NavigationContainer>
       <UserProvider value={[session, setSession]}>
         <Drawer.Navigator>
-          // tutaj zaleznie od typu konta chcialbym 3 rozne ekrany, dla usera(user_status = 1): Restauracje
-          // dla restauracji (user_status = 2): Zamówienia(OrderListScreen), dla dostawcy(user_status = 3): cos dla dostawcy
           <Drawer.Screen
             name="Restaurant"
             options={{ title: "Restauracje" }}

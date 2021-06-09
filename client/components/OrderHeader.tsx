@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Dish } from "../types/Dish";
-import Order from "../types/Order";
+import { HistoricalOrder as Order } from "../types/Order";
 import DishHeader from "./DishHeader";
 
 const STATUSES: { [index: number]: string } = {
@@ -29,6 +29,7 @@ const OrderHeader: React.FunctionComponent<Order> = ({
           orderedDishes.map((i) => (
             <View key={i.name}>
               <DishHeader
+                id={i.id}
                 name={i.name}
                 price={i.price}
                 image={i.image}
