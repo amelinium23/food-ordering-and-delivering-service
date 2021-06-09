@@ -1,16 +1,16 @@
 import * as React from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { User as UserType } from "../types/ApiResponseTypes";
-import { AntDesign } from "@expo/vector-icons";
 import UserContext from "../contexts/UserContext";
 
 interface IProps {
   user: UserType;
+  setUserData: (user: UserType) => void;
 }
 
-const UserHeader: React.FunctionComponent<IProps> = ({ user }) => {
+const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
   const [session, setSession] = React.useContext(UserContext);
   const [inputEmail, setInputEmail] = React.useState(user.email);
   const [inputUsername, setInputUsername] = React.useState(user.username);
@@ -21,7 +21,7 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.patch(
+      const res: AxiosResponse<UserType> = await axios.patch(
         `https://glove-backend.herokuapp.com/users/auth/user/`,
         {
           email: inputEmail,
@@ -34,6 +34,7 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user }) => {
           headers: { Authorization: `Bearer ${session.token.access_token}` },
         }
       );
+      setUserData(res.data);
     } catch (err) {
       console.log(err);
     }

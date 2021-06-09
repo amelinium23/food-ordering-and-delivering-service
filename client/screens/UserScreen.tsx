@@ -40,7 +40,7 @@ const UserScreen: React.FunctionComponent = () => {
       <ActivityIndicator size="large" color="#fff" />
     </View>
   ) : (
-    <UserHeader user={userData} />
+    <UserHeader user={userData} setUserData={setUserData} />
   );
 };
 
