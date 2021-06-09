@@ -22,7 +22,6 @@ const UserScreen: React.FunctionComponent = () => {
         `https://glove-backend.herokuapp.com/users/auth/user/`,
         {
           headers: {
-            // "Content-Type": "application/json",
             Authorization: `Bearer ${session.token.access_token}`,
           },
         }

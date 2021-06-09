@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { User as UserType } from "../types/ApiResponseTypes";
 import { AntDesign } from "@expo/vector-icons";
 import UserContext from "../contexts/UserContext";
@@ -103,17 +103,17 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user }) => {
     </View>
   ) : (
     <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.text}>Nazwa użytkownika: {user.username}</Text>
+      <View style={styles.containerWithText}>
+        <Text style={styles.header}>Nazwa użytkownika: {user.username}</Text>
         <Text style={styles.text}>Imię: {user.first_name}</Text>
         <Text style={styles.text}>Nazwisko: {user.last_name}</Text>
         <Text style={styles.text}>Adres: {user.address}</Text>
         <Text style={styles.text}>Email: {user.email}</Text>
-        <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
-          <Feather name="edit" size={24} color="white" />
-          <Text style={styles.buttonText}>Edytuj</Text>
-        </Pressable>
       </View>
+      <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
+        <Feather name="edit" size={24} color="white" />
+        <Text style={styles.buttonText}>Edytuj</Text>
+      </Pressable>
     </View>
   );
 };
@@ -123,10 +123,28 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     backgroundColor: "white",
+    flexDirection: "column",
+  },
+  containerWithText: {
+    backgroundColor: "white",
+    fontSize: 14,
+    textAlign: "left",
+    marginHorizontal: 10,
+    marginVertical: 10,
+    flexDirection: "column",
+  },
+  header: {
+    fontSize: 18,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "rgb(59, 108, 212)",
+    marginBottom: 3,
   },
   text: {
     fontSize: 16,
-    textAlign: "center",
+    textAlign: "left",
+    marginTop: 3,
+    color: "black",
   },
   formText: {
     fontSize: 18,
@@ -135,13 +153,6 @@ const styles = StyleSheet.create({
     color: "rgb(59, 108, 212)",
     marginTop: 5,
     marginHorizontal: 10,
-  },
-  infoContainer: {
-    backgroundColor: "white",
-    flex: 2,
-    padding: 10,
-    marginHorizontal: 10,
-    marginVertical: 10,
   },
   buttonText: {
     color: "white",
