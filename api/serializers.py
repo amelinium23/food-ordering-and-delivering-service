@@ -93,7 +93,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Order
         fields = ['id', 'user', 'dishes', 'restaurant', 'status',
-                  'order_placement_date', 'order_delivery_date', 'order_cost']
+                  'order_placement_date', 'order_delivery_date', 'order_cost', 'delivery_address']
         read_only_fields = ['id', 'user', 'restaurant', 'order_placement_date']
 
 
