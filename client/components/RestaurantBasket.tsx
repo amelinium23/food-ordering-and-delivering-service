@@ -27,16 +27,13 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [dishList, setDishList] = React.useContext(DishContext);
-  const deliveryCost = route.params.restaurantInfo.cost;
+  const deliveryCost = route.params.restaurantInfo.delivery_cost;
   let id = 1;
 
-  const renderDishes = (dishes: DishType[]) =>
-    dishes.map((dish) => (
-      <Text
-        key={`${dish.name}${id++}`}
-        style={{ fontSize: 14, color: "black" }}
-      >
-        {dish.name}: {dish.price} zł
+  const renderDishes = () =>
+    dishList.map((dish) => (
+      <Text key={`${id++}`} style={{ fontSize: 14, color: "black" }}>
+        {dish.dishName}: {dish.totalCost} zł
       </Text>
     ));
 
@@ -59,13 +56,16 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({
           <View style={styles.basketList}>
             {dishList.length ? (
               <View>
-                {renderDishes(dishList)}
-                <Text>Dostawa: {deliveryCost} zł</Text>
+                {renderDishes()}
+                <Text>Dostawa: {deliveryCost.toFixed(2)} zł</Text>
                 <View style={styles.summaryContainer}>
                   <Text style={styles.summaryText}>
                     Suma:{" "}
                     {dishList
-                      .reduce((current, e) => current + e.price, deliveryCost)
+                      .reduce(
+                        (current, e) => current + e.totalCost,
+                        deliveryCost
+                      )
                       .toFixed(2)}{" "}
                     zł
                   </Text>

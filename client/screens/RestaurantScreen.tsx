@@ -1,5 +1,12 @@
 import * as React from "react";
-import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  SectionList,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
 import DishHeader from "../components/DishHeader";
 import { RouteProp } from "@react-navigation/native";
@@ -11,6 +18,7 @@ import { DishProvider } from "../contexts/DishContext";
 import Order from "../types/Order";
 import UserContext from "../contexts/UserContext";
 import { MenuCategory as MenuCategoryType } from "../types/ApiResponseTypes";
+import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
 
 type RestaurantScreenRouteProp = RouteProp<RootStackParamList, "Restaurant">;
 
@@ -30,8 +38,9 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
 }) => {
   const details = route.params.restaurantInfo;
   const [session, setSession] = React.useContext(UserContext);
-  const [dishList, setDishList] = React.useState<DishType[]>([]);
-  const [menu, setMenu] = React.useState([] as MenuCategoryType[]);
+  const [dishList, setDishList] = React.useState<OrderedItemType[]>([]);
+  const [menu, setMenu] = React.useState<MenuCategoryType[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const requestData = async () => {
@@ -46,12 +55,21 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
       if (res.ok) {
         const json = (await res.json()) as MenuCategoryType[];
         setMenu(json);
+        setIsLoading(false);
       }
     };
     void requestData();
   }, [session, details]);
 
-  return (
+  React.useEffect(() => {
+    console.log(dishList);
+  }, [dishList]);
+
+  return isLoading ? (
+    <View>
+      <ActivityIndicator size="large" color="black" />
+    </View>
+  ) : (
     <View>
       <DishProvider value={[dishList, setDishList]}>
         <SectionList

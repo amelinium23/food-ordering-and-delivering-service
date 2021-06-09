@@ -11,6 +11,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dish as DishType } from "../types/ApiResponseTypes";
 import ExtraPicker from "../components/ExtraPicker";
+import DishContext from "../contexts/DishContext";
 
 interface IProps extends DishType {
   isExtendable?: boolean;
@@ -26,6 +27,8 @@ const DishHeader: React.FunctionComponent<IProps> = ({
 }) => {
   const [isPressed, setIsPressed] = React.useState(false);
   const [addedPrice, setAddedPrice] = React.useState(0);
+  const [extras, setExtras] = React.useState<number[]>([]);
+  const [dishList, setDishList] = React.useContext(DishContext);
 
   return (
     <View style={styles.wrapper}>
@@ -73,6 +76,8 @@ const DishHeader: React.FunctionComponent<IProps> = ({
                   group={item}
                   price={addedPrice}
                   setPrice={setAddedPrice}
+                  extras={extras}
+                  setExtras={setExtras}
                 />
               </View>
             )}
@@ -84,7 +89,17 @@ const DishHeader: React.FunctionComponent<IProps> = ({
               },
               styles.checkoutButton,
             ]}
-            onPress={() => {}}
+            onPress={() => {
+              setDishList([
+                ...dishList,
+                {
+                  dishId: id,
+                  dishName: name,
+                  orderedExtras: extras,
+                  totalCost: price + addedPrice,
+                },
+              ]);
+            }}
           >
             <Text style={styles.checkoutButtonText}>Dodaj</Text>
           </Pressable>

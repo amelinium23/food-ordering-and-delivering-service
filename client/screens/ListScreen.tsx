@@ -74,6 +74,8 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
         console.log(json);
         setRestaurants(json);
         setIsLoading(false);
+      } else {
+        console.log(res.status);
       }
     };
     void requestData();
@@ -104,7 +106,7 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
 
   return isLoading ? (
     <View>
-      <ActivityIndicator size="large" color="#fff" />
+      <ActivityIndicator size="large" color="black" />
     </View>
   ) : (
     <SafeAreaView style={styles.container}>

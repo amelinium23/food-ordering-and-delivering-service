@@ -8,12 +8,16 @@ interface IProps {
   group: ExtrasGroupType;
   price: number;
   setPrice: (price: number) => void;
+  extras: number[];
+  setExtras: (extras: number[]) => void;
 }
 
 const ExtraPicker: React.FunctionComponent<IProps> = ({
   group,
   price,
   setPrice,
+  extras,
+  setExtras,
 }) => {
   return (
     <View>
@@ -38,9 +42,13 @@ const ExtraPicker: React.FunctionComponent<IProps> = ({
               <View style={styles.checkbox}>
                 <BouncyCheckbox
                   onPress={(isChecked) => {
-                    isChecked
-                      ? setPrice(price + item.added_price)
-                      : setPrice(price - item.added_price);
+                    if (isChecked) {
+                      setPrice(price + item.added_price);
+                      setExtras([...extras, item.id]);
+                    } else {
+                      setPrice(price - item.added_price);
+                      setExtras(extras.filter((e) => e !== item.id));
+                    }
                   }}
                   fillColor="rgb(59, 108, 212)"
                   iconStyle={{ borderColor: "rgb(59, 108, 212)" }}
