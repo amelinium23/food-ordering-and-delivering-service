@@ -1,22 +1,18 @@
 import * as React from "react";
 import { StyleSheet, Text, Image, View } from "react-native";
 import { FontAwesome5, Ionicons, Entypo } from "@expo/vector-icons";
-import { Restaurant as RestaurantType } from "../types/Restaurant";
+import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
 
-interface IProps {
-  name: string;
-  type: string[];
-  cost: number;
-  image: string;
-  distance: number;
-}
-
-const RestaurantHeader: React.FunctionComponent<IProps> = ({
-  name,
-  type,
-  cost,
-  image,
+const RestaurantHeader: React.FunctionComponent<RestaurantType> = ({
+  id,
+  cuisine_type,
   distance,
+  location,
+  name,
+  logo,
+  address,
+  delivery_cost,
+  description,
 }) => {
   return (
     <View style={styles.listItem}>
@@ -29,7 +25,7 @@ const RestaurantHeader: React.FunctionComponent<IProps> = ({
             color="black"
             style={{ paddingRight: 3 }}
           />
-          {type.sort().join(", ")}
+          {cuisine_type.sort().join(", ")}
         </Text>
         <Text>
           <FontAwesome5
@@ -38,14 +34,14 @@ const RestaurantHeader: React.FunctionComponent<IProps> = ({
             color="black"
             style={{ paddingRight: 3 }}
           />
-          {`${cost.toFixed(2)} zł`}
+          {`${delivery_cost.toFixed(2)} zł`}
         </Text>
       </View>
       <View style={styles.logoView}>
         <Image
           style={styles.logo}
           source={{
-            uri: image,
+            uri: logo,
           }}
         />
         <Text style={styles.distText}>

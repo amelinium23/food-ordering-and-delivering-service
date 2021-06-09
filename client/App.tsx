@@ -126,7 +126,6 @@ const Restaurant = () => {
       <Stack.Screen
         name="RestaurantList"
         component={ListScreen}
-        initialParams={{ restaurants: RESTAURANTS }}
         options={{
           title: "Glove",
           headerLeft: () => null,
@@ -136,7 +135,7 @@ const Restaurant = () => {
       <Stack.Screen
         name="Restaurant"
         component={RestaurantScreen}
-        options={({ route }) => ({ title: route.params.restaurantInfo.key })}
+        options={({ route }) => ({ title: route.params.restaurantInfo.name })}
       />
       <Stack.Screen name="Order" component={OrderScreen} />
     </Stack.Navigator>

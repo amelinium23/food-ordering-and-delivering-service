@@ -12,3 +12,20 @@ export interface User {
   address: string;
   account_type: number;
 }
+
+export interface Restaurant {
+  id: number;
+  cuisine_type: string[];
+  distance: number;
+  location: Location;
+  name: string;
+  logo: string;
+  address: string;
+  delivery_cost: number;
+  description: string;
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}

@@ -6,6 +6,7 @@ import {
   Pressable,
   View,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import RestaurantHeader from "../components/RestaurantHeader";
@@ -14,6 +15,8 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
+import UserContext from "../contexts/UserContext";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "RestaurantList">;
 
@@ -28,10 +31,36 @@ interface IProps {
 }
 
 const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
-  const restaurants = route.params.restaurants;
+  const [session, setSession] = React.useContext(UserContext);
+  const [restaurants, setRestaurants] = React.useState([] as RestaurantType[]);
   const [filter, setFilter] = React.useState("");
   const [cuisineType, setCuisineType] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(true);
   const [restList, setRestList] = React.useState(restaurants);
+
+  React.useEffect(() => {
+    const requestData = async () => {
+      const res = await fetch(
+        "https://glove-backend.herokuapp.com/api/restaurants/",
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        const json = (await res.json()) as RestaurantType[];
+        console.log(json);
+        setRestaurants(json);
+        setIsLoading(false);
+      }
+    };
+    void requestData();
+  }, [session]);
+
+  React.useEffect(() => {
+    setRestList(restaurants);
+  }, [restaurants]);
 
   React.useEffect(() => {
     void updateList();
@@ -41,18 +70,22 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
     const search =
       filter.length > 0
         ? restaurants.filter((r) =>
-            r.key.toLowerCase().includes(filter.toLowerCase())
+            r.name.toLowerCase().includes(filter.toLowerCase())
           )
         : restaurants;
     const picker =
       cuisineType !== ""
-        ? restaurants.filter((r) => r.type.includes(cuisineType))
+        ? restaurants.filter((r) => r.cuisine_type.includes(cuisineType))
         : restaurants;
 
     setRestList(search.filter((e) => picker.includes(e)));
   };
 
-  return (
+  return isLoading ? (
+    <View>
+      <ActivityIndicator size="large" color="#fff" />
+    </View>
+  ) : (
     <SafeAreaView style={styles.container}>
       {/* Część z wyszukiwaniem i filtrowaniem, do wydzielenia jako osobny komponent */}
       <View style={styles.header}>
@@ -73,7 +106,7 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
           items={Array.from(
             new Set(
               restaurants.reduce(
-                (current, e) => current.concat(e.type),
+                (current, e) => current.concat(e.cuisine_type),
                 [] as string[]
               )
             )
@@ -110,7 +143,7 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
       {/* Tutaj koniec części wyszukiwarki i filtrowania */}
       <FlatList
         data={restList}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => `${item.id}`}
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
@@ -118,11 +151,15 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
             }
           >
             <RestaurantHeader
-              name={item.key}
-              type={item.type}
-              cost={item.cost}
-              image={item.image}
+              id={item.id}
+              cuisine_type={item.cuisine_type}
               distance={item.distance}
+              location={item.location}
+              name={item.name}
+              logo={item.logo}
+              address={item.address}
+              delivery_cost={item.delivery_cost}
+              description={item.description}
             />
           </Pressable>
         )}

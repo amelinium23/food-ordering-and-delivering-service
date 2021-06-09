@@ -103,7 +103,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   React.useEffect(() => {
     if (session.state) {
       setLoginError(false);
-      navigation.navigate("RestaurantList", { restaurants: RESTAURANTS });
+      navigation.navigate("RestaurantList", {});
     }
   }, [session, navigation]);
 
