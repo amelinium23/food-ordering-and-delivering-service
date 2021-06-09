@@ -73,7 +73,7 @@ class RestaurantMenu(APIView):
     """
 
     def get(self, request, pk, format=None):
-        menugroup = MenuGroup.objects.filter(pk=pk)
+        menugroup = MenuGroup.objects.filter(restaurant=pk)
         serializer = MenuGroupSerializer(menugroup, many=True)
         return Response(serializer.data)
 
