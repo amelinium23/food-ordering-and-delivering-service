@@ -29,3 +29,28 @@ export interface Location {
   latitude: number;
   longitude: number;
 }
+
+export interface MenuCategory {
+  name: string;
+  data: Dish[];
+}
+
+export interface Dish {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  extras_group: ExtrasGroup[];
+}
+
+export interface ExtrasGroup {
+  name: string;
+  extra_type: number;
+  extras: Extra[];
+}
+
+export interface Extra {
+  id: number;
+  name: string;
+  added_price: number;
+}

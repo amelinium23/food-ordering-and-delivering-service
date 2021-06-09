@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Dish as DishType } from "../types/Dish";
+import { Dish as DishType } from "../types/ApiResponseTypes";
 import ExtraPicker from "../components/ExtraPicker";
 
 interface IProps extends DishType {
