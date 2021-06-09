@@ -17,6 +17,7 @@ import * as React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
+import useLocation from "../hooks/useLocation";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "RestaurantList">;
 
@@ -37,25 +38,46 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
   const [cuisineType, setCuisineType] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
   const [restList, setRestList] = React.useState(restaurants);
+  const [location, status] = useLocation();
 
   React.useEffect(() => {
     const requestData = async () => {
-      const res = await fetch(
-        "https://glove-backend.herokuapp.com/api/restaurants/",
-        {
-          headers: {
-            Authorization: `Bearer ${session.token.access_token}`,
-          },
-        }
-      );
+      let res;
+      if (location && status == "loaded") {
+        console.log("mamy to");
+        console.log(
+          `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`
+        );
+        res = await fetch(
+          `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`,
+          {
+            headers: {
+              Authorization: `Bearer ${session.token.access_token}`,
+            },
+          }
+        );
+      } else if (status === "error") {
+        console.log("jednak nie");
+        res = await fetch(
+          "https://glove-backend.herokuapp.com/api/restaurants/",
+          {
+            headers: {
+              Authorization: `Bearer ${session.token.access_token}`,
+            },
+          }
+        );
+      } else {
+        return;
+      }
       if (res.ok) {
         const json = (await res.json()) as RestaurantType[];
+        console.log(json);
         setRestaurants(json);
         setIsLoading(false);
       }
     };
     void requestData();
-  }, [session]);
+  }, [session, status]);
 
   React.useEffect(() => {
     setRestList(restaurants);
