@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   Pressable,
-  View,
+  ActivityIndicator,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
@@ -38,12 +38,14 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   const [lastName, setLastName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [registerError, setRegisterError] = React.useState(false);
+  const [isWaiting, setIsWaiting] = React.useState(false);
 
   const [safety, setSafety] = React.useState(0);
   const [session, setSession] = React.useContext(UserContext);
 
   const register = async () => {
     setRegisterError(false);
+    setIsWaiting(true);
     const res = await fetch(
       "https://glove-backend.herokuapp.com/users/registration/",
       {
@@ -78,6 +80,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
     } else {
       console.log("Could not register");
       setRegisterError(true);
+      setIsWaiting(false);
     }
   };
 
@@ -163,20 +166,24 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         value={address}
         onChangeText={(text) => setAddress(text)}
       />
-      <Pressable
-        style={({ pressed }) => [
-          {
-            opacity: pressed ? 0.4 : 1,
-          },
-          styles.loginButton,
-        ]}
-        onPress={() => {
-          // navigation.navigate("Login", {});
-          void register();
-        }}
-      >
-        <Text style={styles.loginButtonText}>Zarejestruj się</Text>
-      </Pressable>
+      {!isWaiting ? (
+        <Pressable
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.4 : 1,
+            },
+            styles.loginButton,
+          ]}
+          onPress={() => {
+            // navigation.navigate("Login", {});
+            void register();
+          }}
+        >
+          <Text style={styles.loginButtonText}>Zarejestruj się</Text>
+        </Pressable>
+      ) : (
+        <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
+      )}
       {registerError ? (
         <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
       ) : null}

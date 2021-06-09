@@ -6,6 +6,7 @@ import {
   Text,
   Pressable,
   View,
+  ActivityIndicator,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
@@ -99,6 +100,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   const [inputUsername, setInputUsername] = React.useState("");
   const [inputPassword, setInputPassword] = React.useState("");
   const [loginError, setLoginError] = React.useState(false);
+  const [isWaiting, setIsWaiting] = React.useState(false);
 
   React.useEffect(() => {
     if (session.state) {
@@ -108,6 +110,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   }, [session, navigation]);
 
   const login = async (username: string, password: string) => {
+    setIsWaiting(true);
     const res = await fetch(
       "https://glove-backend.herokuapp.com/users/auth/login/",
       {
@@ -124,7 +127,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
     );
     if (res.ok) {
       const json = (await res.json()) as UserLoginType;
-      // console.log(json);
       const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
       RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
@@ -137,6 +139,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
     } else {
       console.log("Test nie dziala");
       setLoginError(true);
+      setIsWaiting(false);
     }
   };
 
@@ -158,19 +161,24 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         value={inputPassword}
         onChangeText={(text: string) => setInputPassword(text)}
       />
-      <Pressable
-        style={({ pressed }) => [
-          {
-            opacity: pressed ? 0.4 : 1,
-          },
-          styles.loginButton,
-        ]}
-        onPress={() => {
-          void login(inputUsername, inputPassword);
-        }}
-      >
-        <Text style={styles.loginButtonText}>Zaloguj się</Text>
-      </Pressable>
+      {!isWaiting ? (
+        <Pressable
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.4 : 1,
+            },
+            styles.loginButton,
+          ]}
+          onPress={() => {
+            void login(inputUsername, inputPassword);
+          }}
+        >
+          <Text style={styles.loginButtonText}>Zaloguj się</Text>
+        </Pressable>
+      ) : (
+        <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
+      )}
+
       {loginError ? (
         <Text style={styles.errorText}>Niepoprawne dane logowania</Text>
       ) : null}
