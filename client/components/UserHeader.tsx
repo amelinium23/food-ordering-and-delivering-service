@@ -1,20 +1,44 @@
 import * as React from "react";
+import axios from "axios";
 import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { User } from "../types/User";
+import { User as UserType } from "../types/ApiResponseTypes";
 import { AntDesign } from "@expo/vector-icons";
+import UserContext from "../contexts/UserContext";
 
-const UserHeader: React.FunctionComponent<User> = ({
-  email,
-  username,
-  first_name,
-  last_name,
-  address,
-}) => {
-  // const handleSubmit = () => {
-  //   const data = {};
-  // };
+interface IProps {
+  user: UserType;
+}
+
+const UserHeader: React.FunctionComponent<IProps> = ({ user }) => {
+  const [session, setSession] = React.useContext(UserContext);
+  const [inputEmail, setInputEmail] = React.useState(user.email);
+  const [inputUsername, setInputUsername] = React.useState(user.username);
+  const [inputFirstName, setInputFirstName] = React.useState(user.first_name);
+  const [inputLastName, setInputLastName] = React.useState(user.last_name);
+  const [inputAddress, setInputAddress] = React.useState(user.address);
   const [editable, setEditable] = React.useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.patch(
+        `https://glove-backend.herokuapp.com/users/auth/user/`,
+        {
+          email: inputEmail,
+          username: inputUsername,
+          first_name: inputFirstName,
+          last_name: inputLastName,
+          address: inputAddress,
+        },
+        {
+          headers: { Authorization: `Bearer ${session.token.access_token}` },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    setEditable(!editable);
+  };
   return editable ? (
     <View style={styles.container}>
       <Text style={styles.formText}>Nazwa użytkownika:</Text>
@@ -24,8 +48,9 @@ const UserHeader: React.FunctionComponent<User> = ({
         autoCapitalize="none"
         textContentType="username"
         placeholder="Nazwa użytkownika"
-        defaultValue={username}
+        value={inputUsername}
         clearTextOnFocus={true}
+        onChangeText={(text) => setInputUsername(text)}
       />
       <Text style={styles.formText}>Imię:</Text>
       <TextInput
@@ -34,8 +59,9 @@ const UserHeader: React.FunctionComponent<User> = ({
         autoCapitalize="words"
         textContentType="name"
         placeholder="Imię"
-        defaultValue={first_name}
         clearTextOnFocus={true}
+        value={inputFirstName}
+        onChangeText={(text) => setInputFirstName(text)}
       />
       <Text style={styles.formText}>Nazwisko:</Text>
       <TextInput
@@ -44,8 +70,9 @@ const UserHeader: React.FunctionComponent<User> = ({
         autoCapitalize="words"
         textContentType="name"
         placeholder="Nazwisko"
-        defaultValue={last_name}
         clearTextOnFocus={true}
+        value={inputLastName}
+        onChangeText={(text) => setInputLastName(text)}
       />
       <Text style={styles.formText}>Adres e-mail:</Text>
       <TextInput
@@ -54,8 +81,9 @@ const UserHeader: React.FunctionComponent<User> = ({
         autoCapitalize="none"
         textContentType="emailAddress"
         placeholder="Nowy adres e-mail"
-        defaultValue={email}
         clearTextOnFocus={true}
+        value={inputEmail}
+        onChangeText={(text) => setInputEmail(text)}
       />
       <Text style={styles.formText}>Adres:</Text>
       <TextInput
@@ -64,10 +92,11 @@ const UserHeader: React.FunctionComponent<User> = ({
         autoCapitalize="none"
         textContentType="streetAddressLine1"
         placeholder="Nowy adres"
-        defaultValue={address}
         clearTextOnFocus={true}
+        value={inputAddress}
+        onChangeText={(text) => setInputAddress(text)}
       />
-      <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
+      <Pressable style={styles.button} onPress={handleSubmit}>
         <AntDesign name="save" size={24} color="white" />
         <Text style={styles.buttonText}>Modyfikuj</Text>
       </Pressable>
@@ -75,11 +104,11 @@ const UserHeader: React.FunctionComponent<User> = ({
   ) : (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text style={styles.text}>Nazwa użytkownika: {username}</Text>
-        <Text style={styles.text}>Imię: {first_name}</Text>
-        <Text style={styles.text}>Nazwisko: {last_name}</Text>
-        <Text style={styles.text}>Adres: {address}</Text>
-        <Text style={styles.text}>Email: {email}</Text>
+        <Text style={styles.text}>Nazwa użytkownika: {user.username}</Text>
+        <Text style={styles.text}>Imię: {user.first_name}</Text>
+        <Text style={styles.text}>Nazwisko: {user.last_name}</Text>
+        <Text style={styles.text}>Adres: {user.address}</Text>
+        <Text style={styles.text}>Email: {user.email}</Text>
         <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
           <Feather name="edit" size={24} color="white" />
           <Text style={styles.buttonText}>Edytuj</Text>
