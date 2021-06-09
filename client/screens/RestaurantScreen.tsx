@@ -9,305 +9,8 @@ import { Dish as DishType } from "../types/Dish";
 import { IExtraType } from "../types/ExtrasGroup";
 import { DishProvider } from "../contexts/DishContext";
 import Order from "../types/Order";
-
-const DISHES = [
-  {
-    category: "Pizza",
-    data: [
-      {
-        id: 1,
-        name: "Margherita",
-        price: 14.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Normalna",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-              {
-                id: 3,
-                name: "Ogromna",
-                added_price: 15.0,
-              },
-            ],
-          },
-          {
-            name: "Dodatki",
-            extra_type: 2 as IExtraType,
-            extras: [
-              {
-                id: 4,
-                name: "Dodatkowy ananas",
-                added_price: 2.5,
-              },
-              {
-                id: 5,
-                name: "Dodatkowa szynka",
-                added_price: 2.0,
-              },
-              {
-                id: 6,
-                name: "Dodatkowy ser",
-                added_price: 1.5,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://pojedzone.eu/wp-content/uploads/2021/03/pizza-3000274_1920-marggerita.jpg",
-      },
-      {
-        id: 2,
-        name: "Pepperoni",
-        price: 17.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://dwormarcinkowo.pl/wp-content/uploads/2020/03/Pizza-Pepperoni.jpg",
-      },
-      {
-        id: 3,
-        name: "Hawajska",
-        price: 16.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://www.pogotujmy.pl/wp-content/uploads/2016/11/DSC_0442-725x1039.jpg",
-      },
-      {
-        id: 4,
-        name: "Quattro formaggi",
-        price: 18.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://s3.przepisy.pl/przepisy3ii/img/variants/767x0/pizza-quattro-formaggi.jpg",
-      },
-    ],
-  },
-  {
-    category: "Przystawki",
-    data: [
-      {
-        id: 5,
-        name: "Skrzydełka",
-        price: 8.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://jesspryles.com/wp-content/uploads/2020/01/smoked-chicken-wings-46-1440x900.jpg",
-      },
-      {
-        id: 6,
-        name: "Pieczywo czosnkowe",
-        price: 9.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://www.shugarysweets.com/wp-content/uploads/2020/04/garlic-bread-4-720x540.jpg",
-      },
-    ],
-  },
-  {
-    category: "Desery",
-    data: [
-      {
-        id: 7,
-        name: "Lava cake",
-        price: 12.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://polki.pl/foto/4_3_LARGE/lava-cake-czyli-przepis-na-czekoladowy-deser-z-plynnym-srodkiem-2449537.jpg",
-      },
-      {
-        id: 8,
-        name: "Szarlotka",
-        price: 10.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://blix.pl/gotuj/wp-content/uploads/2018/11/szarlotka-w-style-apple-pie.jpg",
-      },
-      {
-        id: 9,
-        name: "Sernik",
-        price: 10.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://www.splenda.com/wp-content/themes/bistrotheme/assets/recipe-images/american-classic-cheesecake.jpg",
-      },
-    ],
-  },
-  {
-    category: "Napoje",
-    data: [
-      {
-        id: 10,
-        name: "Lemoniada",
-        price: 8.99,
-        extras_group: [
-          {
-            name: "Rozmiar",
-            extra_type: 1 as IExtraType,
-            extras: [
-              {
-                id: 1,
-                name: "Mała",
-                added_price: 0.0,
-              },
-              {
-                id: 2,
-                name: "Duża",
-                added_price: 5.0,
-              },
-            ],
-          },
-        ],
-        image:
-          "https://images-gmi-pmc.edge-generalmills.com/2586d951-a46a-4091-aec6-eca3adefb409.jpg",
-      },
-    ],
-  },
-];
+import UserContext from "../contexts/UserContext";
+import { MenuCategory as MenuCategoryType } from "../types/ApiResponseTypes";
 
 type RestaurantScreenRouteProp = RouteProp<RootStackParamList, "Restaurant">;
 
@@ -326,17 +29,37 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const details = route.params.restaurantInfo;
+  const [session, setSession] = React.useContext(UserContext);
   const [dishList, setDishList] = React.useState<DishType[]>([]);
+  const [menu, setMenu] = React.useState([] as MenuCategoryType[]);
+
+  React.useEffect(() => {
+    const requestData = async () => {
+      const res = await fetch(
+        `https://glove-backend.herokuapp.com/api/restaurants/${details.id}/menu`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        const json = (await res.json()) as MenuCategoryType[];
+        setMenu(json);
+      }
+    };
+    void requestData();
+  }, [session, details]);
 
   return (
     <View>
       <DishProvider value={[dishList, setDishList]}>
         <SectionList
-          sections={DISHES}
+          sections={menu}
           keyExtractor={(item) => item.name}
           stickySectionHeadersEnabled={false} // need to set it to false as it's true by default on iOS
-          renderSectionHeader={({ section: { category } }) => (
-            <Text style={styles.categoryHeader}>{category}</Text>
+          renderSectionHeader={({ section: { name } }) => (
+            <Text style={styles.categoryHeader}>{name}</Text>
           )}
           renderItem={({ item }) => (
             <DishHeader

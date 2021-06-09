@@ -50,7 +50,6 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
       );
       if (res.ok) {
         const json = (await res.json()) as RestaurantType[];
-        console.log(json);
         setRestaurants(json);
         setIsLoading(false);
       }
