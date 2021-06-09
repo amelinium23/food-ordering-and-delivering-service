@@ -72,15 +72,9 @@ class RestaurantMenu(APIView):
     Retrieve a restaurant menu.
     """
 
-    def get_object(self, pk):
-        try:
-            return MenuGroup.objects.get(restaurant=pk)
-        except Restaurant.DoesNotExist:
-            raise Http404
-
     def get(self, request, pk, format=None):
-        menugroup = self.get_object(pk)
-        serializer = MenuGroupSerializer(menugroup)
+        menugroup = MenuGroup.objects.filter(pk=pk)
+        serializer = MenuGroupSerializer(menugroup, many=True)
         return Response(serializer.data)
 
 
