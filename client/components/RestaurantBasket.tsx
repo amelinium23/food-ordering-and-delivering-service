@@ -33,7 +33,7 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({
   const renderDishes = () =>
     dishList.map((dish) => (
       <Text key={`${id++}`} style={{ fontSize: 14, color: "black" }}>
-        {dish.dishName}: {dish.totalCost} zł
+        {dish.dishName}: {dish.totalCost.toFixed(2)} zł
       </Text>
     ));
 
@@ -96,7 +96,7 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({
                   setModalVisible(false);
                   navigation.navigate("Order", {
                     orderInfo: dishList,
-                    deliveryCost: route.params.restaurantInfo.cost,
+                    restaurantInfo: route.params.restaurantInfo,
                   });
                 }
               }}

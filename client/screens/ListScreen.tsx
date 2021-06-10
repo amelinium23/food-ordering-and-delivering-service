@@ -43,6 +43,9 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
   React.useEffect(() => {
     const requestData = async () => {
       let res;
+      console.log(session.token.access_token);
+      console.log(session.token.refresh_token);
+
       if (location && status == "loaded") {
         console.log("mamy to");
         console.log(
@@ -75,6 +78,8 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
         setRestaurants(json);
         setIsLoading(false);
       } else {
+        const json = (await res.json()) as RestaurantType[];
+        console.log(json);
         console.log(res.status);
       }
     };
