@@ -97,6 +97,7 @@ const DishHeader: React.FunctionComponent<IProps> = ({
                   dishName: name,
                   orderedExtras: extras,
                   totalCost: price + addedPrice,
+                  image: image,
                 },
               ]);
             }}

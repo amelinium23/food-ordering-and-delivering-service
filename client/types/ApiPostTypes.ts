@@ -10,4 +10,5 @@ export interface OrderedItem {
   dishName: string;
   orderedExtras: number[];
   totalCost: number;
+  image: string;
 }

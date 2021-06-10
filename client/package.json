@@ -11,6 +11,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-cookies/cookies": "^6.0.7",
     "@react-native-picker/picker": "^1.15.0",
+    "@react-navigation/core": "^5.15.3",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
