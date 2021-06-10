@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios, { AxiosResponse } from "axios";
 import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
-import { Feather, MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import { Feather, AntDesign } from "@expo/vector-icons";
 import { User as UserType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
 

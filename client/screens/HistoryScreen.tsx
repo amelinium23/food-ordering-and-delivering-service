@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HistoricalOrder as OrderType } from "../types/Order";
+import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import OrderHeader from "../components/OrderHeader";
 import UserContext from "../contexts/UserContext";
@@ -15,6 +15,7 @@ const HistoryScreen: React.FunctionComponent = () => {
       );
       if (res.ok) {
         const json = (await res.json()) as OrderType[];
+        console.log(JSON.stringify(json));
         setOrders(json);
       }
     };
@@ -26,7 +27,7 @@ const HistoryScreen: React.FunctionComponent = () => {
       {orders.length > 0 ? (
         <FlatList
           data={orders}
-          keyExtractor={(item) => item.restaurant.key}
+          keyExtractor={(item) => `${item.id}`}
           renderItem={({ item }) => (
             <Pressable key={`${item.id}`} onPress={() => null}>
               <OrderHeader
@@ -36,7 +37,7 @@ const HistoryScreen: React.FunctionComponent = () => {
                 status={item.status}
                 order_cost={item.order_cost}
                 restaurant={item.restaurant}
-                orderedDishes={item.orderedDishes}
+                dishes={item.dishes}
                 delivery_address={item.delivery_address}
                 order_placement_date={item.order_placement_date}
               />

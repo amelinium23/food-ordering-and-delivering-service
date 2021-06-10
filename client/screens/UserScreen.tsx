@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import UserHeader from "../components/UserHeader";
 import { User as UserType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";

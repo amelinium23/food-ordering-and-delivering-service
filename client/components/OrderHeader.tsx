@@ -1,7 +1,6 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { Dish } from "../types/Dish";
-import { HistoricalOrder as Order } from "../types/Order";
+import { HistoricalOrder as Order } from "../types/ApiResponseTypes";
 import DishHeader from "./DishHeader";
 
 const STATUSES: { [index: number]: string } = {
@@ -22,21 +21,22 @@ const OrderHeader: React.FunctionComponent<Order> = ({
   status,
   order_cost,
   restaurant,
-  orderedDishes,
+  dishes,
 }) => {
+  let j = 0;
   const [isExpanded, setIsExpanded] = React.useState(false);
   return isExpanded ? (
     <View style={styles.orderContainer}>
       <Pressable onPress={() => setIsExpanded(!isExpanded)}>
-        {orderedDishes.length > 0 ? (
-          orderedDishes.map((i) => (
-            <View key={i.name}>
+        {dishes.length > 0 ? (
+          dishes.map((i) => (
+            <View key={`${i.dish.id + j++}`}>
               <DishHeader
-                id={i.id}
-                name={i.name}
-                price={i.price}
-                image={i.image}
-                extras_group={i.extras_group}
+                id={i.dish.id}
+                name={i.dish.name}
+                price={i.dish.price}
+                image={i.dish.image}
+                extras_group={[]}
               />
             </View>
           ))
@@ -50,15 +50,15 @@ const OrderHeader: React.FunctionComponent<Order> = ({
   ) : (
     <Pressable onPress={() => setIsExpanded(!isExpanded)}>
       <View style={styles.orderContainer}>
-        <Text style={styles.header}>Restauracja: {restaurant.key}</Text>
+        <Text style={styles.header}>Restauracja: {restaurant}</Text>
+        <Text style={styles.text}>Numer zamówienia: {id}</Text>
         <Text style={styles.text}>Status: {STATUSES[status]}</Text>
         <Text style={styles.text}>Data zamówienia: {order_placement_date}</Text>
         <Text style={styles.text}>Data dostawy: {order_delivery_date}</Text>
         <Text style={styles.text}>Adres: {delivery_address}</Text>
-        <Text style={styles.text}>
+        <Text style={styles.summaryText}>
           Cena zamówienia: {order_cost.toFixed(2)} zł
         </Text>
-        <Text style={styles.text}>Numer zamówienia: {id}</Text>
       </View>
     </Pressable>
   );
@@ -67,6 +67,11 @@ const OrderHeader: React.FunctionComponent<Order> = ({
 const styles = StyleSheet.create({
   text: {
     fontSize: 14,
+  },
+  summaryText: {
+    marginTop: 6,
+    textAlign: "center",
+    fontWeight: "bold",
   },
   header: {
     marginBottom: 10,

@@ -55,3 +55,31 @@ export interface Extra {
   name: string;
   added_price: number;
 }
+
+export interface HistoricalOrder {
+  id: number;
+  user: User;
+  dishes: DishElement[];
+  restaurant: string;
+  status: number;
+  order_placement_date: string;
+  order_delivery_date: string;
+  order_cost: number;
+  delivery_address: string;
+}
+
+export interface DishElement {
+  dish: DishDish;
+  ordered_extras: OrderedExtra[];
+}
+
+export interface DishDish {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+}
+
+export interface OrderedExtra {
+  extra: Extra;
+}

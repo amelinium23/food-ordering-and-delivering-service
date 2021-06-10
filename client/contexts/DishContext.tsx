@@ -11,6 +11,7 @@ const DishContext = React.createContext<
       dishName: "foo",
       orderedExtras: [],
       totalCost: 0,
+      image: "",
     },
   ],
   () => {},

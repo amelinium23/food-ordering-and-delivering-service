@@ -58,12 +58,8 @@ const RestaurantOrderHeader: React.FunctionComponent<RestaurantOrder> = ({
           Data dostarczenia zamówienia: {orderDeliveryDate}
         </Text>
         <Text style={styles.text}>
-          Dostawca: {deliveryMan.username == null ? (deliveryMan.email) : (`jeszcze nie ma dostawcy`)}
-        </Text>
-        <Text style={styles.text}>
           Cena zamówienia: {orderCost.toFixed(2)} zł
         </Text>
-        <Text style={styles.text}>Email zamawiającego: {user.email}</Text>
       </View>
     </Pressable>
   );

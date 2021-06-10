@@ -7,7 +7,7 @@ const ORDERS: RestaurantOrder[] = [
   {
     id: 1,
     user: {
-      email: "elo320@gmail.com",
+      id: 0,
       username: "Mati",
       first_name: "Mateusz",
       last_name: "Przełóż",
@@ -19,7 +19,7 @@ const ORDERS: RestaurantOrder[] = [
     orderPlacementDate: "2021-06-06T22:41:22.096384+02:00",
     orderDeliveryDate: "",
     deliveryMan: {
-      email: "",
+      id: 0,
       username: "",
       first_name: "",
       last_name: "",

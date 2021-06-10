@@ -1,6 +1,4 @@
-import { Dish } from "./Dish";
-import { Restaurant } from "./Restaurant";
-import { User } from "./User";
+import { User, Dish } from "./ApiResponseTypes";
 
 export interface HistoricalOrder {
   id: number;
@@ -10,8 +8,8 @@ export interface HistoricalOrder {
   order_delivery_date: string;
   delivery_address: string;
   order_cost: number;
-  restaurant: Restaurant;
-  orderedDishes: Dish[];
+  restaurant: string;
+  dishes: Dish[];
 }
 
 export interface RestaurantOrder {
