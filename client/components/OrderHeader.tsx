@@ -15,9 +15,12 @@ const STATUSES: { [index: number]: string } = {
 
 const OrderHeader: React.FunctionComponent<Order> = ({
   id,
-  date,
+  user,
+  order_placement_date,
+  order_delivery_date,
+  delivery_address,
   status,
-  price,
+  order_cost,
   restaurant,
   orderedDishes,
 }) => {
@@ -49,8 +52,12 @@ const OrderHeader: React.FunctionComponent<Order> = ({
       <View style={styles.orderContainer}>
         <Text style={styles.header}>Restauracja: {restaurant.key}</Text>
         <Text style={styles.text}>Status: {STATUSES[status]}</Text>
-        <Text style={styles.text}>Data zamówienia: {date}</Text>
-        <Text style={styles.text}>Cena zamówienia: {price.toFixed(2)} zł</Text>
+        <Text style={styles.text}>Data zamówienia: {order_placement_date}</Text>
+        <Text style={styles.text}>Data dostawy: {order_delivery_date}</Text>
+        <Text style={styles.text}>Adres: {delivery_address}</Text>
+        <Text style={styles.text}>
+          Cena zamówienia: {order_cost.toFixed(2)} zł
+        </Text>
         <Text style={styles.text}>Numer zamówienia: {id}</Text>
       </View>
     </Pressable>

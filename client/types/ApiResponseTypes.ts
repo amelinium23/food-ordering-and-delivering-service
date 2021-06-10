@@ -1,5 +1,4 @@
 export interface UserLogin {
-  id: number;
   account_type: number;
   access_token: string;
   refresh_token: string;
@@ -7,7 +6,7 @@ export interface UserLogin {
 }
 
 export interface User {
-  email: string;
+  id: number;
   username: string;
   first_name: string;
   last_name: string;

@@ -4,9 +4,12 @@ import { User } from "./User";
 
 export interface HistoricalOrder {
   id: number;
+  user: User;
   status: number;
-  date: string;
-  price: number;
+  order_placement_date: string;
+  order_delivery_date: string;
+  delivery_address: string;
+  order_cost: number;
   restaurant: Restaurant;
   orderedDishes: Dish[];
 }

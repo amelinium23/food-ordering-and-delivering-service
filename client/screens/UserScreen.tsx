@@ -6,7 +6,7 @@ import UserContext from "../contexts/UserContext";
 
 const UserScreen: React.FunctionComponent = () => {
   const [userData, setUserData] = React.useState({
-    email: "example@example.com",
+    id: 0,
     username: "example",
     first_name: "John",
     last_name: "Doe",

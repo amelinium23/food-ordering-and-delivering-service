@@ -194,6 +194,8 @@ const History = () => {
 
 const App: React.FunctionComponent = () => {
   const [session, setSession] = React.useState<SessionContextType>({
+    id: 0,
+    account_type: 1,
     state: false,
     token: {
       access_token: "",

@@ -12,7 +12,6 @@ interface IProps {
 
 const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
   const [session, setSession] = React.useContext(UserContext);
-  const [inputEmail, setInputEmail] = React.useState(user.email);
   const [inputUsername, setInputUsername] = React.useState(user.username);
   const [inputFirstName, setInputFirstName] = React.useState(user.first_name);
   const [inputLastName, setInputLastName] = React.useState(user.last_name);
@@ -24,7 +23,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
       const res: AxiosResponse<UserType> = await axios.patch(
         `https://glove-backend.herokuapp.com/users/auth/user/`,
         {
-          email: inputEmail,
           username: inputUsername,
           first_name: inputFirstName,
           last_name: inputLastName,
@@ -75,17 +73,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
         value={inputLastName}
         onChangeText={(text) => setInputLastName(text)}
       />
-      <Text style={styles.formText}>Adres e-mail:</Text>
-      <TextInput
-        style={styles.input}
-        autoCompleteType="email"
-        autoCapitalize="none"
-        textContentType="emailAddress"
-        placeholder="Nowy adres e-mail"
-        clearTextOnFocus={true}
-        value={inputEmail}
-        onChangeText={(text) => setInputEmail(text)}
-      />
       <Text style={styles.formText}>Adres:</Text>
       <TextInput
         style={styles.input}
@@ -109,7 +96,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
         <Text style={styles.text}>Imię: {user.first_name}</Text>
         <Text style={styles.text}>Nazwisko: {user.last_name}</Text>
         <Text style={styles.text}>Adres: {user.address}</Text>
-        <Text style={styles.text}>Email: {user.email}</Text>
       </View>
       <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
         <Feather name="edit" size={24} color="white" />

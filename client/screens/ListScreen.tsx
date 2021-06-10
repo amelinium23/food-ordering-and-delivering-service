@@ -43,11 +43,11 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
   React.useEffect(() => {
     const requestData = async () => {
       let res;
-      console.log(session.token.access_token);
-      console.log(session.token.refresh_token);
+      // console.log(session.token.access_token);
+      // console.log(session.token.refresh_token);
 
       if (location && status == "loaded") {
-        console.log("mamy to");
+        // console.log("mamy to");
         console.log(
           `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`
         );
@@ -60,7 +60,7 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
           }
         );
       } else if (status === "error") {
-        console.log("jednak nie");
+        // console.log("jednak nie");
         res = await fetch(
           "https://glove-backend.herokuapp.com/api/restaurants/",
           {
@@ -74,12 +74,12 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
       }
       if (res.ok) {
         const json = (await res.json()) as RestaurantType[];
-        console.log(json);
+        // console.log(json);
         setRestaurants(json);
         setIsLoading(false);
       } else {
         const json = (await res.json()) as RestaurantType[];
-        console.log(json);
+        // console.log(json);
         console.log(res.status);
       }
     };

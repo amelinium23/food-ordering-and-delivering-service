@@ -5,6 +5,8 @@ const UserContext = React.createContext<
   [SessionContextType, (session: SessionContextType) => void]
 >([
   {
+    id: 0,
+    account_type: 1,
     state: false,
     token: {
       access_token: "",
