@@ -130,6 +130,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
       const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
       RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
+        id: json.id,
+        account_type: json.account_type,
         state: true,
         token: {
           access_token: json.access_token,
