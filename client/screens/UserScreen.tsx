@@ -10,7 +10,6 @@ const UserScreen: React.FunctionComponent = () => {
     username: "example",
     first_name: "John",
     last_name: "Doe",
-    address: "",
     account_type: 1,
   });
   const [session, setSession] = React.useContext(UserContext);

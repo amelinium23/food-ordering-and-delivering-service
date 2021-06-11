@@ -15,7 +15,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
   const [inputUsername, setInputUsername] = React.useState(user.username);
   const [inputFirstName, setInputFirstName] = React.useState(user.first_name);
   const [inputLastName, setInputLastName] = React.useState(user.last_name);
-  const [inputAddress, setInputAddress] = React.useState(user.address);
   const [editable, setEditable] = React.useState(false);
 
   const handleSubmit = async () => {
@@ -26,7 +25,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
           username: inputUsername,
           first_name: inputFirstName,
           last_name: inputLastName,
-          address: inputAddress,
         },
         {
           headers: { Authorization: `Bearer ${session.token.access_token}` },
@@ -73,17 +71,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
         value={inputLastName}
         onChangeText={(text) => setInputLastName(text)}
       />
-      <Text style={styles.formText}>Adres:</Text>
-      <TextInput
-        style={styles.input}
-        autoCompleteType="street-address"
-        autoCapitalize="none"
-        textContentType="streetAddressLine1"
-        placeholder="Nowy adres"
-        clearTextOnFocus={true}
-        value={inputAddress}
-        onChangeText={(text) => setInputAddress(text)}
-      />
       <Pressable style={styles.button} onPress={handleSubmit}>
         <AntDesign name="save" size={24} color="white" />
         <Text style={styles.buttonText}>Modyfikuj</Text>
@@ -95,7 +82,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
         <Text style={styles.header}>Nazwa użytkownika: {user.username}</Text>
         <Text style={styles.text}>Imię: {user.first_name}</Text>
         <Text style={styles.text}>Nazwisko: {user.last_name}</Text>
-        <Text style={styles.text}>Adres: {user.address}</Text>
       </View>
       <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
         <Feather name="edit" size={24} color="white" />

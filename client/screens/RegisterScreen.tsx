@@ -36,7 +36,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   const [password2, setPassword2] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
-  const [address, setAddress] = React.useState("");
   const [registerError, setRegisterError] = React.useState(false);
   const [isWaiting, setIsWaiting] = React.useState(false);
 
@@ -57,7 +56,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
           password2: password2,
           first_name: firstName,
           last_name: lastName,
-          address: address,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -158,15 +156,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         placeholder="Nazwisko"
         value={lastName}
         onChangeText={(text) => setLastName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        autoCapitalize="words"
-        autoCompleteType="street-address"
-        textContentType="streetAddressLine1"
-        placeholder="Adres"
-        value={address}
-        onChangeText={(text) => setAddress(text)}
       />
       {!isWaiting ? (
         <Pressable
