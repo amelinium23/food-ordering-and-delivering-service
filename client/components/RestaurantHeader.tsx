@@ -12,7 +12,6 @@ const RestaurantHeader: React.FunctionComponent<RestaurantType> = ({
   logo,
   address,
   delivery_cost,
-  description,
 }) => {
   return (
     <View style={styles.listItem}>
