@@ -1,26 +1,30 @@
 import * as React from "react";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import OrderHeader from "../components/OrderHeader";
 import UserContext from "../contexts/UserContext";
 
 const HistoryScreen: React.FunctionComponent = () => {
   const [session, setSession] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState([] as OrderType[]);
-  React.useEffect(() => {
-    const requestData = async () => {
-      const res = await fetch(
-        `https://glove-backend.herokuapp.com/api/order-history/${session.id}/`,
-        { headers: { Authorization: `Bearer ${session.token.access_token}` } }
-      );
-      if (res.ok) {
-        const json = (await res.json()) as OrderType[];
-        console.log(JSON.stringify(json));
-        setOrders(json);
-      }
-    };
-    void requestData();
-  }, [session]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const requestData = async () => {
+        const res = await fetch(
+          `https://glove-backend.herokuapp.com/api/order-history/${session.id}/`,
+          { headers: { Authorization: `Bearer ${session.token.access_token}` } }
+        );
+        if (res.ok) {
+          const json = (await res.json()) as OrderType[];
+          console.log(JSON.stringify(json));
+          setOrders(json);
+        }
+      };
+      void requestData();
+    }, [session])
+  );
 
   return (
     <View style={styles.container}>
