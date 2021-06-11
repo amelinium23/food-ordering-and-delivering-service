@@ -28,7 +28,6 @@ class Restaurant(models.Model):
     cuisine_type = models.ManyToManyField('CuisineType')
     delivery_cost = models.DecimalField(max_digits=4, decimal_places=1)
     is_active = models.BooleanField(default=True)
-    description = models.TextField(blank=True)
     objects = RestaurantManager()
 
     def is_open(self, id):
