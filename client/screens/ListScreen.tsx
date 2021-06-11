@@ -187,7 +187,6 @@ const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
               logo={item.logo}
               address={item.address}
               delivery_cost={item.delivery_cost}
-              description={item.description}
             />
           </Pressable>
         )}
