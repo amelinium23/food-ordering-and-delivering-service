@@ -7,7 +7,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['id', 'email', 'username', 'first_name',
-                  'last_name', 'address', 'account_type']
+                  'last_name', 'account_type']
         read_only_fields = ('email', 'id',)
 
 
@@ -18,7 +18,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['email', 'username', 'password', 'password2',
-                  'first_name', 'last_name', 'address']
+                  'first_name', 'last_name']
         extra_kwargs = {'password': {'write_only': True}}
 
     def save(self, request):
@@ -27,7 +27,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             username=self.validated_data['username'],
             first_name=self.validated_data['first_name'],
             last_name=self.validated_data['last_name'],
-            address=self.validated_data['address'],
         )
 
         password = self.validated_data['password']

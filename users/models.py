@@ -41,7 +41,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
-    address = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     account_type = models.IntegerField(choices=Status.choices, default=1)
     is_active = models.BooleanField(default=True)
