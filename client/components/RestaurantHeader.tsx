@@ -4,13 +4,10 @@ import { FontAwesome5, Ionicons, Entypo } from "@expo/vector-icons";
 import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
 
 const RestaurantHeader: React.FunctionComponent<RestaurantType> = ({
-  id,
   cuisine_type,
   distance,
-  location,
   name,
   logo,
-  address,
   delivery_cost,
 }) => {
   return (

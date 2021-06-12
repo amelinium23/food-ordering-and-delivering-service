@@ -4,7 +4,6 @@ import {
   Text,
   SectionList,
   StyleSheet,
-  Pressable,
   ActivityIndicator,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
@@ -12,10 +11,7 @@ import DishHeader from "../components/DishHeader";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RestaurantBasket from "../components/RestaurantBasket";
-import { Dish as DishType } from "../types/Dish";
-import { IExtraType } from "../types/ExtrasGroup";
 import { DishProvider } from "../contexts/DishContext";
-import Order from "../types/Order";
 import UserContext from "../contexts/UserContext";
 import { MenuCategory as MenuCategoryType } from "../types/ApiResponseTypes";
 import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
@@ -37,7 +33,7 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const details = route.params.restaurantInfo;
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [dishList, setDishList] = React.useState<OrderedItemType[]>([]);
   const [menu, setMenu] = React.useState<MenuCategoryType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);

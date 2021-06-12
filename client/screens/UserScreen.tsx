@@ -13,7 +13,7 @@ const UserScreen: React.FunctionComponent = () => {
     account_type: 1,
     email: "example@example.com",
   });
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {

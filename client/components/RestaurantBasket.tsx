@@ -1,6 +1,5 @@
 import * as React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { Dish as DishType } from "../types/Dish";
 import { FontAwesome5, Entypo } from "@expo/vector-icons";
 import { useState } from "react";
 import Modal from "react-native-modal";
@@ -26,7 +25,7 @@ const RestaurantBasket: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [dishList, setDishList] = React.useContext(DishContext);
+  const [dishList] = React.useContext(DishContext);
   const deliveryCost = route.params.restaurantInfo.delivery_cost;
   let id = 1;
 

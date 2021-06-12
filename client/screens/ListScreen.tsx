@@ -31,8 +31,8 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const ListScreen: React.FunctionComponent<IProps> = ({ route, navigation }) => {
-  const [session, setSession] = React.useContext(UserContext);
+const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
+  const [session] = React.useContext(UserContext);
   const [restaurants, setRestaurants] = React.useState([] as RestaurantType[]);
   const [filter, setFilter] = React.useState("");
   const [cuisineType, setCuisineType] = React.useState("");

@@ -1,4 +1,7 @@
-import { SessionToken } from "./SessionToken";
+export interface SessionToken {
+  access_token: string;
+  refresh_token: string;
+}
 
 export interface SessionContext {
   id: number;

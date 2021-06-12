@@ -26,10 +26,7 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const LoginScreen: React.FunctionComponent<IProps> = ({
-  route,
-  navigation,
-}) => {
+const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [session, setSession] = React.useContext(UserContext);
   const [inputUsername, setInputUsername] = React.useState("");
   const [inputPassword, setInputPassword] = React.useState("");

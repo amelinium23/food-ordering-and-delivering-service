@@ -29,10 +29,7 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const LoginScreen: React.FunctionComponent<IProps> = ({
-  route,
-  navigation,
-}) => {
+const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [username, setUsername] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -43,7 +40,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   const [isWaiting, setIsWaiting] = React.useState(false);
 
   const [safety, setSafety] = React.useState(0);
-  const [session, setSession] = React.useContext(UserContext);
+  const [, setSession] = React.useContext(UserContext);
 
   const register = async () => {
     setRegisterError(false);

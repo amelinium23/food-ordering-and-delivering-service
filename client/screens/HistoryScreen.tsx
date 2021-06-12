@@ -6,7 +6,7 @@ import OrderHeader from "../components/OrderHeader";
 import UserContext from "../contexts/UserContext";
 
 const HistoryScreen: React.FunctionComponent = () => {
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState([] as OrderType[]);
 
   useFocusEffect(

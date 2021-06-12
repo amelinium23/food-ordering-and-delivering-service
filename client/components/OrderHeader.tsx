@@ -14,7 +14,6 @@ const STATUSES: { [index: number]: string } = {
 
 const OrderHeader: React.FunctionComponent<Order> = ({
   id,
-  user,
   order_placement_date,
   order_delivery_date,
   delivery_address,

@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios, { AxiosResponse } from "axios";
 import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
-import { Feather, AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { User as UserType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
 
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [inputUsername, setInputUsername] = React.useState(user.username);
   const [inputFirstName, setInputFirstName] = React.useState(user.first_name);
   const [inputLastName, setInputLastName] = React.useState(user.last_name);

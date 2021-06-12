@@ -1,13 +1,15 @@
-import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
-import { Dish as DishType } from "./Dish";
+import {
+  Restaurant as RestaurantType,
+  Dish as DishType,
+  User as UserType,
+} from "../types/ApiResponseTypes";
 import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
-import { User } from "./User";
 
 export type RootStackParamList = {
   RestaurantList: Record<string, never>;
   Restaurant: { restaurantInfo: RestaurantType };
   Order: { orderInfo: OrderedItemType[]; restaurantInfo: RestaurantType };
-  User: { user: User };
+  User: { user: UserType };
   History: {
     Order: { orderInfo: DishType[]; deliveryCost: number; summitCost: number };
   };

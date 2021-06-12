@@ -9,7 +9,6 @@ import {
   TextInput,
   Platform,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../types/RootStackParamList";
@@ -38,7 +37,7 @@ const OrderScreen: React.FunctionComponent<IProps> = ({
   const orderDishList = route.params.orderInfo;
   const deliveryCost = route.params.restaurantInfo.delivery_cost;
   const restaurantId = route.params.restaurantInfo.id;
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(false);
   const [deliveryAddress, setDeliveryAddress] = React.useState("");
 

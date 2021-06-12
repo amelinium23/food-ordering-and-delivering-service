@@ -166,7 +166,7 @@ const ErrorNavigator = () => {
 };
 
 const ClientNavigator = () => {
-  const [session, setSession] = React.useContext(UserContext);
+  const [, setSession] = React.useContext(UserContext);
 
   return (
     <Drawer.Navigator

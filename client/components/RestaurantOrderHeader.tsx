@@ -1,6 +1,5 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { Dish } from "../types/Dish";
 import { RestaurantOrder } from "../types/Order";
 import DishHeader from "./DishHeader";
 
