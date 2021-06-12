@@ -11,6 +11,7 @@ const UserScreen: React.FunctionComponent = () => {
     first_name: "John",
     last_name: "Doe",
     account_type: 1,
+    email: "example@example.com",
   });
   const [session, setSession] = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(true);

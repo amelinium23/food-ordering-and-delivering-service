@@ -10,6 +10,7 @@ export interface User {
   first_name: string;
   last_name: string;
   account_type: number;
+  email: string;
 }
 
 export interface Restaurant {

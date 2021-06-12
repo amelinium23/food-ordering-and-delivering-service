@@ -110,7 +110,7 @@ const User = () => {
       <Stack.Screen
         name="User"
         component={UserScreen}
-        options={{ title: "Użytkownik" }}
+        options={{ title: "Konto" }}
       />
     </Stack.Navigator>
   );
@@ -200,7 +200,7 @@ const ClientNavigator = () => {
       />
       <Drawer.Screen
         name="User"
-        options={{ title: "Użytkownik" }}
+        options={{ title: "Konto" }}
         component={User}
       />
       <Drawer.Screen
