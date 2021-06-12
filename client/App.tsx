@@ -1,7 +1,12 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import ListScreen from "./screens/ListScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import UserScreen from "./screens/UserScreen";
@@ -10,7 +15,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
-import { UserProvider } from "./contexts/UserContext";
+import UserContext, { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
 
@@ -136,9 +141,58 @@ const History = () => {
   );
 };
 
-const ClientNavigator = () => {
+const ErrorNavigator = () => {
   return (
-    <Drawer.Navigator>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Text
+        style={{
+          color: "rgb(59,108,212)",
+          fontSize: 42,
+          fontWeight: "100",
+          textAlign: "center",
+        }}
+      >
+        Coś poszło nie tak
+      </Text>
+    </View>
+  );
+};
+
+const ClientNavigator = () => {
+  const [session, setSession] = React.useContext(UserContext);
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Restaurant"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+              label="Wyloguj się"
+              onPress={() =>
+                setSession({
+                  id: 0,
+                  account_type: 1,
+                  state: false,
+                  token: {
+                    access_token: "",
+                    refresh_token: "",
+                  },
+                })
+              }
+            />
+          </DrawerContentScrollView>
+        );
+      }}
+    >
       <Drawer.Screen
         name="Restaurant"
         options={{ title: "Restauracje" }}
@@ -174,27 +228,7 @@ const App: React.FunctionComponent = () => {
       case 1:
         return <ClientNavigator />;
       default:
-        return (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "white",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "rgb(59,108,212)",
-                fontSize: 42,
-                fontWeight: "100",
-                textAlign: "center",
-              }}
-            >
-              Coś poszło nie tak
-            </Text>
-          </View>
-        );
+        return <ErrorNavigator />;
     }
   };
   /* tutaj zaleznie od typu konta chcialbym 3 rozne ekrany, dla
