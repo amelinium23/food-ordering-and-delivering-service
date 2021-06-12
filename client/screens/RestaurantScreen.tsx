@@ -61,10 +61,6 @@ const RestaurantScreen: React.FunctionComponent<IProps> = ({
     void requestData();
   }, [session, details]);
 
-  React.useEffect(() => {
-    console.log(dishList);
-  }, [dishList]);
-
   return isLoading ? (
     <View>
       <ActivityIndicator size="large" color="black" />

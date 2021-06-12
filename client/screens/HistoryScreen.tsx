@@ -18,7 +18,6 @@ const HistoryScreen: React.FunctionComponent = () => {
         );
         if (res.ok) {
           const json = (await res.json()) as OrderType[];
-          console.log(JSON.stringify(json));
           setOrders(json);
         }
       };

@@ -61,7 +61,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
     if (res.ok) {
       const json = (await res.json()) as UserLoginType;
       const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
-      console.log(json);
       RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
         id: json.user.id,
@@ -73,7 +72,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         },
       });
     } else {
-      console.log("Test nie dziala");
       setLoginError(true);
       setIsWaiting(false);
     }

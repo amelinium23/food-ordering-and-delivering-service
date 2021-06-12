@@ -23,7 +23,6 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
       inputFirstName !== user.first_name ||
       inputLastName !== user.last_name
     ) {
-      console.log("Sending patch to api");
       try {
         const res: AxiosResponse<UserType> = await axios.patch(
           `https://glove-backend.herokuapp.com/users/auth/user/`,

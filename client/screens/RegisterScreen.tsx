@@ -81,7 +81,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
         },
       });
     } else {
-      console.log("Could not register");
       setRegisterError(true);
       setIsWaiting(false);
     }
