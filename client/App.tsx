@@ -12,11 +12,12 @@ import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
 import { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
+import { View, Text } from "react-native";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
 
-const Restaurant = () => {
+const Authorisation = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -37,8 +38,6 @@ const Restaurant = () => {
         component={LoginScreen}
         options={{
           title: "Glove",
-          headerLeft: () => null,
-          gestureEnabled: false,
         }}
       />
       <Stack.Screen
@@ -46,9 +45,28 @@ const Restaurant = () => {
         component={RegisterScreen}
         options={{
           title: "Glove",
-          gestureEnabled: false,
         }}
       />
+    </Stack.Navigator>
+  );
+};
+
+const Restaurant = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
       <Stack.Screen
         name="RestaurantList"
         component={ListScreen}
@@ -118,6 +136,28 @@ const History = () => {
   );
 };
 
+const ClientNavigator = () => {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen
+        name="Restaurant"
+        options={{ title: "Restauracje" }}
+        component={Restaurant}
+      />
+      <Drawer.Screen
+        name="User"
+        options={{ title: "Użytkownik" }}
+        component={User}
+      />
+      <Drawer.Screen
+        name="History"
+        options={{ title: "Historia zamówień" }}
+        component={History}
+      />
+    </Drawer.Navigator>
+  );
+};
+
 const App: React.FunctionComponent = () => {
   const [session, setSession] = React.useState<SessionContextType>({
     id: 0,
@@ -128,6 +168,35 @@ const App: React.FunctionComponent = () => {
       refresh_token: "",
     },
   });
+
+  const renderNavigator = (type: number) => {
+    switch (type) {
+      case 1:
+        return <ClientNavigator />;
+      default:
+        return (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "rgb(59,108,212)",
+                fontSize: 42,
+                fontWeight: "100",
+                textAlign: "center",
+              }}
+            >
+              Coś poszło nie tak
+            </Text>
+          </View>
+        );
+    }
+  };
   /* tutaj zaleznie od typu konta chcialbym 3 rozne ekrany, dla
   usera(user_status = 1): Restauracje 
   // dla restauracji (user_status =
@@ -136,23 +205,11 @@ const App: React.FunctionComponent = () => {
   return (
     <NavigationContainer>
       <UserProvider value={[session, setSession]}>
-        <Drawer.Navigator>
-          <Drawer.Screen
-            name="Restaurant"
-            options={{ title: "Restauracje" }}
-            component={Restaurant}
-          />
-          <Drawer.Screen
-            name="User"
-            options={{ title: "Użytkownik" }}
-            component={User}
-          />
-          <Drawer.Screen
-            name="History"
-            options={{ title: "Historia zamówień" }}
-            component={History}
-          />
-        </Drawer.Navigator>
+        {!session.state ? (
+          <Authorisation />
+        ) : (
+          renderNavigator(session.account_type)
+        )}
       </UserProvider>
     </NavigationContainer>
   );

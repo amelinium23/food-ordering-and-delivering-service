@@ -39,7 +39,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   React.useEffect(() => {
     if (session.state) {
       setLoginError(false);
-      navigation.replace("RestaurantList", {});
     }
   }, [session, navigation]);
 
@@ -62,10 +61,11 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
     if (res.ok) {
       const json = (await res.json()) as UserLoginType;
       const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
+      console.log(json);
       RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
         id: json.user.id,
-        account_type: json.account_type,
+        account_type: json.user.account_type,
         state: true,
         token: {
           access_token: json.access_token,

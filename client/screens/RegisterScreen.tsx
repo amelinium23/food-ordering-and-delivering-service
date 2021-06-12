@@ -167,28 +167,27 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
               value={lastName}
               onChangeText={(text) => setLastName(text)}
             />
-            {!isWaiting ? (
-              <Pressable
-                style={({ pressed }) => [
-                  {
-                    opacity: pressed ? 0.4 : 1,
-                  },
-                  styles.loginButton,
-                ]}
-                onPress={() => {
-                  // navigation.navigate("Login", {});
-                  void register();
-                }}
-              >
-                <Text style={styles.loginButtonText}>Zarejestruj się</Text>
-              </Pressable>
-            ) : (
-              <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
-            )}
-            {registerError ? (
-              <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
-            ) : null}
           </ScrollView>
+          {!isWaiting ? (
+            <Pressable
+              style={({ pressed }) => [
+                {
+                  opacity: pressed ? 0.4 : 1,
+                },
+                styles.loginButton,
+              ]}
+              onPress={() => {
+                void register();
+              }}
+            >
+              <Text style={styles.loginButtonText}>Zarejestruj się</Text>
+            </Pressable>
+          ) : (
+            <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
+          )}
+          {registerError ? (
+            <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
+          ) : null}
         </KeyboardAvoidingView>
       )}
     </HeaderHeightContext.Consumer>

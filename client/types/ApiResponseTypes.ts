@@ -1,5 +1,4 @@
 export interface UserLogin {
-  account_type: number;
   access_token: string;
   refresh_token: string;
   user: User;
