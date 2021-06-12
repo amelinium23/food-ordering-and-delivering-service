@@ -7,6 +7,9 @@ import {
   Pressable,
   ActivityIndicator,
   TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../types/RootStackParamList";
@@ -14,6 +17,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import DishHeader from "../components/DishHeader";
 import UserContext from "../contexts/UserContext";
 import axios from "axios";
+import { HeaderHeightContext } from "@react-navigation/stack";
 
 type OrderScreenRouteProp = RouteProp<RootStackParamList, "Order">;
 
@@ -69,52 +73,64 @@ const OrderScreen: React.FunctionComponent<IProps> = ({
 
   let id = 0;
   return (
-    <View style={styles.container}>
-      <View style={styles.addressInput}>
-        <Text style={styles.addressLabel}>Adres:</Text>
-        <TextInput
-          style={styles.input}
-          value={deliveryAddress}
-          onChangeText={(text) => setDeliveryAddress(text)}
-        />
-      </View>
-      <FlatList
-        data={orderDishList}
-        keyExtractor={(item) => `${item.dishId + id++}`}
-        renderItem={({ item }) => (
-          <DishHeader
-            id={item.dishId}
-            name={item.dishName}
-            price={item.totalCost}
-            image={item.image}
-            extras_group={[]}
-            isExtendable={false}
-          />
-        )}
-      />
-      <View style={styles.footer}>
-        <View>
-          <Text style={styles.footerText}>
-            {`Do zapłaty: ${orderDishList
-              .reduce((current, e) => current + e.totalCost, deliveryCost)
-              .toFixed(2)} zł`}
-          </Text>
-        </View>
-        <Pressable
-          disabled={deliveryAddress.length === 0}
-          style={({ pressed }) => [
-            {
-              opacity: pressed ? 0.4 : deliveryAddress.length === 0 ? 0.4 : 1,
-            },
-            styles.checkoutButton,
-          ]}
-          onPress={() => postOrder()}
+    <HeaderHeightContext.Consumer>
+      {(headerHeight) => (
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={headerHeight}
         >
-          <Text style={styles.checkoutButtonText}>Zamów</Text>
-          {isLoading ? <ActivityIndicator color="white" size={23} /> : null}
-        </Pressable>
-      </View>
-    </View>
+          <View style={styles.addressInput}>
+            <Text style={styles.addressLabel}>Adres:</Text>
+            <TextInput
+              style={styles.input}
+              value={deliveryAddress}
+              onChangeText={(text) => setDeliveryAddress(text)}
+            />
+          </View>
+          <FlatList
+            data={orderDishList}
+            keyExtractor={(item) => `${item.dishId + id++}`}
+            renderItem={({ item }) => (
+              <DishHeader
+                id={item.dishId}
+                name={item.dishName}
+                price={item.totalCost}
+                image={item.image}
+                extras_group={[]}
+                isExtendable={false}
+              />
+            )}
+          />
+          <View style={styles.footer}>
+            <View>
+              <Text style={styles.footerText}>
+                {`Do zapłaty: ${orderDishList
+                  .reduce((current, e) => current + e.totalCost, deliveryCost)
+                  .toFixed(2)} zł`}
+              </Text>
+            </View>
+            <Pressable
+              disabled={deliveryAddress.length === 0}
+              style={({ pressed }) => [
+                {
+                  opacity: pressed
+                    ? 0.4
+                    : deliveryAddress.length === 0
+                    ? 0.4
+                    : 1,
+                },
+                styles.checkoutButton,
+              ]}
+              onPress={() => postOrder()}
+            >
+              <Text style={styles.checkoutButtonText}>Zamów</Text>
+              {isLoading ? <ActivityIndicator color="white" size={23} /> : null}
+            </Pressable>
+          </View>
+        </KeyboardAvoidingView>
+      )}
+    </HeaderHeightContext.Consumer>
   );
 };
 
