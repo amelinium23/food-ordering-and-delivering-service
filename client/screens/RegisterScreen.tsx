@@ -1,11 +1,13 @@
 import * as React from "react";
 import {
-  SafeAreaView,
   TextInput,
   StyleSheet,
   Text,
   Pressable,
   ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
@@ -13,6 +15,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import zxcvbn from "zxcvbn";
 import UserContext from "../contexts/UserContext";
 import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
+import { HeaderHeightContext } from "@react-navigation/stack";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Register">;
 
@@ -89,96 +92,106 @@ const LoginScreen: React.FunctionComponent<IProps> = ({
   }, [password]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Rejestracja</Text>
-      <TextInput
-        style={styles.input}
-        autoCapitalize="none"
-        autoCompleteType="username"
-        textContentType="username"
-        placeholder="Nazwa użytkownika"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
-      />
-      <TextInput
-        style={styles.input}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        placeholder="Adres e-mail"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-      <TextInput
-        style={
-          password.length === 0 || safety > 1
-            ? styles.input
-            : styles.invalidInput
-        }
-        autoCapitalize="none"
-        secureTextEntry={true}
-        autoCompleteType="password"
-        textContentType="newPassword"
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        placeholder="Hasło"
-      />
-      {password.length === 0 || safety > 1 ? null : (
-        <Text style={styles.notificationText}>Hasło zbyt słabe.</Text>
-      )}
-      <TextInput
-        style={styles.input}
-        autoCapitalize="none"
-        secureTextEntry={true}
-        autoCompleteType="password"
-        textContentType="newPassword"
-        value={password2}
-        onChangeText={(text) => setPassword2(text)}
-        placeholder="Powtórz hasło"
-      />
-      {password2.length === 0 || password === password2 ? null : (
-        <Text style={styles.notificationText}>Hasła są różne.</Text>
-      )}
-      <TextInput
-        style={styles.input}
-        autoCapitalize="words"
-        autoCompleteType="name"
-        textContentType="name"
-        placeholder="Imię"
-        value={firstName}
-        onChangeText={(text) => setFirstName(text)}
-      />
-      <TextInput
-        style={styles.input}
-        autoCapitalize="words"
-        autoCompleteType="name"
-        textContentType="name"
-        placeholder="Nazwisko"
-        value={lastName}
-        onChangeText={(text) => setLastName(text)}
-      />
-      {!isWaiting ? (
-        <Pressable
-          style={({ pressed }) => [
-            {
-              opacity: pressed ? 0.4 : 1,
-            },
-            styles.loginButton,
-          ]}
-          onPress={() => {
-            // navigation.navigate("Login", {});
-            void register();
-          }}
+    <HeaderHeightContext.Consumer>
+      {(headerHeight) => (
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={headerHeight}
         >
-          <Text style={styles.loginButtonText}>Zarejestruj się</Text>
-        </Pressable>
-      ) : (
-        <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
+          <ScrollView>
+            <Text style={styles.header}>Rejestracja</Text>
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              autoCompleteType="username"
+              textContentType="username"
+              placeholder="Nazwa użytkownika"
+              value={username}
+              onChangeText={(text) => setUsername(text)}
+            />
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              placeholder="Adres e-mail"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+            <TextInput
+              style={
+                password.length === 0 || safety > 1
+                  ? styles.input
+                  : styles.invalidInput
+              }
+              autoCapitalize="none"
+              secureTextEntry={true}
+              autoCompleteType="password"
+              textContentType="newPassword"
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              placeholder="Hasło"
+            />
+            {password.length === 0 || safety > 1 ? null : (
+              <Text style={styles.notificationText}>Hasło zbyt słabe.</Text>
+            )}
+            <TextInput
+              style={styles.input}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              autoCompleteType="password"
+              textContentType="newPassword"
+              value={password2}
+              onChangeText={(text) => setPassword2(text)}
+              placeholder="Powtórz hasło"
+            />
+            {password2.length === 0 || password === password2 ? null : (
+              <Text style={styles.notificationText}>Hasła są różne.</Text>
+            )}
+            <TextInput
+              style={styles.input}
+              autoCapitalize="words"
+              autoCompleteType="name"
+              textContentType="name"
+              placeholder="Imię"
+              value={firstName}
+              onChangeText={(text) => setFirstName(text)}
+            />
+            <TextInput
+              style={styles.input}
+              autoCapitalize="words"
+              autoCompleteType="name"
+              textContentType="name"
+              placeholder="Nazwisko"
+              value={lastName}
+              onChangeText={(text) => setLastName(text)}
+            />
+            {!isWaiting ? (
+              <Pressable
+                style={({ pressed }) => [
+                  {
+                    opacity: pressed ? 0.4 : 1,
+                  },
+                  styles.loginButton,
+                ]}
+                onPress={() => {
+                  // navigation.navigate("Login", {});
+                  void register();
+                }}
+              >
+                <Text style={styles.loginButtonText}>Zarejestruj się</Text>
+              </Pressable>
+            ) : (
+              <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
+            )}
+            {registerError ? (
+              <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
+            ) : null}
+          </ScrollView>
+        </KeyboardAvoidingView>
       )}
-      {registerError ? (
-        <Text style={styles.errorText}>Niepoprawne dane rejestracji</Text>
-      ) : null}
-    </SafeAreaView>
+    </HeaderHeightContext.Consumer>
   );
 };
 
