@@ -1,5 +1,6 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from django.contrib.gis.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
@@ -32,21 +33,25 @@ class Restaurant(models.Model):
 
     def is_open(self, id):
         today = datetime.today().weekday()
-        if today == 0:
-            prev_day = 6
+        prev_day = (datetime.today() - timedelta(days=1)).weekday()
+        current_time = datetime.now(
+            tz=pytz.timezone('Europe/Warsaw')).time()
+        try:
+            obj = OpeningHour.objects.get(weekday=prev_day, restaurant=id)
+        except ObjectDoesNotExist:
+            return False
         else:
-            prev_day = today - 1
-        obj = OpeningHour.objects.get(weekday=today, restaurant=id)
-        current_time = datetime.now(tz=pytz.timezone('Europe/Warsaw')).time()
-        if obj.opening_hour < obj.closing_hour:
-            if obj.opening_hour < current_time < obj.closing_hour:
+            if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
                 return True
-        elif obj.opening_hour < current_time:
-            return True
-        obj = OpeningHour.objects.get(weekday=prev_day, restaurant=id)
-        if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
-            return True
-        return False
+            try:
+                obj = OpeningHour.objects.get(weekday=today, restaurant=id)
+            except ObjectDoesNotExist:
+                return False
+            else:
+                if obj.opening_hour < obj.closing_hour and obj.opening_hour < current_time < obj.closing_hour or\
+                        obj.opening_hour > obj.closing_hour and obj.opening_hour < current_time:
+                    return True
+            return False
 
     def __str__(self) -> str:
         return f'{self.name} - {self.address}'
