@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "space-between",
     alignItems: "flex-end",
+    maxWidth: "35%",
   },
   dishCounter: {
     position: "absolute",
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   basketList: {
     paddingVertical: 10,
     paddingLeft: 25,
-    maxWidth: "70%",
+    maxWidth: "65%",
   },
   checkoutButton: {
     backgroundColor: "rgb(59, 108, 212)",
