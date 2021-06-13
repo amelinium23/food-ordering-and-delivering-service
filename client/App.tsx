@@ -20,11 +20,12 @@ import UserContext, { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
 import OrderListScreen from "./screens/OrderListScreen";
+import PasswordChangeScreen from "./screens/PasswordChangeScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
 
-const Authorisation = () => {
+const Authorization = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -113,6 +114,11 @@ const User = () => {
         name="User"
         component={UserScreen}
         options={{ title: "Konto" }}
+      />
+      <Stack.Screen
+        name="PasswordChange"
+        component={PasswordChangeScreen}
+        options={{ title: "Zmiana hasła" }}
       />
     </Stack.Navigator>
   );
@@ -283,6 +289,43 @@ const RestaurantNavigator = () => {
   );
 };
 
+const DeliveryNavigator = () => {
+  const [, setSession] = React.useContext(UserContext);
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Deliveries"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+              label="Wyloguj się"
+              onPress={() =>
+                setSession({
+                  id: 0,
+                  account_type: 1,
+                  state: false,
+                  token: {
+                    access_token: "",
+                    refresh_token: "",
+                  },
+                })
+              }
+            />
+          </DrawerContentScrollView>
+        );
+      }}
+    >
+      <Drawer.Screen
+        name="Deliveries"
+        options={{ title: "Dostawy" }}
+        component={Orders}
+      />
+    </Drawer.Navigator>
+  );
+};
+
 const App: React.FunctionComponent = () => {
   const [session, setSession] = React.useState<SessionContextType>({
     id: 0,
@@ -297,25 +340,21 @@ const App: React.FunctionComponent = () => {
   const renderNavigator = (type: number) => {
     switch (type) {
       case 1:
+      case 4:
         return <ClientNavigator />;
       case 2:
-        return <ErrorNavigator />;
+        return <DeliveryNavigator />;
       case 3:
         return <RestaurantNavigator />;
       default:
         return <ErrorNavigator />;
     }
   };
-  /* tutaj zaleznie od typu konta chcialbym 3 rozne ekrany, dla
-  usera(user_status = 1): Restauracje 
-  // dla restauracji (user_status =
-  2): Zamówienia(OrderListScreen), dla dostawcy(user_status = 3): cos
-  dla dostawcy*/
   return (
     <NavigationContainer>
       <UserProvider value={[session, setSession]}>
         {!session.state ? (
-          <Authorisation />
+          <Authorization />
         ) : (
           renderNavigator(session.account_type)
         )}

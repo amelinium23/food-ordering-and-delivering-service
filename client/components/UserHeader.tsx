@@ -4,13 +4,14 @@ import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { User as UserType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
-
+import { useNavigation } from "@react-navigation/native";
 interface IProps {
   user: UserType;
   setUserData: (user: UserType) => void;
 }
 
 const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
+  const navigation = useNavigation();
   const [session] = React.useContext(UserContext);
   const [inputUsername, setInputUsername] = React.useState(user.username);
   const [inputFirstName, setInputFirstName] = React.useState(user.first_name);
@@ -110,6 +111,13 @@ const UserHeader: React.FunctionComponent<IProps> = ({ user, setUserData }) => {
       <Pressable style={styles.button} onPress={() => setEditable(!editable)}>
         <FontAwesome5 name="user-edit" size={20} color="white" />
         <Text style={styles.buttonText}>Edytuj</Text>
+      </Pressable>
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate("PasswordChange", {})}
+      >
+        <FontAwesome5 name="user-edit" size={20} color="white" />
+        <Text style={styles.buttonText}>Zmiana hasła</Text>
       </Pressable>
     </View>
   );
