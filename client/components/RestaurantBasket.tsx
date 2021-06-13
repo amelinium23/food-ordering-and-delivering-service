@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
   basketList: {
     paddingVertical: 10,
     paddingLeft: 25,
+    maxWidth: "70%",
   },
   checkoutButton: {
     backgroundColor: "rgb(59, 108, 212)",

@@ -89,7 +89,7 @@ const OrderScreen: React.FunctionComponent<IProps> = ({
           </View>
           <FlatList
             data={orderDishList}
-            keyExtractor={(item) => `${item.dishId + id++}`}
+            keyExtractor={(item) => `${item.dishName}${item.dishId + id++}`}
             renderItem={({ item }) => (
               <DishHeader
                 id={item.dishId}
