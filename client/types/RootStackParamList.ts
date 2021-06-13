@@ -15,4 +15,5 @@ export type RootStackParamList = {
   };
   Login: Record<string, never>;
   Register: Record<string, never>;
+  Orders: Record<string, never>;
 };

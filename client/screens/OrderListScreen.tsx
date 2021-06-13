@@ -1,51 +1,65 @@
 import * as React from "react";
 import { RestaurantOrder } from "../types/Order";
-import { View, FlatList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
-
-const ORDERS: RestaurantOrder[] = [
-  {
-    id: 1,
-    user: {
-      id: 0,
-      username: "Mati",
-      first_name: "Mateusz",
-      last_name: "Przełóż",
-      account_type: 1,
-      email: "example@example.com",
-    },
-    dishes: [],
-    status: 1,
-    orderPlacementDate: "06-06-2021 - 22:41:22",
-    orderDeliveryDate: "",
-    deliveryMan: {
-      id: 0,
-      username: "",
-      first_name: "",
-      last_name: "",
-      email: "example@example.com",
-      account_type: 3,
-    },
-    orderCost: 0.1,
-  },
-];
+import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
+import UserContext from "../contexts/UserContext";
 
 const OrderListScreen: React.FunctionComponent = () => {
-  return (
+  const [session, setSession] = React.useContext(UserContext);
+  const [orders, setOrders] = React.useState<OrderType[]>();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const requestData = async () => {
+      const res = await fetch(
+        "https://glove-backend.herokuapp.com/api/restaurant-orders/",
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        const json = (await res.json()) as OrderType[];
+        console.log(json);
+        setOrders(json);
+        setIsLoading(false);
+      }
+    };
+
+    void requestData();
+    setIsLoading(true);
+  }, [session]);
+
+  return isLoading ? (
+    <View>
+      <ActivityIndicator size="large" color="black" />
+    </View>
+  ) : (
     <View style={styles.container}>
       <FlatList
-        data={ORDERS}
+        data={orders}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable key={`${item.id}`} onPress={() => null}>
+          <Pressable onPress={() => null}>
             <RestaurantOrderHeader
               id={item.id}
               user={item.user}
               dishes={item.dishes}
               status={item.status}
-              orderPlacementDate={item.orderPlacementDate}
-              orderDeliveryDate={item.orderDeliveryDate}
-              deliveryMan={item.deliveryMan}
-              orderCost={item.orderCost}
+              restaurant={item.restaurant}
+              order_placement_date={item.order_placement_date}
+              order_delivery_date={item.order_delivery_date}
+              delivery_address={item.delivery_address}
+              order_cost={item.order_cost}
             />
           </Pressable>
         )}

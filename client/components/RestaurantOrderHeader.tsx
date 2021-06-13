@@ -1,11 +1,11 @@
 import * as React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import { RestaurantOrder } from "../types/Order";
+import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import DishHeader from "./DishHeader";
 
 // ja bym wyrzucil te statusy gdzies zeby ich uzywac globalnie
 const STATUSES: { [index: number]: string } = {
-  1: "Zamówiony",
+  1: "Zamówione",
   2: "Szukam dostawcy",
   3: "W przygotowaniu",
   4: "W dostawie",
@@ -13,61 +13,52 @@ const STATUSES: { [index: number]: string } = {
   6: "Anulowane",
 };
 
-const RestaurantOrderHeader: React.FunctionComponent<RestaurantOrder> = ({
+const RestaurantOrderHeader: React.FunctionComponent<OrderType> = ({
   id,
   user,
   dishes,
   status,
-  orderPlacementDate,
-  orderDeliveryDate,
-  deliveryMan,
-  orderCost,
+  order_placement_date,
+  order_delivery_date,
+  delivery_address,
+  order_cost,
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
-  return isExpanded ? (
+  return (
     <View style={styles.orderContainer}>
-      <Pressable onPress={() => setIsExpanded(!isExpanded)}>
-        {dishes.length > 0 ? (
-          dishes.map((i) => (
-            <View key={id}>
-              <DishHeader
-                id={i.id}
-                name={i.name}
-                price={i.price}
-                image={i.image}
-                extras_group={i.extras_group}
-              />
-            </View>
-          ))
-        ) : (
-          <View>
-            <Text>test</Text>
-          </View>
-        )}
-      </Pressable>
-    </View>
-  ) : (
-    <Pressable onPress={() => setIsExpanded(!isExpanded)}>
-      <View style={styles.orderContainer}>
-        <Text style={styles.header}>Status: {STATUSES[status]}</Text>
-        <Text style={styles.text}>
-          Data złożenia zamówienia: {orderPlacementDate}
-        </Text>
-        <Text style={styles.text}>
-          Data dostarczenia zamówienia: {orderDeliveryDate}
-        </Text>
-        <Text style={styles.text}>
-          Cena zamówienia: {orderCost.toFixed(2)} zł
-        </Text>
+      <Text style={styles.header}>Zamówienie #{id}</Text>
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "lightgrey",
+          paddingBottom: 10,
+        }}
+      >
+        <View style={styles.textWithLabel}>
+          <Text style={styles.label}>Status:</Text>
+          <Text style={styles.text}>{STATUSES[status]}</Text>
+        </View>
+        <View style={styles.textWithLabel}>
+          <Text style={styles.label}>Złożono:</Text>
+          <Text style={styles.text}>{order_placement_date}</Text>
+        </View>
+        <View style={styles.textWithLabel}>
+          <Text style={styles.label}>Adres:</Text>
+          <Text style={styles.text}>{delivery_address}</Text>
+        </View>
+        <View style={styles.textWithLabel}>
+          <Text style={styles.label}>Kwota:</Text>
+          <Text style={styles.text}>{order_cost}</Text>
+        </View>
       </View>
-    </Pressable>
+      <Text style={styles.text}>
+        {dishes.map((dish) => dish.dish.name).join(", ")}
+      </Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 14,
-  },
   header: {
     marginBottom: 10,
     fontSize: 20,
@@ -88,6 +79,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 6,
     elevation: 5,
+  },
+  textWithLabel: {
+    alignContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  text: {
+    fontSize: 14,
+    textAlign: "left",
+    marginTop: 3,
+    color: "black",
+  },
+  label: {
+    fontSize: 14,
+    textAlign: "left",
+    marginTop: 3,
+    marginRight: 3,
+    color: "black",
+    textDecorationLine: "underline",
   },
 });
 

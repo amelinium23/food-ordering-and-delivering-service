@@ -18,6 +18,7 @@ import OrderScreen from "./screens/OrderScreen";
 import UserContext, { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
+import OrderListScreen from "./screens/OrderListScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -212,6 +213,31 @@ const ClientNavigator = () => {
   );
 };
 
+const RestaurantNavigator = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Orders"
+        component={OrderListScreen}
+        options={{ title: "Zamówienia" }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const App: React.FunctionComponent = () => {
   const [session, setSession] = React.useState<SessionContextType>({
     id: 0,
@@ -224,9 +250,14 @@ const App: React.FunctionComponent = () => {
   });
 
   const renderNavigator = (type: number) => {
+    console.log(type);
     switch (type) {
       case 1:
         return <ClientNavigator />;
+      case 2:
+        return <ErrorNavigator />;
+      case 3:
+        return <RestaurantNavigator />;
       default:
         return <ErrorNavigator />;
     }
