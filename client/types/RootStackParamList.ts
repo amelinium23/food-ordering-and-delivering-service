@@ -2,6 +2,7 @@ import {
   Restaurant as RestaurantType,
   Dish as DishType,
   User as UserType,
+  HistoricalOrder as OrderType,
 } from "../types/ApiResponseTypes";
 import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
 
@@ -16,4 +17,5 @@ export type RootStackParamList = {
   Login: Record<string, never>;
   Register: Record<string, never>;
   Orders: Record<string, never>;
+  RestaurantOrder: { orderInfo: OrderType };
 };

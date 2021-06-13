@@ -1,5 +1,4 @@
 import * as React from "react";
-import { RestaurantOrder } from "../types/Order";
 import {
   View,
   FlatList,
@@ -11,11 +10,27 @@ import {
 import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
+import { RootStackParamList } from "../types/RootStackParamList";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-const OrderListScreen: React.FunctionComponent = () => {
+type ListScreenRouteProp = RouteProp<RootStackParamList, "Orders">;
+
+type ListScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Orders"
+>;
+
+interface IProps {
+  route: ListScreenRouteProp;
+  navigation: ListScreenNavigationProp;
+}
+
+const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [session, setSession] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState<OrderType[]>();
   const [isLoading, setIsLoading] = React.useState(true);
+  const isFocused = useIsFocused();
 
   React.useEffect(() => {
     const requestData = async () => {
@@ -36,7 +51,7 @@ const OrderListScreen: React.FunctionComponent = () => {
 
     void requestData();
     setIsLoading(true);
-  }, [session]);
+  }, [session, isFocused]);
 
   return isLoading ? (
     <View>
@@ -48,7 +63,11 @@ const OrderListScreen: React.FunctionComponent = () => {
         data={orders}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable onPress={() => null}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("RestaurantOrder", { orderInfo: item })
+            }
+          >
             <RestaurantOrderHeader
               id={item.id}
               user={item.user}

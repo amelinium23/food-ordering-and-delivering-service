@@ -13,6 +13,7 @@ import UserScreen from "./screens/UserScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
+import RestaurantOrderScreen from "./screens/RestaurantOrderScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
 import OrderScreen from "./screens/OrderScreen";
 import UserContext, { UserProvider } from "./contexts/UserContext";
@@ -213,7 +214,7 @@ const ClientNavigator = () => {
   );
 };
 
-const RestaurantNavigator = () => {
+const Orders = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -234,7 +235,51 @@ const RestaurantNavigator = () => {
         component={OrderListScreen}
         options={{ title: "Zamówienia" }}
       />
+      <Stack.Screen
+        name="RestaurantOrder"
+        component={RestaurantOrderScreen}
+        options={({ route }) => ({
+          title: `Zamówienie #${route.params.orderInfo.id}`,
+        })}
+      />
     </Stack.Navigator>
+  );
+};
+
+const RestaurantNavigator = () => {
+  const [, setSession] = React.useContext(UserContext);
+
+  return (
+    <Drawer.Navigator
+      initialRouteName="Orders"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem
+              label="Wyloguj się"
+              onPress={() =>
+                setSession({
+                  id: 0,
+                  account_type: 1,
+                  state: false,
+                  token: {
+                    access_token: "",
+                    refresh_token: "",
+                  },
+                })
+              }
+            />
+          </DrawerContentScrollView>
+        );
+      }}
+    >
+      <Drawer.Screen
+        name="Orders"
+        options={{ title: "Zamówienia" }}
+        component={Orders}
+      />
+    </Drawer.Navigator>
   );
 };
 

@@ -23,7 +23,6 @@ const RestaurantOrderHeader: React.FunctionComponent<OrderType> = ({
   delivery_address,
   order_cost,
 }) => {
-  const [isExpanded, setIsExpanded] = React.useState(false);
   return (
     <View style={styles.orderContainer}>
       <Text style={styles.header}>Zamówienie #{id}</Text>
