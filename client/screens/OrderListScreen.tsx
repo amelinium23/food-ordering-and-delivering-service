@@ -29,7 +29,6 @@ const OrderListScreen: React.FunctionComponent = () => {
       );
       if (res.ok) {
         const json = (await res.json()) as OrderType[];
-        console.log(json);
         setOrders(json);
         setIsLoading(false);
       }

@@ -250,7 +250,6 @@ const App: React.FunctionComponent = () => {
   });
 
   const renderNavigator = (type: number) => {
-    console.log(type);
     switch (type) {
       case 1:
         return <ClientNavigator />;
