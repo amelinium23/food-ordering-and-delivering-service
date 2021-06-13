@@ -28,10 +28,14 @@ const ExtraPicker: React.FunctionComponent<IProps> = ({
           useNativeAndroidPickerStyle={false}
           items={group.extras.map((e) => ({
             label: `${e.name} (+${e.added_price.toFixed(2)} zł)`,
-            value: e.added_price,
-            key: e.name,
+            value: e.id,
+            key: e.id,
           }))}
-          onValueChange={(item) => setPrice(item)}
+          onValueChange={(id) =>
+            setPrice(
+              group.extras.find((extra) => extra.id === id)?.added_price || 0
+            )
+          }
         />
       ) : (
         <View style={styles.container}>
