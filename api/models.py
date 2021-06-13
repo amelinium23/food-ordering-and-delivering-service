@@ -22,14 +22,6 @@ class CuisineType(models.Model):
 
 
 class Restaurant(models.Model):
-    class CUISINE_TYPE_CHOICES(models.TextChoices):
-        OTHER = 'other', _('inne')
-        CHINESE = 'cn', _('chińska')
-        ITALIAN = 'it', _('włoska')
-        TURKISH = 'tr', _('turecka')
-        POLISH = 'pl', _('polska')
-        INDIAN = 'in', _('indyjska')
-        JEWISH = 'il', _('żydowska')
     name = models.CharField(max_length=50)
     logo = models.URLField()
     address = models.CharField(max_length=80)
