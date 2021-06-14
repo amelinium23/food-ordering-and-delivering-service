@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from os import stat
 import django
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
@@ -170,7 +171,8 @@ class OrdersForDeliveryMan(APIView):
     permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
 
     def get(self, request):
-        orders = Order.objects.filter(delivery=request.user.id, status=2)
+        orders = Order.objects.filter(
+            delivery=request.user.id, status__gte=2, status__lte=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
