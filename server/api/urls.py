@@ -13,5 +13,6 @@ urlpatterns = [
     path('delivery-orders/', views.OrdersForDeliveryMan.as_view()),
     path('update-status/', views.DeliveryManStatus.as_view()),
     path('restaurant-orders/', views.OrdersForRestaurant.as_view()),
+    path('restaurant-order-history/', views.RestaurantOrderHistory.as_view()),
     path('available-delivery-men/', views.AvailableDeliveries.as_view()),
 ]

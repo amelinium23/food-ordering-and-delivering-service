@@ -192,6 +192,17 @@ class OrdersForRestaurant(APIView):
         return Response(serializer.data)
 
 
+class RestaurantOrderHistory(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
+
+    def get(self, request, format=None):
+        restaurant = RestaurantOwner.objects.get(
+            user=request.user.id).restaurant
+        orders = Order.objects.filter(restaurant=restaurant, status__gt=4)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
 class AvailableDeliveries(APIView):
     permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
 
