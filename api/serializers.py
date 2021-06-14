@@ -2,6 +2,7 @@ from users.serializers import UserDetailSerializer
 from rest_framework import serializers
 from drf_extra_fields.geo_fields import PointField
 import api.models as models
+import users.models as user_models
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -99,7 +100,8 @@ class OrderSerializer(serializers.ModelSerializer):
                             'order_placement_date', 'dishes']
 
     def update(self, instance, validated_data):
-        delivery_man = validated_data.pop('delivery')
+        delivery_man_data = validated_data.get('delivery', instance.delivery)
+        delivery_man = user_models.User.objects.get(id=delivery_man_data.id)
         instance.delivery = delivery_man
         instance.status = validated_data.get('status', instance.status)
         instance.order_delivery_date = validated_data.get(
