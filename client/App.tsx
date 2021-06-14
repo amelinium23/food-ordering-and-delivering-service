@@ -150,6 +150,31 @@ const History = () => {
   );
 };
 
+const DeliveryMan = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="Deliveries"
+        options={{ title: "Dostawy" }}
+        component={DeliveryMapScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const ErrorNavigator = () => {
   return (
     <View
@@ -321,7 +346,7 @@ const DeliveryNavigator = () => {
       <Drawer.Screen
         name="Deliveries"
         options={{ title: "Dostawy" }}
-        component={DeliveryMapScreen}
+        component={DeliveryMan}
       />
     </Drawer.Navigator>
   );
