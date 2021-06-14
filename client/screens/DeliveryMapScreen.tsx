@@ -12,14 +12,14 @@ const DeliveryMapScreen = () => {
     null as Location.LocationObject | null
   );
 
-//   React.useEffect(() => {}, []);
+  //   React.useEffect(() => {}, []);
 
-//   if (initialLocation) {
-//     setTimeout(async () => {
-//       const location = await Location.getCurrentPositionAsync({});
-//       setLocation(location);
-//     }, 10000);
-//   }
+  //   if (initialLocation) {
+  //     setTimeout(async () => {
+  //       const location = await Location.getCurrentPositionAsync({});
+  //       setLocation(location);
+  //     }, 10000);
+  //   }
 
   return (
     <View style={styles.container}>
@@ -59,3 +59,5 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
 });
+
+export default DeliveryMapScreen;
