@@ -85,15 +85,6 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-class TestOrderHistory(APIView):
-    def get(self, request):
-        username = request.query_params.get('username')
-        if username is not None:
-            orders = Order.objects.filter(user__username=username)
-            serializer = OrderSerializer(orders, many=True)
-            return Response(serializer.data)
-        return Response([])
-
 
 class OrderPlacement(APIView):
     """
@@ -192,6 +183,17 @@ class OrdersForRestaurant(APIView):
         restaurant = RestaurantOwner.objects.get(
             user=request.user.id).restaurant
         orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+class RestaurantOrderHistory(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
+
+    def get(self, request, format=None):
+        restaurant = RestaurantOwner.objects.get(
+            user=request.user.id).restaurant
+        orders = Order.objects.filter(restaurant=restaurant, status__gt=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
