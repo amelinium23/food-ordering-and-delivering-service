@@ -21,6 +21,7 @@ import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
 import OrderListScreen from "./screens/OrderListScreen";
 import PasswordChangeScreen from "./screens/PasswordChangeScreen";
+import DeliveryMapScreen from "./screens/DeliveryMapScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -320,7 +321,7 @@ const DeliveryNavigator = () => {
       <Drawer.Screen
         name="Deliveries"
         options={{ title: "Dostawy" }}
-        component={Orders}
+        component={DeliveryMapScreen}
       />
     </Drawer.Navigator>
   );
