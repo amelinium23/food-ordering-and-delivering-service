@@ -89,11 +89,12 @@ class OrderSerializer(serializers.ModelSerializer):
     restaurant = serializers.SlugRelatedField(
         read_only=True, slug_field='name')
     user = UserDetailSerializer()
+    delivery = UserDetailSerializer()
 
     class Meta:
         model = models.Order
         fields = ['id', 'user', 'dishes', 'restaurant', 'status',
-                  'order_placement_date', 'order_delivery_date', 'order_cost', 'delivery_address']
+                  'order_placement_date', 'order_delivery_date', 'delivery', 'order_cost', 'delivery_address']
         read_only_fields = ['id', 'user', 'restaurant', 'order_placement_date']
 
 

@@ -85,7 +85,6 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-
 class OrderPlacement(APIView):
     """
     Retrieve an order details, post an order, update order status.
@@ -203,7 +202,7 @@ class AvailableDeliveries(APIView):
 
     def get(self, request, format=None):
         restaurant_location = request.user.restaurantowner.restaurant.location
-        five_minutes_ago = django.utils.timezone.now() + timedelta(minutes=-5)
+        five_minutes_ago = django.utils.timezone.now() + timedelta(hours=-10)
         queryset = DeliveryManData.objects.filter(
             status=1, last_online__gte=five_minutes_ago).annotate(distance=Distance(
                 restaurant_location, 'location')).order_by('distance').filter(distance__lte=5000)
