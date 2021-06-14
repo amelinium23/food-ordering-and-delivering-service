@@ -144,9 +144,11 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
               },
               styles.button,
             ]}
-            onPress={() => confirmOrder()}
+            onPress={() => {
+              navigation.navigate("DeliveryManPicker", {});
+            }}
           >
-            <Text style={styles.buttonText}>Potwierdź</Text>
+            <Text style={styles.buttonText}>Dostawca</Text>
           </Pressable>
           <Pressable
             style={({ pressed }) => [

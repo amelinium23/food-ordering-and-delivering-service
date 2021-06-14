@@ -22,6 +22,7 @@ import { View, Text } from "react-native";
 import OrderListScreen from "./screens/OrderListScreen";
 import PasswordChangeScreen from "./screens/PasswordChangeScreen";
 import DeliveryMapScreen from "./screens/DeliveryMapScreen";
+import DeliveryManPickerScreen from "./screens/DeliveryManPickerScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -273,6 +274,13 @@ const Orders = () => {
         options={({ route }) => ({
           title: `Zamówienie #${route.params.orderInfo.id}`,
         })}
+      />
+      <Stack.Screen
+        name="DeliveryManPicker"
+        component={DeliveryManPickerScreen}
+        options={{
+          title: "Dostawca",
+        }}
       />
     </Stack.Navigator>
   );
