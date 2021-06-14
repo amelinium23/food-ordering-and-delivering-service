@@ -3,6 +3,7 @@ import {
   Dish as DishType,
   User as UserType,
   HistoricalOrder as OrderType,
+  DeliveryMan as DeliveryManType,
 } from "../types/ApiResponseTypes";
 import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
 
@@ -20,5 +21,7 @@ export type RootStackParamList = {
   RestaurantOrder: { orderInfo: OrderType };
   PasswordChange: Record<string, never>;
   Deliveries: Record<string, never>;
-  DeliveryManPicker: Record<string, never>;
+  DeliveryManPicker: {
+    setDeliveryMan: (x: DeliveryManType) => void;
+  };
 };

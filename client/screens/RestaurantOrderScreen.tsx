@@ -14,7 +14,10 @@ import { Entypo } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import UserContext from "../contexts/UserContext";
 import axios, { AxiosResponse } from "axios";
-import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
+import {
+  HistoricalOrder as OrderType,
+  DeliveryMan as DeliveryManType,
+} from "../types/ApiResponseTypes";
 
 type RestaurantOrderRouteProp = RouteProp<
   RootStackParamList,
@@ -38,6 +41,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
   const orderInfo = route.params.orderInfo;
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [session, setSession] = React.useContext(UserContext);
+  const [deliveryMan, setDeliveryMan] = React.useState<DeliveryManType>();
   let counter = 0;
 
   React.useEffect(() => {
@@ -45,6 +49,32 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
       setIsConfirmed(true);
     }
   }, [orderInfo]);
+
+  React.useEffect(() => {
+    console.log(deliveryMan);
+    if (deliveryMan) {
+      void (async () => {
+        try {
+          const res: AxiosResponse<OrderType> = await axios.patch(
+            `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
+            {
+              delivery: deliveryMan,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${session.token.access_token}`,
+              },
+            }
+          );
+          if (res.status === 200) {
+            navigation.goBack();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [deliveryMan]);
 
   const rejectOrder = async () => {
     const res: AxiosResponse<OrderType> = await axios.patch(
@@ -145,7 +175,10 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
               styles.button,
             ]}
             onPress={() => {
-              navigation.navigate("DeliveryManPicker", {});
+              void confirmOrder();
+              navigation.navigate("DeliveryManPicker", {
+                setDeliveryMan: (x: DeliveryManType) => setDeliveryMan(x),
+              });
             }}
           >
             <Text style={styles.buttonText}>Dostawca</Text>

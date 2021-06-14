@@ -13,27 +13,22 @@ import {
   useIsFocused,
   useNavigation,
   useFocusEffect,
+  useRoute,
 } from "@react-navigation/native";
 import { DeliveryMan as DeliveryManType } from "../types/ApiResponseTypes";
 import DeliveryManHeader from "../components/DeliveryManHeader";
-
-// type ListScreenRouteProp = RouteProp<RootStackParamList, "DeliveryManPicker">;
-
-// type ListScreenNavigationProp = StackNavigationProp<
-//   RootStackParamList,
-//   "DeliveryManPicker"
-// >;
-
-// interface IProps {
-//   route: ListScreenRouteProp;
-//   navigation: ListScreenNavigationProp;
-// }
+import { LogBox } from "react-native";
 
 const DeliveryManPickerScreen: React.FunctionComponent = () => {
   const [session] = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [deliveryMen, setDeliveryMen] = React.useState<DeliveryManType[]>([]);
   const navigation = useNavigation();
+  const route: RouteProp<RootStackParamList, "DeliveryManPicker"> = useRoute();
+
+  LogBox.ignoreLogs([
+    "Non-serializable values were found in the navigation state",
+  ]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -68,7 +63,13 @@ const DeliveryManPickerScreen: React.FunctionComponent = () => {
         data={deliveryMen}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <Pressable key={item.id.toString()}>
+          <Pressable
+            key={item.id.toString()}
+            onPress={() => {
+              navigation.goBack();
+              route.params.setDeliveryMan(item);
+            }}
+          >
             <DeliveryManHeader
               id={item.id}
               user={item.user}
