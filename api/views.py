@@ -20,7 +20,6 @@ def index(request):
 
 
 class RestaurantList(generics.ListAPIView):
-    authentication_classes = []
     """
     Retrieve available restaurant list.
     """
