@@ -20,7 +20,10 @@ export type RootStackParamList = {
   Orders: Record<string, never>;
   RestaurantOrder: { orderInfo: OrderType };
   PasswordChange: Record<string, never>;
-  Deliveries: Record<string, never>;
+  DeliveryMan: Record<string, never>;
+  DeliveryMap: Record<string, never>;
+  DeliveryList: Record<string, never>;
+  DeliveryOrder: { orderInfo: OrderType };
   DeliveryManPicker: {
     setDeliveryMan: (x: DeliveryManType) => void;
   };

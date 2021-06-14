@@ -23,6 +23,7 @@ import OrderListScreen from "./screens/OrderListScreen";
 import PasswordChangeScreen from "./screens/PasswordChangeScreen";
 import DeliveryMapScreen from "./screens/DeliveryMapScreen";
 import DeliveryManPickerScreen from "./screens/DeliveryManPickerScreen";
+import DeliveryListScreen from "./screens/DeliveryListScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -168,9 +169,34 @@ const DeliveryMan = () => {
       }}
     >
       <Stack.Screen
-        name="Deliveries"
-        options={{ title: "Dostawy" }}
+        name="DeliveryList"
+        component={DeliveryListScreen}
+        options={{ title: "Lista dostaw" }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const DeliveryMap = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "rgb(59, 108, 212)",
+        },
+        headerTitleAlign: "center",
+        headerTintColor: "white",
+        headerTitleStyle: {
+          textAlign: "center",
+          fontSize: 25,
+          fontWeight: "400",
+        },
+      }}
+    >
+      <Stack.Screen
+        name="DeliveryMap"
         component={DeliveryMapScreen}
+        options={{ title: "Mapa dostaw" }}
       />
     </Stack.Navigator>
   );
@@ -328,7 +354,7 @@ const DeliveryNavigator = () => {
 
   return (
     <Drawer.Navigator
-      initialRouteName="Deliveries"
+      initialRouteName="DeliveryMap"
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props}>
@@ -352,8 +378,13 @@ const DeliveryNavigator = () => {
       }}
     >
       <Drawer.Screen
-        name="Deliveries"
-        options={{ title: "Dostawy" }}
+        name="DeliveryMap"
+        options={{ title: "Mapa" }}
+        component={DeliveryMap}
+      />
+      <Drawer.Screen
+        name="DeliveryMan"
+        options={{ title: "Lista dostaw" }}
         component={DeliveryMan}
       />
     </Drawer.Navigator>
