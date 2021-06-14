@@ -6,9 +6,9 @@ from drf_extra_fields.geo_fields import PointField
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ['email', 'username', 'first_name',
+        fields = ['id', 'email', 'username', 'first_name',
                   'last_name', 'account_type']
-        read_only_fields = ('email', )
+        read_only_fields = ('email', 'id',)
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

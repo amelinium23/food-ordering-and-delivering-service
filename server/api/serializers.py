@@ -3,6 +3,7 @@ from api.models import Dish, Extra, CuisineType
 from rest_framework import serializers
 from drf_extra_fields.geo_fields import PointField
 import api.models as models
+import users.models as user_models
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -87,11 +88,23 @@ class OrderedDishSerializer(serializers.ModelSerializer):
         fields = ['dish', 'ordered_extras']
 
 
+class DeliveryManField(serializers.Field):
+
+    def to_representation(self, value):
+        return UserDetailSerializer(value).data
+
+    def to_internal_value(self, data):
+        try:
+            return user_models.User.objects.filter(id=data['id']).first()
+        except (AttributeError, KeyError):
+            pass
+
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
     restaurant = serializers.SlugRelatedField(
         read_only=True, slug_field='name')
     user = UserDetailSerializer()
+    delivery = DeliveryManField()
 
     class Meta:
         model = models.Order
