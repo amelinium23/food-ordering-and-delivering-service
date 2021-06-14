@@ -85,15 +85,14 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-class TestOrderHistory(generics.ListAPIView):
-    serializer_class = OrderSerializer
-
-    def get_queryset(self):
-        queryset = Order.objects.all()
-        username = self.request.query_params.get('username')
+class TestOrderHistory(APIView):
+    def get(self, request):
+        username = request.query_params.get('username')
         if username is not None:
-            queryset = queryset.filter(user__username=username)
-        return queryset
+            orders = Order.objects.filter(user__username=username)
+            serializer = OrderSerializer(orders, many=True)
+            return Response(serializer.data)
+        return Response([])
 
 
 class OrderPlacement(APIView):
