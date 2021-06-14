@@ -100,7 +100,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         delivery_man = validated_data.pop('delivery')
-        instance.delivery_id = delivery_man.id
+        instance.delivery = delivery_man
         instance.status = validated_data.get('status', instance.status)
         instance.order_delivery_date = validated_data.get(
             'order_delivery_date', instance.order_delivery_date)
