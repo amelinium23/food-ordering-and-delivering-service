@@ -1,13 +1,8 @@
 import * as React from "react";
 import {
   View,
-  FlatList,
-  StyleSheet,
-  Pressable,
-  Text,
   ActivityIndicator,
 } from "react-native";
-import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
 import { RootStackParamList } from "../types/RootStackParamList";
