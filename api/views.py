@@ -86,6 +86,8 @@ class OrderHistory(APIView):
 
 
 class TestOrderHistory(generics.ListAPIView):
+    serializer_class = OrderSerializer
+
     def get_queryset(self):
         queryset = Order.objects.all()
         username = self.request.query_params.get('username')
