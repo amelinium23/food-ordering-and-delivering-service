@@ -85,6 +85,15 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
+class TestOrderHistory(generics.ListAPIView):
+    def get_queryset(self):
+        queryset = Order.objects.all()
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        return queryset
+
+
 class OrderPlacement(APIView):
     """
     Retrieve an order details, post an order, update order status.
