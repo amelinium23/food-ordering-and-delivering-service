@@ -13,6 +13,7 @@ import UserContext from "../contexts/UserContext";
 import { RootStackParamList } from "../types/RootStackParamList";
 import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import OrderList from "../components/OrderList";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Orders">;
 
@@ -27,10 +28,12 @@ interface IProps {
 }
 
 const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
-  const [session, setSession] = React.useContext(UserContext);
-  const [orders, setOrders] = React.useState<OrderType[]>();
+  const [session] = React.useContext(UserContext);
+  const [orders, setOrders] = React.useState<OrderType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const isFocused = useIsFocused();
+  const onPress = (item: OrderType) =>
+    navigation.navigate("RestaurantOrder", { orderInfo: item });
 
   React.useEffect(() => {
     const requestData = async () => {
@@ -60,65 +63,7 @@ const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
       <ActivityIndicator size="large" color="black" />
     </View>
   ) : (
-    <View style={styles.container}>
-      <FlatList
-        data={orders}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() =>
-              navigation.navigate("RestaurantOrder", { orderInfo: item })
-            }
-          >
-            <RestaurantOrderHeader
-              id={item.id}
-              user={item.user}
-              dishes={item.dishes}
-              status={item.status}
-              restaurant={item.restaurant}
-              order_placement_date={item.order_placement_date}
-              order_delivery_date={item.order_delivery_date}
-              delivery_address={item.delivery_address}
-              order_cost={item.order_cost}
-            />
-          </Pressable>
-        )}
-      />
-    </View>
+    <OrderList onPress={onPress} orders={orders} />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 5,
-    fontSize: 14,
-    flex: 1,
-  },
-  hearder: {
-    marginBottom: 10,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "rgb(59, 108, 212)",
-  },
-  logo: {
-    height: 35,
-    resizeMode: "contain",
-  },
-  orderContainer: {
-    padding: 10,
-    marginVertical: 7,
-    marginHorizontal: 20,
-    borderRadius: 10,
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-    elevation: 5,
-  },
-});
-
 export default OrderListScreen;
