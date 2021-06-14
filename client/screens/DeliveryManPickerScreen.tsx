@@ -1,23 +1,21 @@
 import * as React from "react";
 import {
   View,
-  Text,
   ActivityIndicator,
   Pressable,
   FlatList,
+  LogBox,
 } from "react-native";
 import UserContext from "../contexts/UserContext";
 import { RootStackParamList } from "../types/RootStackParamList";
 import {
   RouteProp,
-  useIsFocused,
   useNavigation,
   useFocusEffect,
   useRoute,
 } from "@react-navigation/native";
 import { DeliveryMan as DeliveryManType } from "../types/ApiResponseTypes";
 import DeliveryManHeader from "../components/DeliveryManHeader";
-import { LogBox } from "react-native";
 
 const DeliveryManPickerScreen: React.FunctionComponent = () => {
   const [session] = React.useContext(UserContext);
