@@ -85,33 +85,30 @@ class OrderedDishSerializer(serializers.ModelSerializer):
         fields = ['dish', 'ordered_extras']
 
 
+class DeliveryManField(serializers.Field):
+
+    def to_representation(self, value):
+        return UserDetailSerializer(value).data
+
+    def to_internal_value(self, data):
+        try:
+            return user_models.User.objects.filter(id=data['id']).first()
+        except (AttributeError, KeyError):
+            pass
+
+
 class OrderSerializer(serializers.ModelSerializer):
     dishes = OrderedDishSerializer(many=True)
     restaurant = serializers.SlugRelatedField(
         read_only=True, slug_field='name')
     user = UserDetailSerializer()
-    delivery = UserDetailSerializer()
+    delivery = DeliveryManField()
 
     class Meta:
         model = models.Order
         fields = ['id', 'user', 'dishes', 'restaurant', 'status',
                   'order_placement_date', 'order_delivery_date', 'delivery', 'order_cost', 'delivery_address']
-        read_only_fields = ['id', 'user', 'restaurant',
-                            'order_placement_date', 'dishes']
-
-    def update(self, instance, validated_data):
-        delivery_man_data = validated_data.get('delivery', instance.delivery)
-        delivery_man = user_models.User.objects.get(id=delivery_man_data.id)
-        instance.delivery = delivery_man
-        instance.status = validated_data.get('status', instance.status)
-        instance.order_delivery_date = validated_data.get(
-            'order_delivery_date', instance.order_delivery_date)
-        instance.order_cost = validated_data.get(
-            'order_cost', instance.order_cost)
-        instance.delivery_address = validated_data.get(
-            'delivery_address', instance.delivery_address)
-        instance.save()
-        return instance
+        read_only_fields = ['id', 'user', 'restaurant', 'order_placement_date']
 
 
 class OrderForDeliverySerializer(serializers.ModelSerializer):
