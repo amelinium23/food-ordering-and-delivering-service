@@ -7,21 +7,22 @@ import * as Location from "expo-location";
 
 const DeliveryMapScreen: React.FunctionComponent = () => {
   const [location] = useLocation();
-  const [updatedLocation, setUpdatedLocation] = React.useState(
-    null as Location.LocationObject | null
-  );
+  const [updatedLocation, setUpdatedLocation] = React.useState(location);
 
   useFocusEffect(
     React.useCallback(() => {
+      let locationUpdater = setInterval(() => {}, 10000);
       if (location) {
-        const locationUpdate = setInterval(() => {
+        setUpdatedLocation(location);
+        clearInterval(locationUpdater);
+        locationUpdater = setInterval(() => {
           void (async () => {
             const newLocation = await Location.getCurrentPositionAsync({});
             setUpdatedLocation(newLocation);
           })();
         }, 10000);
-        return () => clearInterval(locationUpdate);
       }
+      return () => clearInterval(locationUpdater);
     }, [location])
   );
 
