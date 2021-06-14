@@ -67,7 +67,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
     const res: AxiosResponse<OrderType> = await axios.patch(
       `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
       {
-        status: 3,
+        status: 2,
       },
       {
         headers: {

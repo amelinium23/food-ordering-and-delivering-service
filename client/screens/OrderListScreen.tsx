@@ -34,6 +34,8 @@ const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
 
   React.useEffect(() => {
     const requestData = async () => {
+      const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
+      RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       const res = await fetch(
         "https://glove-backend.herokuapp.com/api/restaurant-orders/",
         {

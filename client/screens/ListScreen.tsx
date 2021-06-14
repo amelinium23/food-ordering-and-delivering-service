@@ -44,6 +44,9 @@ const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
     const requestData = async () => {
       let res;
       if (location && status == "loaded") {
+        console.log(
+          `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`
+        );
         res = await fetch(
           `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`,
           {
@@ -69,6 +72,8 @@ const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
         setRestaurants(json);
         setIsLoading(false);
       }
+      const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
+      RCTNetworking.clearCookies(() => {}); //eslint-disable-line
     };
     void requestData();
   }, [session, status, location]);

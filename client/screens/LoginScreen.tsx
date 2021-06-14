@@ -40,6 +40,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   }, [session, navigation]);
 
   const login = async (username: string, password: string) => {
+    const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
+    RCTNetworking.clearCookies(() => {}); //eslint-disable-line
     setIsWaiting(true);
     const res = await fetch(
       "https://glove-backend.herokuapp.com/users/auth/login/",
@@ -57,8 +59,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
     );
     if (res.ok) {
       const json = (await res.json()) as UserLoginType;
-      const RCTNetworking = require("react-native/Libraries/Network/RCTNetworking"); //eslint-disable-line
-      RCTNetworking.clearCookies(() => {}); //eslint-disable-line
+      // RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
         id: json.user.id,
         account_type: json.user.account_type,
