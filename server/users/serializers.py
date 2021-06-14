@@ -52,4 +52,4 @@ class DeliveryManDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.DeliveryManData
-        exclude = []
+        exclude = ['id', 'status']
