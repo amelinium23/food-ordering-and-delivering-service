@@ -19,7 +19,8 @@ def index(request):
     return HttpResponse("co jest????")
 
 
-class RestaurantList(generics.ListCreateAPIView):
+class RestaurantList(generics.ListAPIView):
+    authentication_classes = []
     """
     Retrieve available restaurant list.
     """
