@@ -5,11 +5,9 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { DeliveryMan as DeliveryManType } from "../types/ApiResponseTypes";
 
 const DeliveryManHeader: React.FunctionComponent<DeliveryManType> = ({
-  id,
   user,
   location,
   distance_to_restaurant,
-  status,
   last_online,
 }) => {
   return (

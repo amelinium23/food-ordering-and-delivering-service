@@ -59,21 +59,19 @@ const DeliveryManPickerScreen: React.FunctionComponent = () => {
     <View>
       <FlatList
         data={deliveryMen}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.user.id.toString()}
         renderItem={({ item }) => (
           <Pressable
-            key={item.id.toString()}
+            key={item.user.id.toString()}
             onPress={() => {
               navigation.goBack();
               route.params.setDeliveryMan(item);
             }}
           >
             <DeliveryManHeader
-              id={item.id}
               user={item.user}
               location={item.location}
               distance_to_restaurant={item.distance_to_restaurant}
-              status={item.status}
               last_online={item.last_online}
             />
           </Pressable>
