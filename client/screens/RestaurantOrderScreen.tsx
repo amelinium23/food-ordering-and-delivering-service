@@ -45,6 +45,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
   const [deliveryMan, setDeliveryMan] = React.useState<DeliveryManType>();
   const [isWaiting, setIsWaiting] = React.useState(false);
   const isFocused = useIsFocused();
+  const [safetyFlag, setSafetyFlag] = React.useState(true);
   let counter = 0;
 
   React.useEffect(() => {
@@ -66,6 +67,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
     };
 
     const cancelDeliveryMan = async () => {
+      console.log("#deliveryManIsOverParty");
       const res: AxiosResponse<OrderType> = await axios.patch(
         `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
         {
@@ -80,15 +82,21 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
       if (res.status === 200) {
         setOrderInfo(res.data);
       }
+      setSafetyFlag(true);
     };
     let interval = setInterval(() => {});
     let timeout = setTimeout(() => {});
-    if (isWaiting) {
+    if (isWaiting && safetyFlag) {
       clearInterval(interval);
       clearTimeout(timeout);
       interval = setInterval(() => void getStatus(), 10000);
       timeout = setTimeout(() => void cancelDeliveryMan(), 20000);
+      setSafetyFlag(false);
     } else {
+      // for (let i = (setInterval(() => {}) as unknown) as number; i > 0; i--) {
+      //   // clearInterval(i);
+      //   // console.log(`Liczba intervali: ${i}`);
+      // }
       clearInterval(interval);
       clearTimeout(timeout);
     }
