@@ -1,17 +1,16 @@
-from datetime import datetime, timedelta
 import django
+from datetime import datetime, timedelta
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
 from django.http import Http404, HttpResponse
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
 from users.models import DeliveryManData, User, RestaurantOwner
 from users.serializers import DeliveryManDataSerializer
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
-from rest_framework import permissions
-from api.permissions import IsRestaurantOwnerOrReadOnly, IsRestaurantOwner, IsDeliveryForOrder, IsDeliveryAccountOwner, IsRestaurantOwnerForOrder
+from api.permissions import IsRestaurantOwnerOrReadOnly, IsRestaurantOwner, IsDeliveryForOrder, IsDeliveryAccountOwner, IsRestaurantOwnerForOrder, IsNormalUser
 
 
 def index(request):
@@ -85,6 +84,9 @@ class RestaurantMenu(APIView):
 
 
 class OrderHistory(APIView):
+    """
+    Retrive an order history for user.
+    """
     def get(self, request, user_id):
         if request.user.account_type == 3:
             restaurant = RestaurantOwner.objects.get(
@@ -96,15 +98,14 @@ class OrderHistory(APIView):
         return Response(serializer.data)
 
 
-
 class OrderPlacement(APIView):
     """
-    Retrieve an order details, post an order, update order status.
+    Post an order.
     """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
-    permission_classes = [permissions.IsAuthenticated,
-                          IsRestaurantOwnerForOrder | IsDeliveryForOrder]
+    permission_classes = [
+        permissions.IsAuthenticated & IsNormalUser]
 
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])

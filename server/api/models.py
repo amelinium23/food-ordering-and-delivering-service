@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from django.contrib.gis.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.deletion import CASCADE, SET_NULL
@@ -136,6 +136,7 @@ class Order(models.Model):
                                  blank=True, on_delete=SET_NULL, related_name='delivery_man')
     status = models.IntegerField(choices=ORDER_STATUS.choices, default=1)
     order_placement_date = models.DateTimeField(auto_now_add=True)
+    # pamiatka
     order_preparation_date = models.DateTimeField(null=True, blank=True)
     order_delivery_date = models.DateTimeField(null=True, blank=True)
     order_cost = models.DecimalField(max_digits=10, decimal_places=2)

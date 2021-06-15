@@ -2,7 +2,7 @@ from django.http import response
 from .test_setup import TestSetup
 
 
-class TestRegisterViews(TestSetup):
+class TestRegisterViewCase(TestSetup):
 
     def test_user_cannot_register_with_no_data(self):
         response = self.client.post('/users/registration/', {})
@@ -17,7 +17,7 @@ class TestRegisterViews(TestSetup):
         response = self.client.post('/users/registration/', self.user_data)
         self.assertEqual(response.status_code, 400)
 
-class TestLoginViews(TestSetup):
+class TestLoginViewCase(TestSetup):
 
     def test_user_cannot_login_with_invalid_data(self):
         self.client.post('/users/registration/', self.user_data)

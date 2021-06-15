@@ -1,6 +1,11 @@
 from rest_framework import permissions
 
 
+class IsNormalUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.account_type == 1
+
+
 class IsRestaurantOwner(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.account_type == 3

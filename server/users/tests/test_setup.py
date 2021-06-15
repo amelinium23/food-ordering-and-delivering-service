@@ -1,15 +1,9 @@
 from rest_framework.test import APITestCase
-from django.urls import reverse
 
 
 class TestSetup(APITestCase):
 
     def setUp(self):
-        #self.auth_url = reverse('users:auth/login')
-        # self.login_url = reverse('users:auth/login')
-        # self.register_url = reverse('users:registration')
-        # self.social_login_url = reverse('users:social-login')
-
         self.user_data = {
             'username': 'user',
             'email': 'example@gmail.com',
