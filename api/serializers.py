@@ -102,7 +102,7 @@ class OrderSerializer(serializers.ModelSerializer):
     restaurant = serializers.SlugRelatedField(
         read_only=True, slug_field='name')
     user = UserDetailSerializer()
-    delivery = DeliveryManField()
+    delivery = DeliveryManField(allow_null=True)
 
     class Meta:
         model = models.Order
