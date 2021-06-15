@@ -83,10 +83,8 @@ export interface OrderedExtra {
 }
 
 export interface DeliveryMan {
-  id: number;
   user: User;
   location: Location;
   distance_to_restaurant: number;
-  status: number;
   last_online: string;
 }
