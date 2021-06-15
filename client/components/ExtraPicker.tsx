@@ -19,6 +19,8 @@ const ExtraPicker: React.FunctionComponent<IProps> = ({
   extras,
   setExtras,
 }) => {
+  const [temp, setTemp] = React.useState<number>(0);
+
   return (
     <View>
       {group.extra_type === 1 ? (
@@ -31,11 +33,13 @@ const ExtraPicker: React.FunctionComponent<IProps> = ({
             value: e.id,
             key: e.id,
           }))}
-          onValueChange={(id) =>
+          onValueChange={(id) => {
             setPrice(
               group.extras.find((extra) => extra.id === id)?.added_price || 0
-            )
-          }
+            );
+            setExtras([...extras.filter((extra) => extra !== temp), id]);
+            setTemp(id);
+          }}
         />
       ) : (
         <View style={styles.container}>
