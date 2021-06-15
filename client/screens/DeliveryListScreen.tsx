@@ -25,7 +25,9 @@ const DeliveryListScreen: React.FunctionComponent<IProps> = ({
   const [session] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState<OrderType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
+  
   const onPress = (item: OrderType) =>
     navigation.navigate("DeliveryOrder", { orderInfo: item });
 
@@ -50,14 +52,22 @@ const DeliveryListScreen: React.FunctionComponent<IProps> = ({
 
     void requestData();
     setIsLoading(true);
-  }, [session, isFocused]);
+    if (refreshing) {
+      setRefreshing(false);
+    }
+  }, [session, isFocused, refreshing]);
 
   return isLoading ? (
     <View>
       <ActivityIndicator size="large" color="black" />
     </View>
   ) : (
-    <OrderList onPress={onPress} orders={orders} />
+    <OrderList
+      onPress={onPress}
+      orders={orders}
+      refreshing={refreshing}
+      setRefreshing={setRefreshing}
+    />
   );
 };
 export default DeliveryListScreen;
