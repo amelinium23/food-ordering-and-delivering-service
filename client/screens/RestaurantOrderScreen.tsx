@@ -44,8 +44,8 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
   const [session, setSession] = React.useContext(UserContext);
   const [deliveryMan, setDeliveryMan] = React.useState<DeliveryManType>();
   const [isWaiting, setIsWaiting] = React.useState(false);
-  const isFocused = useIsFocused();
-  const [safetyFlag, setSafetyFlag] = React.useState(true);
+  const timeout = React.useRef(setTimeout(() => {}));
+  const interval = React.useRef(setInterval(() => {}));
   let counter = 0;
 
   React.useEffect(() => {
@@ -82,25 +82,21 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
       if (res.status === 200) {
         setOrderInfo(res.data);
       }
-      setSafetyFlag(true);
     };
-    let interval = setInterval(() => {});
-    let timeout = setTimeout(() => {});
-    if (isWaiting && safetyFlag) {
-      clearInterval(interval);
-      clearTimeout(timeout);
-      interval = setInterval(() => void getStatus(), 10000);
-      timeout = setTimeout(() => void cancelDeliveryMan(), 20000);
-      setSafetyFlag(false);
+    if (isWaiting) {
+      clearInterval(interval.current);
+      clearTimeout(timeout.current);
+      interval.current = setInterval(() => void getStatus(), 10000);
+      timeout.current = setTimeout(() => void cancelDeliveryMan(), 20000);
     } else {
-      // for (let i = (setInterval(() => {}) as unknown) as number; i > 0; i--) {
-      //   // clearInterval(i);
-      //   // console.log(`Liczba intervali: ${i}`);
-      // }
-      clearInterval(interval);
-      clearTimeout(timeout);
+      clearInterval(interval.current);
+      clearTimeout(timeout.current);
     }
-  }, [isFocused, isWaiting]);
+    return () => {
+      clearInterval(interval.current);
+      clearTimeout(timeout.current);
+    };
+  }, [isWaiting]);
 
   React.useEffect(() => {
     switch (orderInfo.status) {
