@@ -24,6 +24,7 @@ import PasswordChangeScreen from "./screens/PasswordChangeScreen";
 import DeliveryMapScreen from "./screens/DeliveryMapScreen";
 import DeliveryManPickerScreen from "./screens/DeliveryManPickerScreen";
 import DeliveryListScreen from "./screens/DeliveryListScreen";
+import DeliveryOrderScreen from "./screens/DeliveryOrderScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -172,6 +173,13 @@ const DeliveryMan = () => {
         name="DeliveryList"
         component={DeliveryListScreen}
         options={{ title: "Lista dostaw" }}
+      />
+      <Stack.Screen
+        name="DeliveryOrder"
+        component={DeliveryOrderScreen}
+        options={({ route }) => ({
+          title: `Zamówienie #${route.params.orderInfo.id}`,
+        })}
       />
     </Stack.Navigator>
   );
