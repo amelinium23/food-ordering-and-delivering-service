@@ -97,8 +97,6 @@ class OrderPlacement(APIView):
     """
     # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
     # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
-    permission_classes = [permissions.IsAuthenticated,
-                          IsRestaurantOwnerForOrder | IsDeliveryForOrder]
 
     def post(self, request):
         restaurant = Restaurant.objects.get(pk=request.data['restaurantId'])
