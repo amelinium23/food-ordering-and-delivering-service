@@ -188,7 +188,7 @@ class OrdersForRestaurant(APIView):
     def get(self, request, format=None):
         restaurant = RestaurantOwner.objects.get(
             user=request.user.id).restaurant
-        orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
+        orders = Order.objects.filter(restaurant=restaurant, status__lt=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
