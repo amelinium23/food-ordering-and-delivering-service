@@ -6,9 +6,10 @@ import {
   StyleSheet,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
-import { RouteProp } from "@react-navigation/native";
+import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Entypo } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -38,15 +39,75 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
   route,
   navigation,
 }) => {
-  const orderInfo = route.params.orderInfo;
+  const [orderInfo, setOrderInfo] = React.useState(route.params.orderInfo);
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [session, setSession] = React.useContext(UserContext);
   const [deliveryMan, setDeliveryMan] = React.useState<DeliveryManType>();
+  const [isWaiting, setIsWaiting] = React.useState(false);
+  const isFocused = useIsFocused();
   let counter = 0;
 
   React.useEffect(() => {
-    if (orderInfo.status === 3) {
-      setIsConfirmed(true);
+    const getStatus = async () => {
+      const res = await fetch(
+        `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
+      );
+      if (res.ok) {
+        const json = (await res.json()) as OrderType;
+        if (json.status !== orderInfo.status) {
+          setOrderInfo(json);
+        }
+      }
+    };
+
+    const cancelDeliveryMan = async () => {
+      const res: AxiosResponse<OrderType> = await axios.patch(
+        `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
+        {
+          status: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        setOrderInfo(res.data);
+      }
+    };
+    let interval = setInterval(() => {});
+    let timeout = setTimeout(() => {});
+    if (isWaiting) {
+      clearInterval(interval);
+      clearTimeout(timeout);
+      interval = setInterval(() => void getStatus(), 10000);
+      timeout = setTimeout(() => void cancelDeliveryMan(), 20000);
+    } else {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    }
+  }, [isFocused, isWaiting]);
+
+  React.useEffect(() => {
+    switch (orderInfo.status) {
+      case 2:
+        setIsConfirmed(true);
+        setIsWaiting(true);
+        break;
+      case 3:
+        setIsConfirmed(true);
+        setIsWaiting(false);
+        break;
+      default:
+        setIsConfirmed(false);
+        setIsWaiting(false);
+        break;
     }
   }, [orderInfo]);
 
@@ -67,7 +128,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
             }
           );
           if (res.status === 200) {
-            navigation.goBack();
+            setIsWaiting(true);
           }
         } catch (error) {
           console.log(error);
@@ -110,6 +171,26 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
     }
   };
 
+  const finishOrder = async () => {
+    setIsWaiting(true);
+    const res: AxiosResponse<OrderType> = await axios.patch(
+      `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
+      {
+        status: 4,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${session.token.access_token}`,
+        },
+      }
+    );
+    if (res.status === 200) {
+      navigation.goBack();
+    } else {
+      setIsWaiting(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -145,13 +226,18 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
           <Pressable
             style={({ pressed }) => [
               {
-                opacity: pressed ? 0.4 : 1,
+                opacity: pressed ? 0.4 : isWaiting ? 0.4 : 1,
               },
               styles.button,
             ]}
-            onPress={() => {}}
+            onPress={() => finishOrder()}
+            disabled={isWaiting}
           >
-            <Text style={styles.buttonText}>Gotowe</Text>
+            {isWaiting ? (
+              <ActivityIndicator color="white" size={23} />
+            ) : (
+              <Text style={styles.buttonText}>Gotowe</Text>
+            )}
           </Pressable>
           <Pressable
             style={({ pressed }) => [

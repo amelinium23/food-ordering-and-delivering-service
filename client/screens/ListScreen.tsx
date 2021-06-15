@@ -7,6 +7,7 @@ import {
   View,
   Text,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import RestaurantHeader from "../components/RestaurantHeader";
@@ -39,14 +40,12 @@ const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [restList, setRestList] = React.useState(restaurants);
   const [location, status] = useLocation();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   React.useEffect(() => {
     const requestData = async () => {
       let res;
       if (location && status == "loaded") {
-        console.log(
-          `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`
-        );
         res = await fetch(
           `https://glove-backend.herokuapp.com/api/restaurants?latitude=${location.coords.latitude}&longitude=${location.coords.longitude}`,
           {
@@ -76,7 +75,10 @@ const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
       RCTNetworking.clearCookies(() => {}); //eslint-disable-line
     };
     void requestData();
-  }, [session, status, location]);
+    if (refreshing) {
+      setRefreshing(false);
+    }
+  }, [session, status, location, refreshing]);
 
   React.useEffect(() => {
     setRestList(restaurants);
@@ -162,6 +164,12 @@ const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
       </View>
       {/* Tutaj koniec części wyszukiwarki i filtrowania */}
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
         data={restList}
         keyExtractor={(item) => `${item.id}`}
         renderItem={({ item }) => (

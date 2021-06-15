@@ -1,6 +1,13 @@
 import * as React from "react";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  RefreshControl,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import OrderHeader from "../components/OrderHeader";
 import UserContext from "../contexts/UserContext";
@@ -8,6 +15,7 @@ import UserContext from "../contexts/UserContext";
 const HistoryScreen: React.FunctionComponent = () => {
   const [session] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState([] as OrderType[]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -22,13 +30,22 @@ const HistoryScreen: React.FunctionComponent = () => {
         }
       };
       void requestData();
-    }, [session])
+      if (refreshing) {
+        setRefreshing(false);
+      }
+    }, [session, refreshing])
   );
 
   return (
     <View style={styles.container}>
       {orders.length > 0 ? (
         <FlatList
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => setRefreshing(true)}
+            />
+          }
           data={orders}
           keyExtractor={(item) => `${item.id}`}
           renderItem={({ item }) => (

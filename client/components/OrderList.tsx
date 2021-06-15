@@ -1,17 +1,36 @@
 import * as React from "react";
-import { View, FlatList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  RefreshControl,
+} from "react-native";
 import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 
 interface IProps {
   onPress: (item: OrderType) => void;
   orders: OrderType[];
+  refreshing: boolean;
+  setRefreshing: (item: boolean) => void;
 }
 
-const OrderList: React.FunctionComponent<IProps> = ({ onPress, orders }) => {
+const OrderList: React.FunctionComponent<IProps> = ({
+  onPress,
+  orders,
+  refreshing,
+  setRefreshing,
+}) => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => setRefreshing(true)}
+          />
+        }
         data={orders}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (

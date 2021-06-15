@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  ActivityIndicator,
-} from "react-native";
+import { View, ActivityIndicator, RefreshControl } from "react-native";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
 import { RootStackParamList } from "../types/RootStackParamList";
@@ -27,6 +24,7 @@ const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [orders, setOrders] = React.useState<OrderType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const isFocused = useIsFocused();
+  const [refreshing, setRefreshing] = React.useState(false);
   const onPress = (item: OrderType) =>
     navigation.navigate("RestaurantOrder", { orderInfo: item });
 
@@ -51,14 +49,22 @@ const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
 
     void requestData();
     setIsLoading(true);
-  }, [session, isFocused]);
+    if (refreshing) {
+      setRefreshing(false);
+    }
+  }, [session, isFocused, refreshing]);
 
   return isLoading ? (
     <View>
       <ActivityIndicator size="large" color="black" />
     </View>
   ) : (
-    <OrderList onPress={onPress} orders={orders} />
+    <OrderList
+      onPress={onPress}
+      orders={orders}
+      refreshing={refreshing}
+      setRefreshing={setRefreshing}
+    />
   );
 };
 export default OrderListScreen;

@@ -345,6 +345,11 @@ const RestaurantNavigator = () => {
         options={{ title: "Zamówienia" }}
         component={Orders}
       />
+      <Drawer.Screen
+        name="History"
+        options={{ title: "Historia zamówień" }}
+        component={History}
+      />
     </Drawer.Navigator>
   );
 };
