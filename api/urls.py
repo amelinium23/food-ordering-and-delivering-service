@@ -14,4 +14,5 @@ urlpatterns = [
     path('update-status/', views.DeliveryManStatus.as_view()),
     path('restaurant-orders/', views.OrdersForRestaurant.as_view()),
     path('available-delivery-men/', views.AvailableDeliveries.as_view()),
+    path('restaurant-from-order/<int:pk>/', views.RestaurantDetailsForOrder.as_view())
 ]

@@ -68,6 +68,19 @@ class RestaurantDetails(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RestaurantDetailsForOrder(APIView):
+    def get_object(self, pk):
+        try:
+            order = Order.objects.get(pk=pk)
+            return order.restaurant
+        except Restaurant.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        restaurant = self.get_object(pk)
+        serializer = RestaurantSerializer(restaurant)
+        return Response(serializer.data)
+
 class RestaurantMenu(APIView):
     """
     Retrieve a restaurant menu.
