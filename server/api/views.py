@@ -86,9 +86,15 @@ class RestaurantMenu(APIView):
 
 class OrderHistory(APIView):
     def get(self, request, user_id):
-        orders = Order.objects.filter(user=user_id)
+        if request.user.account_type == 3:
+            restaurant = RestaurantOwner.objects.get(
+                user=request.user.id).restaurant
+            orders = Order.objects.filter(restaurant=restaurant, status__gt=4)
+        else:
+            orders = Order.objects.filter(user=user_id)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
+
 
 
 class OrderPlacement(APIView):
@@ -187,18 +193,7 @@ class OrdersForRestaurant(APIView):
     def get(self, request, format=None):
         restaurant = RestaurantOwner.objects.get(
             user=request.user.id).restaurant
-        orders = Order.objects.filter(restaurant=restaurant, status__lte=4)
-        serializer = OrderSerializer(orders, many=True)
-        return Response(serializer.data)
-
-
-class RestaurantOrderHistory(APIView):
-    permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
-
-    def get(self, request, format=None):
-        restaurant = RestaurantOwner.objects.get(
-            user=request.user.id).restaurant
-        orders = Order.objects.filter(restaurant=restaurant, status__gt=4)
+        orders = Order.objects.filter(restaurant=restaurant, status__lt=4)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
