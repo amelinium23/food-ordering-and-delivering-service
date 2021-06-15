@@ -15,9 +15,10 @@ import UserContext from "../contexts/UserContext";
 import axios, { AxiosResponse } from "axios";
 import {
   HistoricalOrder as OrderType,
-  DeliveryMan as DeliveryManType,
+  Restaurant,
 } from "../types/ApiResponseTypes";
-
+import * as dotenv from "dotenv";
+import { TomtomGeocodeResponse } from "../types/TomtomApiResponseTypes";
 type DeliveryOrderRouteProp = RouteProp<RootStackParamList, "DeliveryOrder">;
 
 type DeliveryOrderNavigationProp = StackNavigationProp<
@@ -35,6 +36,7 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const orderInfo = route.params.orderInfo;
+  dotenv.config(); // eslint-disable-line
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [isPickedUp, setIsPickedUp] = React.useState(false);
   const [session, setSession] = React.useContext(UserContext);
@@ -102,6 +104,36 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
     }
   };
 
+  const getMarkerLocation = async () => {
+    if (isPickedUp && process.env.TOMTOM_API_KEY) {
+      const res: AxiosResponse<TomtomGeocodeResponse> = await axios.get(
+        `https://api.tomtom.com/search/2/geocode/${encodeURI(
+          orderInfo.delivery_address
+        )}.json?key=${process.env.TOMTOM_API_KEY}`
+      );
+      if (res.status === 200) {
+        navigation.navigate("DeliveryMap", {
+          lon: res.data.results[0].position.lon,
+          lat: res.data.results[0].position.lat,
+          title: "Miejsce dostawy",
+          description: orderInfo.delivery_address,
+        });
+      }
+    } else {
+      const res: AxiosResponse<Restaurant> = await axios.get(
+        `https://glove-backend.herokuapp.com/api/restaurant-from-order/${orderInfo.id}/`
+      );
+      if (res.status === 200) {
+        navigation.navigate("DeliveryMap", {
+          lon: res.data.location.longitude,
+          lat: res.data.location.latitude,
+          title: `Restauracja ${res.data.name}`,
+          description: res.data.address,
+        });
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -136,7 +168,9 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
               },
               styles.button,
             ]}
-            onPress={() => {}}
+            onPress={() => {
+              void getMarkerLocation();
+            }}
           >
             <Text style={styles.buttonText}>Pokaż na mapie</Text>
           </Pressable>
