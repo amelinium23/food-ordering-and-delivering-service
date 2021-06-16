@@ -21,6 +21,10 @@ export type RootStackParamList = {
   RestaurantOrder: { orderInfo: OrderType };
   PasswordChange: Record<string, never>;
   DeliveryMan: Record<string, never>;
+  DeliveryMapStack: {
+    screen: string;
+    params: { lat: number; lon: number; title: string; description: string };
+  };
   DeliveryMap: { lat: number; lon: number; title: string; description: string };
   DeliveryList: Record<string, never>;
   DeliveryOrder: { orderInfo: OrderType };

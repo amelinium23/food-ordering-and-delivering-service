@@ -113,12 +113,16 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
       );
       if (res.status === 200) {
         console.log(res.data);
-        navigation.navigate("DeliveryMap", {
-          lon: res.data.results[0].position.lon,
-          lat: res.data.results[0].position.lat,
-          title: "Miejsce dostawy",
-          description: orderInfo.delivery_address,
-        });
+        if (res.data.results.length) {
+          navigation.navigate("DeliveryMap", {
+            lon: res.data.results[0].position.lon,
+            lat: res.data.results[0].position.lat,
+            title: "Miejsce dostawy",
+            description: orderInfo.delivery_address,
+          });
+        } else {
+          navigation.goBack();
+        }
       }
     } else {
       const res: AxiosResponse<Restaurant> = await axios.get(
@@ -130,11 +134,14 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
         }
       );
       if (res.status === 200) {
-        navigation.navigate("DeliveryMap", {
-          lon: res.data.location.longitude,
-          lat: res.data.location.latitude,
-          title: `Restauracja ${res.data.name}`,
-          description: res.data.address,
+        navigation.navigate("DeliveryMapStack", {
+          screen: "DeliveryMap",
+          params: {
+            lon: res.data.location.longitude,
+            lat: res.data.location.latitude,
+            title: `Restauracja ${res.data.name}`,
+            description: res.data.address,
+          },
         });
       }
     }

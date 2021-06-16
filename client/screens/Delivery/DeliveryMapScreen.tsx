@@ -13,7 +13,6 @@ const DeliveryMapScreen: React.FunctionComponent = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log(route.params);
       let locationUpdater = setInterval(() => {}, 10000);
       if (location) {
         setUpdatedLocation(location);
@@ -34,7 +33,7 @@ const DeliveryMapScreen: React.FunctionComponent = () => {
       {location ? (
         <MapView
           style={styles.map}
-          region={{
+          initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             latitudeDelta: 0.0122,

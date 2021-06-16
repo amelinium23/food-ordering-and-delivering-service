@@ -185,7 +185,7 @@ const DeliveryMan = () => {
   );
 };
 
-const DeliveryMap = () => {
+const DeliveryMapStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -367,7 +367,7 @@ const DeliveryNavigator = () => {
 
   return (
     <Drawer.Navigator
-      initialRouteName="DeliveryMap"
+      initialRouteName="DeliveryMapStack"
       drawerContent={(props) => {
         return (
           <DrawerContentScrollView {...props}>
@@ -391,9 +391,9 @@ const DeliveryNavigator = () => {
       }}
     >
       <Drawer.Screen
-        name="DeliveryMap"
+        name="DeliveryMapStack"
         options={{ title: "Mapa" }}
-        component={DeliveryMap}
+        component={DeliveryMapStack}
       />
       <Drawer.Screen
         name="DeliveryMan"
