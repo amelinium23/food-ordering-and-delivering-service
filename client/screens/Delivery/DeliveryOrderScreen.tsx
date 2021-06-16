@@ -39,7 +39,7 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
   const orderInfo = route.params.orderInfo;
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [isPickedUp, setIsPickedUp] = React.useState(false);
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   let counter = 0;
 
   React.useEffect(() => {
@@ -184,7 +184,7 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
               void getMarkerLocation();
             }}
           >
-            <Text style={styles.buttonText}>Pokaż na mapie</Text>
+            <Text style={styles.buttonText}>Mapa</Text>
           </Pressable>
           <Pressable
             style={({ pressed }) => [
@@ -198,7 +198,7 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
             }}
             disabled={!isPickedUp}
           >
-            <Text style={styles.buttonText}>Potwierdź doręczenie</Text>
+            <Text style={styles.buttonText}>Potwierdź</Text>
           </Pressable>
         </View>
       ) : (
