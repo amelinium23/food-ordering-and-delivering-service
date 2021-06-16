@@ -13,11 +13,10 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import UserContext from "../contexts/UserContext";
 import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
-import { Entypo, AntDesign } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import * as Facebook from "expo-auth-session/providers/facebook";
-import { ResponseType } from "expo-auth-session";
+
+import GoogleLoginButton from "../components/GoogleLoginButton";
+import FacebookLoginButton from "../components/FacebookLoginButton";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
@@ -39,17 +38,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [inputPassword, setInputPassword] = React.useState("");
   const [loginError, setLoginError] = React.useState(false);
   const [isWaiting, setIsWaiting] = React.useState(false);
-  const [, googleResponse, googlePromptAsync] = Google.useAuthRequest({
-    expoClientId:
-      "203056787354-gg20fsm82as66rd2on59godinrs0p3cf.apps.googleusercontent.com",
-    webClientId:
-      "203056787354-vr11otq7re249ltpfgc8siufdvbegtbf.apps.googleusercontent.com",
-  });
-
-  const [, facebookResponse, facebookPromptAsync] = Facebook.useAuthRequest({
-    expoClientId: "309557664110258",
-    responseType: ResponseType.Code,
-  });
 
   const handleResponse = async (response: Response) => {
     if (response.ok) {
@@ -77,59 +65,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   }, [session, navigation]);
 
   React.useEffect(() => {
-    if (googleResponse?.type === "success") {
-      const { authentication } = googleResponse;
-      void (async () => {
-        const res = await fetch(
-          "https://glove-backend.herokuapp.com/users/social-login/google/",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              access_token: authentication?.accessToken,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Referer:
-                "https://glove-backend.herokuapp.com/users/social-login/google/",
-            },
-          }
-        );
-        console.log(
-          JSON.stringify({
-            access_token: authentication?.accessToken,
-          })
-        );
-        void handleResponse(res);
-        // const json = (await res.json()) as UserLoginType;
-        // console.log(json);
-      })();
-    }
-  }, [googleResponse]);
-
-  React.useEffect(() => {
-    if (facebookResponse?.type === "success") {
-      const { code } = facebookResponse.params;
-      void (async () => {
-        const res = await fetch(
-          "https://glove-backend.herokuapp.com/users/social-login/facebook/",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              code: code,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              Referer:
-                "https://glove-backend.herokuapp.com/users/social-login/facebook/",
-            },
-          }
-        );
-        void handleResponse(res);
-      })();
-    }
-  }, [facebookResponse, handleResponse]);
-
-  React.useEffect(() => {
     if (session.state) {
       setLoginError(false);
     }
@@ -153,22 +88,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
         },
       }
     );
-    if (res.ok) {
-      const json = (await res.json()) as UserLoginType;
-      // RCTNetworking.clearCookies(() => {}); //eslint-disable-line
-      setSession({
-        id: json.user.id,
-        account_type: json.user.account_type,
-        state: true,
-        token: {
-          access_token: json.access_token,
-          refresh_token: json.refresh_token,
-        },
-      });
-    } else {
-      setLoginError(true);
-      setIsWaiting(false);
-    }
+    void handleResponse(res);
   };
 
   return (
@@ -206,91 +126,14 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
       ) : (
         <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
       )}
-      <Pressable
-        style={({ pressed }) => [
-          {
-            opacity: pressed ? 0.4 : 1,
-          },
-          styles.socialLoginButton,
-          {
-            backgroundColor: "white",
-            borderColor: "lightgrey",
-            borderWidth: 1,
-          },
-        ]}
-        onPress={() => {
-          console.log("google");
-          void googlePromptAsync();
-        }}
-      >
-        <View>
-          <AntDesign
-            name="google"
-            size={24}
-            color="green"
-            style={{
-              paddingHorizontal: 4,
-              position: "relative",
-              alignSelf: "center",
-            }}
-          />
-          <AntDesign
-            name="google"
-            size={24}
-            color="rgb(59, 108, 212)"
-            style={{
-              paddingHorizontal: 4,
-              height: 15,
-              position: "absolute",
-            }}
-          />
-          <AntDesign
-            name="google"
-            size={24}
-            color="orange"
-            style={{
-              paddingHorizontal: 4,
-              height: 15,
-              width: 15,
-              position: "absolute",
-            }}
-          />
-          <AntDesign
-            name="google"
-            size={24}
-            color="red"
-            style={{
-              paddingHorizontal: 4,
-              height: 8,
-              position: "absolute",
-            }}
-          />
-        </View>
-        <Text style={[styles.loginButtonText, { color: "grey" }]}>
-          Zaloguj się z Google
-        </Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [
-          {
-            opacity: pressed ? 0.4 : 1,
-          },
-          styles.socialLoginButton,
-        ]}
-        onPress={() => {
-          console.log("google, ale inny :)");
-          void facebookPromptAsync();
-        }}
-      >
-        <Entypo
-          name="facebook"
-          size={24}
-          color="white"
-          style={{ paddingHorizontal: 4 }}
-        />
-        <Text style={styles.loginButtonText}>Zaloguj się przez Facebook</Text>
-      </Pressable>
-
+      <GoogleLoginButton
+        setLoginError={setLoginError}
+        setIsWaiting={setIsWaiting}
+      />
+      <FacebookLoginButton
+        setLoginError={setLoginError}
+        setIsWaiting={setIsWaiting}
+      />
       {loginError ? (
         <Text style={styles.errorText}>Niepoprawne dane logowania</Text>
       ) : null}
