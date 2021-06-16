@@ -17,7 +17,7 @@ import {
   HistoricalOrder as OrderType,
   Restaurant,
 } from "../types/ApiResponseTypes";
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
 import { TomtomGeocodeResponse } from "../types/TomtomApiResponseTypes";
 type DeliveryOrderRouteProp = RouteProp<RootStackParamList, "DeliveryOrder">;
 
@@ -36,7 +36,7 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const orderInfo = route.params.orderInfo;
-  dotenv.config(); // eslint-disable-line
+  // dotenv.config(); // eslint-disable-line
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [isPickedUp, setIsPickedUp] = React.useState(false);
   const [session, setSession] = React.useContext(UserContext);
