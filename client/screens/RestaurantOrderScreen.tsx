@@ -123,6 +123,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
           const res: AxiosResponse<OrderType> = await axios.patch(
             `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
             {
+              status: 2,
               delivery: deliveryMan.user,
             },
             {
@@ -132,6 +133,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
             }
           );
           if (res.status === 200) {
+            setIsConfirmed(true);
             setIsWaiting(true);
           }
         } catch (error) {
@@ -155,23 +157,6 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
     );
     if (res.status === 200) {
       navigation.goBack();
-    }
-  };
-
-  const confirmOrder = async () => {
-    const res: AxiosResponse<OrderType> = await axios.patch(
-      `https://glove-backend.herokuapp.com/api/orders/${orderInfo.id}/`,
-      {
-        status: 2,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${session.token.access_token}`,
-        },
-      }
-    );
-    if (res.status === 200) {
-      setIsConfirmed(true);
     }
   };
 
@@ -265,7 +250,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
               styles.button,
             ]}
             onPress={() => {
-              void confirmOrder();
+              // void confirmOrder();
               navigation.navigate("DeliveryManPicker", {
                 setDeliveryMan: (x: DeliveryManType) => setDeliveryMan(x),
               });
