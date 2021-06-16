@@ -16,6 +16,8 @@ import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import * as Facebook from "expo-auth-session/providers/facebook";
+import { ResponseType } from "expo-auth-session";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
@@ -37,11 +39,16 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [inputPassword, setInputPassword] = React.useState("");
   const [loginError, setLoginError] = React.useState(false);
   const [isWaiting, setIsWaiting] = React.useState(false);
-  const [request, response, promptAsync] = Google.useAuthRequest({
+  const [, googleResponse, googlePromptAsync] = Google.useAuthRequest({
     expoClientId:
       "203056787354-gg20fsm82as66rd2on59godinrs0p3cf.apps.googleusercontent.com",
     webClientId:
       "203056787354-vr11otq7re249ltpfgc8siufdvbegtbf.apps.googleusercontent.com",
+  });
+
+  const [, facebookResponse, facebookPromptAsync] = Facebook.useAuthRequest({
+    expoClientId: "309557664110258",
+    responseType: ResponseType.Code,
   });
 
   const handleResponse = async (response: Response) => {
@@ -70,8 +77,8 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   }, [session, navigation]);
 
   React.useEffect(() => {
-    if (response?.type === "success") {
-      const { authentication } = response;
+    if (googleResponse?.type === "success") {
+      const { authentication } = googleResponse;
       void (async () => {
         const res = await fetch(
           "https://glove-backend.herokuapp.com/users/social-login/google/",
@@ -97,7 +104,30 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
         // console.log(json);
       })();
     }
-  }, [response]);
+  }, [googleResponse]);
+
+  React.useEffect(() => {
+    if (facebookResponse?.type === "success") {
+      const { code } = facebookResponse.params;
+      void (async () => {
+        const res = await fetch(
+          "https://glove-backend.herokuapp.com/users/social-login/facebook/",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              code: code,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Referer:
+                "https://glove-backend.herokuapp.com/users/social-login/facebook/",
+            },
+          }
+        );
+        void handleResponse(res);
+      })();
+    }
+  }, [facebookResponse, handleResponse]);
 
   React.useEffect(() => {
     if (session.state) {
@@ -190,7 +220,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
         ]}
         onPress={() => {
           console.log("google");
-          void promptAsync();
+          void googlePromptAsync();
         }}
       >
         <View>
@@ -247,7 +277,10 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
           },
           styles.socialLoginButton,
         ]}
-        onPress={() => {}}
+        onPress={() => {
+          console.log("google, ale inny :)");
+          void facebookPromptAsync();
+        }}
       >
         <Entypo
           name="facebook"
