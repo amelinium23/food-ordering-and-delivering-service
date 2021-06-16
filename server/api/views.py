@@ -13,11 +13,6 @@ from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSeri
 from api.permissions import IsRestaurantOwnerOrReadOnly, IsRestaurantOwner, IsDeliveryForOrder, IsDeliveryAccountOwner, IsRestaurantOwnerForOrder, IsNormalUser
 
 
-def index(request):
-    print(datetime.today().weekday())
-    return HttpResponse("co jest????")
-
-
 class RestaurantList(generics.ListCreateAPIView):
     """
     Retrieve available restaurant list.
@@ -156,9 +151,8 @@ class OrderDetails(APIView):
 
     def patch(self, request, pk):
         order = self.get_object(pk)
-        if request.user.account_type == 2 and order.delivery == request.user.id:
-            data_to_edit = {'status': request.data.get(
-                'status'), 'delivery': request.data.get('delivery')}
+        if request.user.account_type == 2:
+            data_to_edit = {'status': request.data["status"], 'delivery': request.data["delivery"]}
             serializer = OrderSerializer(
                 order, data=data_to_edit, partial=True)
         else:

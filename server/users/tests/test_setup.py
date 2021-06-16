@@ -19,7 +19,7 @@ class TestSetup(APITestCase):
             'first_name': 'foo',
             'last_name': 'bar',
             'password': 'foobar',
-            'password2': 'foobar'
+            'password2': 'foobar2'
         }
 
         self.login_data = {

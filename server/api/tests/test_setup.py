@@ -26,7 +26,8 @@ class TestSetup(APITestCase):
             'access']
         self.restaurant_user_token = self.get_tokens_for_user(self.restaurant_user)[
             'access']
-        self.invalid_delivery_user_token = self.get_tokens_for_user(self.invalid_delivery_user)['access']
+        self.invalid_delivery_user_token = self.get_tokens_for_user(
+            self.invalid_delivery_user)['access']
 
         location = Point(0, 0, srid=4326)
         self.test_restaurant = Restaurant.objects.create(
@@ -52,6 +53,18 @@ class TestSetup(APITestCase):
 
         self.test_post_order = json.dumps({
             "restaurantId": self.test_restaurant.id, "orderedItems": [{'dishId': self.test_dish.id, 'orderedExtras': []}, {'dishId': self.test_dish.id, 'orderedExtras': []}], "orderCost": 85.25, "deliveryAddress": "Mniam"
+        })
+
+        self.test_order_details = json.dumps({
+            "status": 3,
+            "delivery": {
+                "id": 1,
+                "username": "username",
+                "first_name": "name",
+                "last_name": "lname",
+                "account_type": 2,
+                "email": "other@user.com"
+            }
         })
 
         self.restaurants_url = reverse('api:restaurants')

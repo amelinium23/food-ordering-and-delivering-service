@@ -1,5 +1,5 @@
+import json
 from .test_setup import TestSetup
-
 
 class TestRestaurantViewCase(TestSetup):
     def test_user_cannot_get_restaurant_list_without_authorization(self):
@@ -118,7 +118,7 @@ class TestOrderViewCase(TestSetup):
     def test_delivery_user_can_patch_order_details(self):
         self.user_authentication(2)
         response = self.client.patch(
-            self.order_details_url, {'status': 3})
+            self.order_details_url, self.test_order_details, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
     def test_delivery_user_can_patch_his_status(self):
