@@ -14,6 +14,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import UserContext from "../contexts/UserContext";
 import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
 import { Entypo, AntDesign } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
@@ -27,12 +29,75 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
+WebBrowser.maybeCompleteAuthSession();
+
 const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const [session, setSession] = React.useContext(UserContext);
   const [inputUsername, setInputUsername] = React.useState("");
   const [inputPassword, setInputPassword] = React.useState("");
   const [loginError, setLoginError] = React.useState(false);
   const [isWaiting, setIsWaiting] = React.useState(false);
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId:
+      "203056787354-gg20fsm82as66rd2on59godinrs0p3cf.apps.googleusercontent.com",
+    webClientId:
+      "203056787354-vr11otq7re249ltpfgc8siufdvbegtbf.apps.googleusercontent.com",
+  });
+
+  const handleResponse = async (response: Response) => {
+    if (response.ok) {
+      const json = (await response.json()) as UserLoginType;
+      // RCTNetworking.clearCookies(() => {}); //eslint-disable-line
+      setSession({
+        id: json.user.id,
+        account_type: json.user.account_type,
+        state: true,
+        token: {
+          access_token: json.access_token,
+          refresh_token: json.refresh_token,
+        },
+      });
+    } else {
+      setLoginError(true);
+      setIsWaiting(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (session.state) {
+      setLoginError(false);
+    }
+  }, [session, navigation]);
+
+  React.useEffect(() => {
+    if (response?.type === "success") {
+      const { authentication } = response;
+      void (async () => {
+        const res = await fetch(
+          "https://glove-backend.herokuapp.com/users/social-login/google/",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              access_token: authentication?.accessToken,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              Referer:
+                "https://glove-backend.herokuapp.com/users/social-login/google/",
+            },
+          }
+        );
+        console.log(
+          JSON.stringify({
+            access_token: authentication?.accessToken,
+          })
+        );
+        void handleResponse(res);
+        // const json = (await res.json()) as UserLoginType;
+        // console.log(json);
+      })();
+    }
+  }, [response]);
 
   React.useEffect(() => {
     if (session.state) {
@@ -123,7 +188,10 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
             borderWidth: 1,
           },
         ]}
-        onPress={() => {}}
+        onPress={() => {
+          console.log("google");
+          void promptAsync();
+        }}
       >
         <View>
           <AntDesign
