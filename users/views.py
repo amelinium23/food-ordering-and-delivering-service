@@ -9,12 +9,12 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 class GoogleLogin(SocialLoginView):
     authentication_classes = []  # disable authentication
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "https://auth.expo.io/@kwisnia/glove"
+    callback_url = "https://auth.expo.io/@kwisnia/client"
     client_class = OAuth2Client
 
 
 class FacebookLogin(SocialLoginView):
     authentication_classes = []
     adapter_class = FacebookOAuth2Adapter
-    callback_url = "http://localhost:3000/login"
+    callback_url = "https://auth.expo.io/@kwisnia/client"
     client_class = OAuth2Client
