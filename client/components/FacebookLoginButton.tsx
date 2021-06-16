@@ -43,7 +43,6 @@ const FacebookLoginButton: React.FunctionComponent<IProps> = ({
   React.useEffect(() => {
     if (facebookResponse?.type === "success") {
       const { access_token } = facebookResponse.params;
-      console.log(facebookResponse.params);
       void (async () => {
         const res = await fetch(
           "https://glove-backend.herokuapp.com/users/social-login/facebook/",
@@ -73,7 +72,6 @@ const FacebookLoginButton: React.FunctionComponent<IProps> = ({
         styles.socialLoginButton,
       ]}
       onPress={() => {
-        console.log("google, ale inny :)");
         void facebookPromptAsync();
       }}
     >

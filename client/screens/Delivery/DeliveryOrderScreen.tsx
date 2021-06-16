@@ -112,7 +112,6 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
         )}.json?key=${TOMTOM_API_KEY}`
       );
       if (res.status === 200) {
-        console.log(res.data);
         if (res.data.results.length) {
           navigation.navigate("DeliveryMap", {
             lon: res.data.results[0].position.lon,

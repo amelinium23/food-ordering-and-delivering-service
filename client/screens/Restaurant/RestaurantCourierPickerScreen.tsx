@@ -32,7 +32,6 @@ const RestaurantCourierPickerScreen: React.FunctionComponent = () => {
     React.useCallback(() => {
       void (async () => {
         setIsLoading(true);
-        console.log("yo");
         const res = await fetch(
           `https://glove-backend.herokuapp.com/api/available-delivery-men/`,
           {
@@ -43,7 +42,6 @@ const RestaurantCourierPickerScreen: React.FunctionComponent = () => {
         );
         if (res.ok) {
           const json = (await res.json()) as DeliveryManType[];
-          console.log(json);
           setDeliveryMen(json);
           setIsLoading(false);
         }

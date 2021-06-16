@@ -116,7 +116,6 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
   }, [orderInfo]);
 
   React.useEffect(() => {
-    console.log(deliveryMan);
     if (deliveryMan) {
       void (async () => {
         try {

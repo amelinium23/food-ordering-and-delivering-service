@@ -59,11 +59,6 @@ const GoogleLoginButton: React.FunctionComponent<IProps> = ({
             },
           }
         );
-        console.log(
-          JSON.stringify({
-            access_token: authentication?.accessToken,
-          })
-        );
         void handleResponse(res);
       })();
     }
@@ -83,7 +78,6 @@ const GoogleLoginButton: React.FunctionComponent<IProps> = ({
         },
       ]}
       onPress={() => {
-        console.log("google");
         void googlePromptAsync();
       }}
     >
