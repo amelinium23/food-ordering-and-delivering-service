@@ -86,8 +86,8 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
     if (isWaiting) {
       clearInterval(interval.current);
       clearTimeout(timeout.current);
-      interval.current = setInterval(() => void getStatus(), 10000);
-      timeout.current = setTimeout(() => void cancelDeliveryMan(), 20000);
+      interval.current = setInterval(() => void getStatus(), 5000);
+      timeout.current = setTimeout(() => void cancelDeliveryMan(), 25000);
     } else {
       clearInterval(interval.current);
       clearTimeout(timeout.current);
