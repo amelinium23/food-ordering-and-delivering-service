@@ -138,3 +138,8 @@ class TestOrderViewCase(TestSetup):
         response = self.client.patch(
             self.update_delivery_man_status_url, {'last_online': "2011-10-05T14: 48: 00.000Z"})
         self.assertEqual(response.status_code, 404)
+
+    def test_delivery_user_can_get_his_orders(self):
+        self.user_authentication(2)
+        response = self.client.get(self.orders_for_delivery_man_url)
+        self.assertEquals(response.status_code, 200)

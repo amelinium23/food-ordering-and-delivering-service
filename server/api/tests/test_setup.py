@@ -70,7 +70,8 @@ class TestSetup(APITestCase):
             "pk": self.test_order.id})
         self.invalid_order_details_url = reverse('api:orderDetails', kwargs={
             "pk": 99999})
-        self.orders_for_delivery_man_ulr = reverse('api:deliveryManOrders')
+        self.update_delivery_man_status_url = reverse('api:updateStatus')
+        self.orders_for_delivery_man_url = reverse('api:deliveryManOrders')
         # self.restaurant_orders_url = reverse('restaurant-orders')
         # self.restaurant_order_history_url = reverse('restaurant-order-history')
         # self.avaiable_delivery_men_url = reverse('available-delivery-men')
