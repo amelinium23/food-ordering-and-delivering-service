@@ -153,7 +153,7 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
             style={{
               paddingHorizontal: 4,
               height: 15,
-              width: 13,
+              width: 15,
               position: "absolute",
             }}
           />
