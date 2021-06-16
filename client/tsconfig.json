@@ -16,5 +16,6 @@
     "strictBindCallApply": true,
     "noImplicitAny": true
   },
-  "extends": "expo/tsconfig.base"
+  "typeRoots": ["./types"],
+  "extends": "expo/tsconfig.base",
 }

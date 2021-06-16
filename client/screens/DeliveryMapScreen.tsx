@@ -2,15 +2,18 @@ import * as React from "react";
 import useLocation from "../hooks/useLocation";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
+import { RootStackParamList } from "../types/RootStackParamList";
 
 const DeliveryMapScreen: React.FunctionComponent = () => {
   const [location] = useLocation();
   const [updatedLocation, setUpdatedLocation] = React.useState(location);
+  const route = useRoute<RouteProp<RootStackParamList, "DeliveryMap">>();
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log(route.params);
       let locationUpdater = setInterval(() => {}, 10000);
       if (location) {
         setUpdatedLocation(location);
@@ -31,7 +34,7 @@ const DeliveryMapScreen: React.FunctionComponent = () => {
       {location ? (
         <MapView
           style={styles.map}
-          initialRegion={{
+          region={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             latitudeDelta: 0.0122,
@@ -46,6 +49,16 @@ const DeliveryMapScreen: React.FunctionComponent = () => {
               }}
               title="Twoja pozycja"
               description="Tutaj sobie jesteś"
+            />
+          )}
+          {route.params && (
+            <Marker
+              coordinate={{
+                latitude: route.params.lat,
+                longitude: route.params.lon,
+              }}
+              title={route.params.title}
+              description={route.params.description}
             />
           )}
         </MapView>

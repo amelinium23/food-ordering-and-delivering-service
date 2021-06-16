@@ -17,7 +17,8 @@ import {
   HistoricalOrder as OrderType,
   Restaurant,
 } from "../types/ApiResponseTypes";
-// import * as dotenv from "dotenv";
+// eslint-disable-next-line import/named
+import { TOMTOM_API_KEY } from "react-native-dotenv";
 import { TomtomGeocodeResponse } from "../types/TomtomApiResponseTypes";
 type DeliveryOrderRouteProp = RouteProp<RootStackParamList, "DeliveryOrder">;
 
@@ -36,7 +37,6 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const orderInfo = route.params.orderInfo;
-  // dotenv.config(); // eslint-disable-line
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [isPickedUp, setIsPickedUp] = React.useState(false);
   const [session, setSession] = React.useContext(UserContext);
@@ -105,13 +105,14 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
   };
 
   const getMarkerLocation = async () => {
-    if (isPickedUp && process.env.TOMTOM_API_KEY) {
+    if (isPickedUp) {
       const res: AxiosResponse<TomtomGeocodeResponse> = await axios.get(
         `https://api.tomtom.com/search/2/geocode/${encodeURI(
           orderInfo.delivery_address
-        )}.json?key=${process.env.TOMTOM_API_KEY}`
+        )}.json?key=${TOMTOM_API_KEY}`
       );
       if (res.status === 200) {
+        console.log(res.data);
         navigation.navigate("DeliveryMap", {
           lon: res.data.results[0].position.lon,
           lat: res.data.results[0].position.lat,
@@ -121,7 +122,12 @@ const DeliveryOrderScreen: React.FunctionComponent<IProps> = ({
       }
     } else {
       const res: AxiosResponse<Restaurant> = await axios.get(
-        `https://glove-backend.herokuapp.com/api/restaurant-from-order/${orderInfo.id}/`
+        `https://glove-backend.herokuapp.com/api/restaurant-from-order/${orderInfo.id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.token.access_token}`,
+          },
+        }
       );
       if (res.status === 200) {
         navigation.navigate("DeliveryMap", {
