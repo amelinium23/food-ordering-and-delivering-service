@@ -6,15 +6,15 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { RootStackParamList } from "../types/RootStackParamList";
-import DishHeader from "../components/DishHeader";
+import { RootStackParamList } from "../../types/RootStackParamList";
+import DishHeader from "../../components/DishHeader";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import RestaurantBasket from "../components/RestaurantBasket";
-import { DishProvider } from "../contexts/DishContext";
-import UserContext from "../contexts/UserContext";
-import { MenuCategory as MenuCategoryType } from "../types/ApiResponseTypes";
-import { OrderedItem as OrderedItemType } from "../types/ApiPostTypes";
+import RestaurantBasket from "../../components/RestaurantBasket";
+import { DishProvider } from "../../contexts/DishContext";
+import UserContext from "../../contexts/UserContext";
+import { MenuCategory as MenuCategoryType } from "../../types/ApiResponseTypes";
+import { OrderedItem as OrderedItemType } from "../../types/ApiPostTypes";
 
 type RestaurantScreenRouteProp = RouteProp<RootStackParamList, "Restaurant">;
 

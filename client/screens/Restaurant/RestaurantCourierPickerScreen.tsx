@@ -6,18 +6,18 @@ import {
   FlatList,
   LogBox,
 } from "react-native";
-import UserContext from "../contexts/UserContext";
-import { RootStackParamList } from "../types/RootStackParamList";
+import UserContext from "../../contexts/UserContext";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import {
   RouteProp,
   useNavigation,
   useFocusEffect,
   useRoute,
 } from "@react-navigation/native";
-import { DeliveryMan as DeliveryManType } from "../types/ApiResponseTypes";
-import DeliveryManHeader from "../components/DeliveryManHeader";
+import { DeliveryMan as DeliveryManType } from "../../types/ApiResponseTypes";
+import DeliveryManHeader from "../../components/DeliveryManHeader";
 
-const DeliveryManPickerScreen: React.FunctionComponent = () => {
+const RestaurantCourierPickerScreen: React.FunctionComponent = () => {
   const [session] = React.useContext(UserContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [deliveryMen, setDeliveryMen] = React.useState<DeliveryManType[]>([]);
@@ -81,4 +81,4 @@ const DeliveryManPickerScreen: React.FunctionComponent = () => {
   );
 };
 
-export default DeliveryManPickerScreen;
+export default RestaurantCourierPickerScreen;

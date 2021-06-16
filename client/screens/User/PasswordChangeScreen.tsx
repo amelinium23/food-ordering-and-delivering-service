@@ -7,8 +7,8 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import UserContext from "../contexts/UserContext";
-import { RootStackParamList } from "../types/RootStackParamList";
+import UserContext from "../../contexts/UserContext";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import zxcvbn from "zxcvbn";

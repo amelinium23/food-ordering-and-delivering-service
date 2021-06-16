@@ -1,10 +1,10 @@
 import * as React from "react";
-import useLocation from "../hooks/useLocation";
+import useLocation from "../../hooks/useLocation";
 import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import * as Location from "expo-location";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { RootStackParamList } from "../../types/RootStackParamList";
 
 const DeliveryMapScreen: React.FunctionComponent = () => {
   const [location] = useLocation();

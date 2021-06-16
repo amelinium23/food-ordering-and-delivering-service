@@ -7,24 +7,24 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import ListScreen from "./screens/ListScreen";
+import UserRestaurantListScreen from "./screens/User/UserRestaurantListScreen";
 import HistoryScreen from "./screens/HistoryScreen";
-import UserScreen from "./screens/UserScreen";
+import UserDetailsScreen from "./screens/User/UserDetailsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
-import RestaurantScreen from "./screens/RestaurantScreen";
-import RestaurantOrderScreen from "./screens/RestaurantOrderScreen";
+import RestaurantScreen from "./screens/User/RestaurantScreen";
+import RestaurantOrderScreen from "./screens/Restaurant/RestaurantOrderScreen";
 import { RootStackParamList } from "./types/RootStackParamList";
-import OrderScreen from "./screens/OrderScreen";
+import OrderScreen from "./screens/User/OrderScreen";
 import UserContext, { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
-import OrderListScreen from "./screens/OrderListScreen";
-import PasswordChangeScreen from "./screens/PasswordChangeScreen";
-import DeliveryMapScreen from "./screens/DeliveryMapScreen";
-import DeliveryManPickerScreen from "./screens/DeliveryManPickerScreen";
-import DeliveryListScreen from "./screens/DeliveryListScreen";
-import DeliveryOrderScreen from "./screens/DeliveryOrderScreen";
+import ResstaurantOrderListScreen from "./screens/Restaurant/RestaurantOrderListScreen";
+import PasswordChangeScreen from "./screens/User/PasswordChangeScreen";
+import DeliveryMapScreen from "./screens/Delivery/DeliveryMapScreen";
+import RestaurantCourierPickerScreen from "./screens/Restaurant/RestaurantCourierPickerScreen";
+import DeliveryListScreen from "./screens/Delivery/DeliveryListScreen";
+import DeliveryOrderScreen from "./screens/Delivery/DeliveryOrderScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Drawer = createDrawerNavigator<RootStackParamList>();
@@ -81,7 +81,7 @@ const Restaurant = () => {
     >
       <Stack.Screen
         name="RestaurantList"
-        component={ListScreen}
+        component={UserRestaurantListScreen}
         options={{
           title: "Glove",
           headerLeft: () => null,
@@ -116,7 +116,7 @@ const User = () => {
     >
       <Stack.Screen
         name="User"
-        component={UserScreen}
+        component={UserDetailsScreen}
         options={{ title: "Konto" }}
       />
       <Stack.Screen
@@ -299,7 +299,7 @@ const Orders = () => {
     >
       <Stack.Screen
         name="Orders"
-        component={OrderListScreen}
+        component={ResstaurantOrderListScreen}
         options={{ title: "Zamówienia" }}
       />
       <Stack.Screen
@@ -311,7 +311,7 @@ const Orders = () => {
       />
       <Stack.Screen
         name="DeliveryManPicker"
-        component={DeliveryManPickerScreen}
+        component={RestaurantCourierPickerScreen}
         options={{
           title: "Dostawca",
         }}

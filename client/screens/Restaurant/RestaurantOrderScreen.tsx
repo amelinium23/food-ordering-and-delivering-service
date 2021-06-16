@@ -8,17 +8,17 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Entypo } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../../contexts/UserContext";
 import axios, { AxiosResponse } from "axios";
 import {
   HistoricalOrder as OrderType,
   DeliveryMan as DeliveryManType,
-} from "../types/ApiResponseTypes";
+} from "../../types/ApiResponseTypes";
 
 type RestaurantOrderRouteProp = RouteProp<
   RootStackParamList,

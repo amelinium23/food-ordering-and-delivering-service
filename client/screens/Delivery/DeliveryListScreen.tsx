@@ -1,11 +1,11 @@
 import * as React from "react";
 import { View, ActivityIndicator } from "react-native";
-import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
-import UserContext from "../contexts/UserContext";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { HistoricalOrder as OrderType } from "../../types/ApiResponseTypes";
+import UserContext from "../../contexts/UserContext";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import OrderList from "../components/OrderList";
+import OrderList from "../../components/OrderList";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "DeliveryList">;
 
@@ -27,7 +27,7 @@ const DeliveryListScreen: React.FunctionComponent<IProps> = ({
   const [isLoading, setIsLoading] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
   const isFocused = useIsFocused();
-  
+
   const onPress = (item: OrderType) =>
     navigation.navigate("DeliveryOrder", { orderInfo: item });
 

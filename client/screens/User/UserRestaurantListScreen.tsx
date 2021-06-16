@@ -10,15 +10,15 @@ import {
   RefreshControl,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import RestaurantHeader from "../components/RestaurantHeader";
-import { RootStackParamList } from "../types/RootStackParamList";
+import RestaurantHeader from "../../components/RestaurantHeader";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import * as React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { Restaurant as RestaurantType } from "../types/ApiResponseTypes";
-import UserContext from "../contexts/UserContext";
-import useLocation from "../hooks/useLocation";
+import { Restaurant as RestaurantType } from "../../types/ApiResponseTypes";
+import UserContext from "../../contexts/UserContext";
+import useLocation from "../../hooks/useLocation";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "RestaurantList">;
 
@@ -32,7 +32,9 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const ListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
+const UserRestaurantListScreen: React.FunctionComponent<IProps> = ({
+  navigation,
+}) => {
   const [session] = React.useContext(UserContext);
   const [restaurants, setRestaurants] = React.useState([] as RestaurantType[]);
   const [filter, setFilter] = React.useState("");
@@ -240,4 +242,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListScreen;
+export default UserRestaurantListScreen;

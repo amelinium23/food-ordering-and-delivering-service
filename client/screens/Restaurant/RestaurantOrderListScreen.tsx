@@ -1,11 +1,11 @@
 import * as React from "react";
 import { View, ActivityIndicator } from "react-native";
-import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
-import UserContext from "../contexts/UserContext";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { HistoricalOrder as OrderType } from "../../types/ApiResponseTypes";
+import UserContext from "../../contexts/UserContext";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp, useIsFocused } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import OrderList from "../components/OrderList";
+import OrderList from "../../components/OrderList";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Orders">;
 
@@ -19,7 +19,9 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
+const ResstaurantOrderListScreen: React.FunctionComponent<IProps> = ({
+  navigation,
+}) => {
   const [session] = React.useContext(UserContext);
   const [orders, setOrders] = React.useState<OrderType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -67,4 +69,4 @@ const OrderListScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
     />
   );
 };
-export default OrderListScreen;
+export default ResstaurantOrderListScreen;

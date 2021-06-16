@@ -11,10 +11,10 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { StackNavigationProp } from "@react-navigation/stack";
-import DishHeader from "../components/DishHeader";
-import UserContext from "../contexts/UserContext";
+import DishHeader from "../../components/DishHeader";
+import UserContext from "../../contexts/UserContext";
 import axios from "axios";
 import { HeaderHeightContext } from "@react-navigation/stack";
 

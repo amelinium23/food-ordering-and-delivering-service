@@ -7,19 +7,19 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
-import { RootStackParamList } from "../types/RootStackParamList";
+import { RootStackParamList } from "../../types/RootStackParamList";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Entypo } from "@expo/vector-icons";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../../contexts/UserContext";
 import axios, { AxiosResponse } from "axios";
 import {
   HistoricalOrder as OrderType,
   Restaurant,
-} from "../types/ApiResponseTypes";
+} from "../../types/ApiResponseTypes";
 // eslint-disable-next-line import/named
 import { TOMTOM_API_KEY } from "react-native-dotenv";
-import { TomtomGeocodeResponse } from "../types/TomtomApiResponseTypes";
+import { TomtomGeocodeResponse } from "../../types/TomtomApiResponseTypes";
 type DeliveryOrderRouteProp = RouteProp<RootStackParamList, "DeliveryOrder">;
 
 type DeliveryOrderNavigationProp = StackNavigationProp<
