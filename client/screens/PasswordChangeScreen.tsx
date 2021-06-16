@@ -41,6 +41,7 @@ const PasswordChangeScreen: React.FunctionComponent<IProps> = ({
   }, [newPassword]);
 
   const handleSumbit = async () => {
+    setIsWaiting(true);
     const res = await fetch(
       "https://glove-backend.herokuapp.com/users/auth/password/change/",
       {
@@ -56,8 +57,11 @@ const PasswordChangeScreen: React.FunctionComponent<IProps> = ({
         },
       }
     );
+    setIsWaiting(false);
     if (res.ok) {
       navigation.goBack();
+    } else {
+      setSubmitError(true);
     }
   };
   return (
