@@ -19,7 +19,7 @@ import OrderScreen from "./screens/User/OrderScreen";
 import UserContext, { UserProvider } from "./contexts/UserContext";
 import { SessionContext as SessionContextType } from "./types/SessionContext";
 import { View, Text } from "react-native";
-import ResstaurantOrderListScreen from "./screens/Restaurant/RestaurantOrderListScreen";
+import RestaurantOrderListScreen from "./screens/Restaurant/RestaurantOrderListScreen";
 import PasswordChangeScreen from "./screens/User/PasswordChangeScreen";
 import DeliveryMapScreen from "./screens/Delivery/DeliveryMapScreen";
 import RestaurantCourierPickerScreen from "./screens/Restaurant/RestaurantCourierPickerScreen";
@@ -299,7 +299,7 @@ const Orders = () => {
     >
       <Stack.Screen
         name="Orders"
-        component={ResstaurantOrderListScreen}
+        component={RestaurantOrderListScreen}
         options={{ title: "Zamówienia" }}
       />
       <Stack.Screen
