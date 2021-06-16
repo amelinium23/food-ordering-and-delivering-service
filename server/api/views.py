@@ -71,7 +71,7 @@ class RestaurantDetailsForOrder(APIView):
         try:
             order = Order.objects.get(pk=pk)
             return order.restaurant
-        except Restaurant.DoesNotExist:
+        except Order.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):

@@ -73,8 +73,13 @@ class TestSetup(APITestCase):
         self.update_delivery_man_status_url = reverse('api:updateStatus')
         self.orders_for_delivery_man_url = reverse('api:deliveryManOrders')
         self.orders_for_restaurant_url = reverse('api:restaurantOrders')
-        # self.restaurant_order_history_url = reverse('restaurant-order-history')
-        # self.avaiable_delivery_men_url = reverse('available-delivery-men')
+        self.available_delivery_man_url = reverse('api:availableDeliveryMan')
+        self.restaurant_details_from_order_url = reverse(
+            'api:restaurantDetailsFromOrder', kwargs={
+                "pk": self.test_order.id})
+        self.restaurant_details_from_invalid_order_url = reverse(
+            'api:restaurantDetailsFromOrder', kwargs={
+                "pk": 99999})
 
         return super().setUp()
 
