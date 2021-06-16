@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, ActivityIndicator, RefreshControl } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 import UserContext from "../contexts/UserContext";
 import { RootStackParamList } from "../types/RootStackParamList";

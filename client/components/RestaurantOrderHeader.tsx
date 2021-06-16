@@ -1,7 +1,6 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
-import DishHeader from "./DishHeader";
 
 // ja bym wyrzucil te statusy gdzies zeby ich uzywac globalnie
 const STATUSES: { [index: number]: string } = {
@@ -15,11 +14,9 @@ const STATUSES: { [index: number]: string } = {
 
 const RestaurantOrderHeader: React.FunctionComponent<OrderType> = ({
   id,
-  user,
   dishes,
   status,
   order_placement_date,
-  order_delivery_date,
   delivery_address,
   order_cost,
 }) => {

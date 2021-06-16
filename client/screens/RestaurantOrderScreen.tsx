@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { RootStackParamList } from "../types/RootStackParamList";
-import { RouteProp, useIsFocused } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Entypo } from "@expo/vector-icons";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -41,7 +41,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
 }) => {
   const [orderInfo, setOrderInfo] = React.useState(route.params.orderInfo);
   const [isConfirmed, setIsConfirmed] = React.useState(false);
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
   const [deliveryMan, setDeliveryMan] = React.useState<DeliveryManType>();
   const [isWaiting, setIsWaiting] = React.useState(false);
   const timeout = React.useRef(setTimeout(() => {}));
@@ -96,7 +96,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
       clearInterval(interval.current);
       clearTimeout(timeout.current);
     };
-  }, [isWaiting]);
+  }, [isWaiting]); //eslint-disable-line
 
   React.useEffect(() => {
     switch (orderInfo.status) {
@@ -141,7 +141,7 @@ const RestaurantOrderScreen: React.FunctionComponent<IProps> = ({
         }
       })();
     }
-  }, [deliveryMan]);
+  }, [deliveryMan]); //eslint-disable-line
 
   const rejectOrder = async () => {
     const res: AxiosResponse<OrderType> = await axios.patch(

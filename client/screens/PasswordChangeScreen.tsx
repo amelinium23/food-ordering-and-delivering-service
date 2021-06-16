@@ -34,7 +34,7 @@ const PasswordChangeScreen: React.FunctionComponent<IProps> = ({
   const [submitError, setSubmitError] = React.useState(false);
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [safety, setSafety] = React.useState(0);
-  const [session, setSession] = React.useContext(UserContext);
+  const [session] = React.useContext(UserContext);
 
   React.useEffect(() => {
     setSafety(zxcvbn(newPassword).score as number); //eslint-disable-line

@@ -6,9 +6,7 @@ import { DeliveryMan as DeliveryManType } from "../types/ApiResponseTypes";
 
 const DeliveryManHeader: React.FunctionComponent<DeliveryManType> = ({
   user,
-  location,
   distance_to_restaurant,
-  last_online,
 }) => {
   return (
     <View style={styles.container}>
