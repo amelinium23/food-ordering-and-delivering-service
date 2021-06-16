@@ -39,7 +39,14 @@ class Restaurant(models.Model):
         try:
             obj = OpeningHour.objects.get(weekday=prev_day, restaurant=id)
         except ObjectDoesNotExist:
-            return False
+            try:
+                today = OpeningHour.objects.get(weekday=today, restaurant=id)
+            except ObjectDoesNotExist:
+                return False
+            if today.opening_hour > today.closing_hour:
+                return today.opening_hour < current_time
+            else:
+                return today.opening_hour < current_time < today.closing_hour
         else:
             if current_time < obj.closing_hour and obj.closing_hour < obj.opening_hour:
                 return True
