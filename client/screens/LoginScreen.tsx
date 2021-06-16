@@ -13,6 +13,7 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import UserContext from "../contexts/UserContext";
 import { UserLogin as UserLoginType } from "../types/ApiResponseTypes";
+import { Entypo, AntDesign } from "@expo/vector-icons";
 
 type ListScreenRouteProp = RouteProp<RootStackParamList, "Login">;
 
@@ -110,6 +111,84 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
       ) : (
         <ActivityIndicator color="rgb(59, 108, 212)" size={35} />
       )}
+      <Pressable
+        style={({ pressed }) => [
+          {
+            opacity: pressed ? 0.4 : 1,
+          },
+          styles.socialLoginButton,
+          {
+            backgroundColor: "white",
+            borderColor: "lightgrey",
+            borderWidth: 1,
+          },
+        ]}
+        onPress={() => {}}
+      >
+        <View>
+          <AntDesign
+            name="google"
+            size={24}
+            color="green"
+            style={{
+              paddingHorizontal: 4,
+              position: "relative",
+              alignSelf: "center",
+            }}
+          />
+          <AntDesign
+            name="google"
+            size={24}
+            color="rgb(59, 108, 212)"
+            style={{
+              paddingHorizontal: 4,
+              height: 15,
+              position: "absolute",
+            }}
+          />
+          <AntDesign
+            name="google"
+            size={24}
+            color="orange"
+            style={{
+              paddingHorizontal: 4,
+              height: 15,
+              width: 13,
+              position: "absolute",
+            }}
+          />
+          <AntDesign
+            name="google"
+            size={24}
+            color="red"
+            style={{
+              paddingHorizontal: 4,
+              height: 8,
+              position: "absolute",
+            }}
+          />
+        </View>
+        <Text style={[styles.loginButtonText, { color: "grey" }]}>
+          Zaloguj się z Google
+        </Text>
+      </Pressable>
+      <Pressable
+        style={({ pressed }) => [
+          {
+            opacity: pressed ? 0.4 : 1,
+          },
+          styles.socialLoginButton,
+        ]}
+        onPress={() => {}}
+      >
+        <Entypo
+          name="facebook"
+          size={24}
+          color="white"
+          style={{ paddingHorizontal: 4 }}
+        />
+        <Text style={styles.loginButtonText}>Zaloguj się przez Facebook</Text>
+      </Pressable>
 
       {loginError ? (
         <Text style={styles.errorText}>Niepoprawne dane logowania</Text>
@@ -170,6 +249,15 @@ const styles = StyleSheet.create({
     padding: 7,
     margin: 10,
     borderRadius: 10,
+    flexDirection: "row",
+  },
+  socialLoginButton: {
+    backgroundColor: "rgb(59, 108, 212)",
+    alignSelf: "center",
+    padding: 7,
+    margin: 3,
+    borderRadius: 10,
+    flexDirection: "row",
   },
   loginButtonText: {
     color: "white",

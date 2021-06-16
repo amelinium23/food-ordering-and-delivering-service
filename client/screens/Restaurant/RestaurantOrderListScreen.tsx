@@ -19,7 +19,7 @@ interface IProps {
   navigation: ListScreenNavigationProp;
 }
 
-const ResstaurantOrderListScreen: React.FunctionComponent<IProps> = ({
+const RestaurantOrderListScreen: React.FunctionComponent<IProps> = ({
   navigation,
 }) => {
   const [session] = React.useContext(UserContext);
@@ -69,4 +69,4 @@ const ResstaurantOrderListScreen: React.FunctionComponent<IProps> = ({
     />
   );
 };
-export default ResstaurantOrderListScreen;
+export default RestaurantOrderListScreen;
