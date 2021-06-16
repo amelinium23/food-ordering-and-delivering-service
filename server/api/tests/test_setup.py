@@ -16,6 +16,8 @@ class TestSetup(APITestCase):
             'normal_user', 'testuser@user.com', 'firstname', 'lastname', 'password', account_type=1)
         self.delivery_user = user_model.objects.create_user(
             'delivery_user', 'example@user.com', 'firstname', 'lastname', 'password', account_type=2)
+        self.invalid_delivery_user = user_model.objects.create_user(
+            'invalid_delivery_user', 'invalid@user.com', 'firstname', 'lastname', 'password', account_type=2)
         self.restaurant_user = user_model.objects.create_user(
             'restaurant_user', 'foo@bar.com', 'firstname', 'lastname', 'password', account_type=3)
 
@@ -24,6 +26,7 @@ class TestSetup(APITestCase):
             'access']
         self.restaurant_user_token = self.get_tokens_for_user(self.restaurant_user)[
             'access']
+        self.invalid_delivery_user_token = self.get_tokens_for_user(self.invalid_delivery_user)['access']
 
         location = Point(0, 0, srid=4326)
         self.test_restaurant = Restaurant.objects.create(
@@ -32,7 +35,8 @@ class TestSetup(APITestCase):
         self.restaurant_owner = RestaurantOwner.objects.create(
             user=self.restaurant_user, restaurant=self.test_restaurant)
 
-        self.delivery_man = DeliveryManData.objects.create(status=1, user=self.delivery_user, location=location, last_online="2020-10-05T14: 48: 00.000Z")
+        self.delivery_man = DeliveryManData.objects.create(
+            status=1, user=self.delivery_user, location=location, last_online="2020-10-05T14: 48: 00.000Z")
 
         self.test_opening_hour = OpeningHour.objects.create(
             weekday=1, restaurant=self.test_restaurant, opening_hour="10:00", closing_hour="20:00")
@@ -66,7 +70,7 @@ class TestSetup(APITestCase):
             "pk": self.test_order.id})
         self.invalid_order_details_url = reverse('api:orderDetails', kwargs={
             "pk": 99999})
-        self.update_delivery_man_status_url = reverse('api:updateStatus')
+        self.orders_for_delivery_man_ulr = reverse('api:deliveryManOrders')
         # self.restaurant_orders_url = reverse('restaurant-orders')
         # self.restaurant_order_history_url = reverse('restaurant-order-history')
         # self.avaiable_delivery_men_url = reverse('available-delivery-men')
@@ -76,13 +80,15 @@ class TestSetup(APITestCase):
     def tearDown(self):
         return super().tearDown()
 
-    def user_authentication(self, user):
-        if user == 1:
+    def user_authentication(self, userid=99):
+        if userid == 1:
             token = self.user_token
-        elif user == 2:
+        elif userid == 2:
             token = self.delivery_user_token
-        elif user == 3:
+        elif userid == 3:
             token = self.restaurant_user_token
+        else:
+            token = self.invalid_delivery_user_token
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
 
     def get_tokens_for_user(self, user):

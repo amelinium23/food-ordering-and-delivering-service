@@ -132,3 +132,9 @@ class TestOrderViewCase(TestSetup):
         response = self.client.patch(
             self.update_delivery_man_status_url, {'location': "wrong_example"})
         self.assertEqual(response.status_code, 400)
+
+    def test_delivery_user_does_not_exist(self):
+        self.user_authentication()
+        response = self.client.patch(
+            self.update_delivery_man_status_url, {'last_online': "2011-10-05T14: 48: 00.000Z"})
+        self.assertEqual(response.status_code, 404)
