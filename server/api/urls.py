@@ -14,7 +14,7 @@ urlpatterns = [
     path('orders/<int:pk>/', views.OrderDetails.as_view(), name='orderDetails'),
     path('delivery-orders/', views.OrdersForDeliveryMan.as_view(), name="deliveryManOrders"),
     path('update-status/', views.DeliveryManStatus.as_view(), name='updateStatus'),
-    path('restaurant-orders/', views.OrdersForRestaurant.as_view()),
+    path('restaurant-orders/', views.OrdersForRestaurant.as_view(), name="restaurantOrders"),
     path('available-delivery-men/', views.AvailableDeliveries.as_view()),
     path('restaurant-from-order/<int:pk>/', views.RestaurantDetailsForOrder.as_view())
 ]

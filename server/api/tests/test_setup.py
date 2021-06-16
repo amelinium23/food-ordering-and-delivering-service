@@ -72,7 +72,7 @@ class TestSetup(APITestCase):
             "pk": 99999})
         self.update_delivery_man_status_url = reverse('api:updateStatus')
         self.orders_for_delivery_man_url = reverse('api:deliveryManOrders')
-        # self.restaurant_orders_url = reverse('restaurant-orders')
+        self.orders_for_restaurant_url = reverse('api:restaurantOrders')
         # self.restaurant_order_history_url = reverse('restaurant-order-history')
         # self.avaiable_delivery_men_url = reverse('available-delivery-men')
 

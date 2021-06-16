@@ -143,3 +143,8 @@ class TestOrderViewCase(TestSetup):
         self.user_authentication(2)
         response = self.client.get(self.orders_for_delivery_man_url)
         self.assertEquals(response.status_code, 200)
+    
+    def test_restaurant_user_can_get_orders(self):
+        self.user_authentication(3)
+        response = self.client.get(self.orders_for_restaurant_url)
+        self.assertEquals(response.status_code, 200)
