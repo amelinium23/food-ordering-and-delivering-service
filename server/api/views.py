@@ -88,7 +88,7 @@ class RestaurantMenu(APIView):
     def get_object(self, pk):
         try:
             return MenuGroup.objects.get(restaurant=pk)
-        except Restaurant.DoesNotExist:
+        except MenuGroup.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
@@ -117,8 +117,6 @@ class OrderPlacement(APIView):
     """
     Post an order.
     """
-    # Co tutaj sie dzieje nie wiem, stabilne to jak moje zdrowie psychiczne
-    # Serio, jak to da sie lepiej zrobic to slucham, czemu nie mozna commit=False dawac ;-;
     permission_classes = [
         permissions.IsAuthenticated & IsNormalUser]
 
@@ -176,7 +174,7 @@ class DeliveryManStatus(APIView):
     """
     Delivery man updates his status (to be visible to restaurants)
     """
-    permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
+    permission_classes = [permissions.IsAuthenticated & IsDeliveryAccountOwner]
 
     def patch(self, request):
         delivery_man = self.get_object(request.user.id)
