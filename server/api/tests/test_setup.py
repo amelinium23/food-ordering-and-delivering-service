@@ -67,6 +67,9 @@ class TestSetup(APITestCase):
             }
         })
 
+        self.test_opening_hour = "13:30:05"
+        self.test_closing_hour = "23:30:05"
+
         self.restaurants_url = reverse('api:restaurants')
         self.specific_restaurant_url = reverse('api:restaurantDetails', kwargs={
             "pk": self.test_restaurant.id})

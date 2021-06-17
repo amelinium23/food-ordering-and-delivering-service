@@ -1,4 +1,3 @@
-from django.http import response
 from .test_setup import TestSetup
 
 
