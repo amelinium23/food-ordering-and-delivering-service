@@ -13,7 +13,7 @@ class TestSetup(APITestCase):
             'password2': 'hardpassword'
         }
 
-        self.invalid_data = {
+        self.invalid_user_data = {
             'username': 'user',
             'email': 'example@gmail.com',
             'first_name': 'foo',

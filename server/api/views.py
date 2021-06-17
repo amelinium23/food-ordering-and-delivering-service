@@ -1,12 +1,12 @@
 import django
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.geos import Point
-from django.http import Http404, HttpResponse
+from django.http import Http404
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra, OpeningHour
+from api.models import Restaurant, MenuGroup, Order, Dish, OrderedDish, Extra, OrderedExtra
 from users.models import DeliveryManData, User, RestaurantOwner
 from users.serializers import DeliveryManDataSerializer
 from api.serializers import RestaurantSerializer, MenuGroupSerializer, OrderSerializer
@@ -62,6 +62,10 @@ class RestaurantDetails(APIView):
 
 
 class RestaurantDetailsForOrder(APIView):
+    """
+    Retrieve a restaurant details through order.
+    """
+
     def get_object(self, pk):
         try:
             order = Order.objects.get(pk=pk)
@@ -133,6 +137,9 @@ class OrderPlacement(APIView):
 
 
 class OrderDetails(APIView):
+    """
+    Retrieve or patch(only for deliveryMan or restaurantOwner) an order details
+    """
     permission_classes = [
         IsRestaurantOwnerForOrder | IsDeliveryForOrder]
 
@@ -187,6 +194,9 @@ class DeliveryManStatus(APIView):
 
 
 class OrdersForDeliveryMan(APIView):
+    """
+    Delivery man gets eligible orders
+    """
     permission_classes = [permissions.IsAuthenticated, IsDeliveryAccountOwner]
 
     def get(self, request):
@@ -196,6 +206,9 @@ class OrdersForDeliveryMan(APIView):
 
 
 class OrdersForRestaurant(APIView):
+    """
+    Restaurant gets eligible orders
+    """
     permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
 
     def get(self, request, format=None):
@@ -207,6 +220,9 @@ class OrdersForRestaurant(APIView):
 
 
 class AvailableDeliveries(APIView):
+    """
+    Restaurant gets eligible deliveryMans
+    """
     permission_classes = [permissions.IsAuthenticated, IsRestaurantOwner]
 
     def get(self, request, format=None):

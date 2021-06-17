@@ -18,7 +18,7 @@ class TestRegisterViewCase(TestSetup):
 
     def test_user_cannot_have_second_password_diffrent_to_first(self):
         self.client.post('/users/registration/', self.user_data)
-        response = self.client.post('/users/registration/', self.user_data)
+        response = self.client.post('/users/registration/', self.invalid_user_data)
         self.assertEqual(response.status_code, 400)
 
 class TestLoginViewCase(TestSetup):

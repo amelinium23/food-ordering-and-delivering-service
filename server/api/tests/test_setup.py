@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.contrib.gis.geos import Point
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import Restaurant, MenuGroup, Dish, OpeningHour, Order
+from api.models import Restaurant, MenuGroup, Dish, OpeningHour, Order, ExtraGroup, Extra, OrderedDish
 from users.models import RestaurantOwner, DeliveryManData
 
 
@@ -29,15 +29,15 @@ class TestSetup(APITestCase):
         self.invalid_delivery_user_token = self.get_tokens_for_user(
             self.invalid_delivery_user)['access']
 
-        location = Point(0, 0, srid=4326)
+        self.location = Point(0, 0, srid=4326)
         self.test_restaurant = Restaurant.objects.create(
-            name='restauracja', logo='https://sitechecker.pro/wp-content/uploads/2017/12/URL-meaning.png', address='adres', location=location, delivery_cost=10)
+            name='restauracja', logo='https://sitechecker.pro/wp-content/uploads/2017/12/URL-meaning.png', address='adres', location=self.location, delivery_cost=10)
 
         self.restaurant_owner = RestaurantOwner.objects.create(
             user=self.restaurant_user, restaurant=self.test_restaurant)
 
         self.delivery_man = DeliveryManData.objects.create(
-            status=1, user=self.delivery_user, location=location, last_online="2020-10-05T14: 48: 00.000Z")
+            status=1, user=self.delivery_user, location=self.location, last_online="2020-10-05T14: 48: 00.000Z")
 
         self.test_opening_hour = OpeningHour.objects.create(
             weekday=1, restaurant=self.test_restaurant, opening_hour="10:00", closing_hour="20:00")
@@ -47,6 +47,12 @@ class TestSetup(APITestCase):
 
         self.test_dish = Dish.objects.create(
             group=self.test_menu_group, name='hawajska', image='https://sitechecker.pro/wp-content/uploads/2017/12/URL-meaning.png', price=21.37)
+        
+        self.test_extra_group = ExtraGroup.objects.create(
+            dish=self.test_dish, name="sosy", extra_type=1)
+
+        self.test_extra = Extra.objects.create(
+            category=self.test_extra_group, name="ketchup", added_price=2.00)
 
         self.test_order = Order.objects.create(
             user=self.user, restaurant=self.test_restaurant, delivery=self.delivery_user, order_cost=10, delivery_address='address')
@@ -66,6 +72,9 @@ class TestSetup(APITestCase):
                 "email": "other@user.com"
             }
         })
+
+        self.test_ordered_dish = OrderedDish.objects.create(
+            dish=self.test_dish, order=self.test_order)
 
         self.test_opening_hour = "13:30:05"
         self.test_closing_hour = "23:30:05"

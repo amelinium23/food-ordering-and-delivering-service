@@ -3,8 +3,6 @@ from django.contrib.gis.admin import OSMGeoAdmin
 from .models import Dish, Extra, ExtraGroup, MenuGroup, OpeningHour, Restaurant, Order, OrderedDish, OrderedExtra, CuisineType
 import nested_admin
 
-# Register your models here.
-
 
 class OpeningHourInline(nested_admin.NestedTabularInline):
     model = OpeningHour
@@ -21,8 +19,6 @@ class ExtraGroupInline(nested_admin.NestedTabularInline):
 
 @admin.register(MenuGroup)
 class MenuGroupInline(nested_admin.NestedModelAdmin):
-    # model = MenuGroup
-    # inlines = [DishInline]
     pass
 
 
@@ -30,7 +26,6 @@ class MenuGroupInline(nested_admin.NestedModelAdmin):
 class RestaurantAdmin(OSMGeoAdmin, nested_admin.NestedModelAdmin):
     inlines = [
         OpeningHourInline,
-        # MenuGroupInline,
     ]
     list_display = ('name', 'location')
 
