@@ -1,4 +1,3 @@
-import json
 from .test_setup import TestSetup
 
 class TestRestaurantViewCase(TestSetup):

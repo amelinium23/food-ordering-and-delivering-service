@@ -99,7 +99,7 @@ class Dish(models.Model):
         MenuGroup, related_name='data', on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     image = models.URLField()
-    price = models.DecimalField(max_digits=4, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self) -> str:
         return f'{self.group} - {self.name}'
