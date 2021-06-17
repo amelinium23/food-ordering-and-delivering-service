@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Pressable,
   RefreshControl,
+  Text,
 } from "react-native";
 import RestaurantOrderHeader from "../components/RestaurantOrderHeader";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
@@ -24,6 +25,11 @@ const OrderList: React.FunctionComponent<IProps> = ({
 }) => {
   return (
     <View style={styles.container}>
+      {!orders.length ? (
+        <View style={{ alignSelf: "center" }}>
+          <Text style={styles.header}>Brak zamówień</Text>
+        </View>
+      ) : null}
       <FlatList
         refreshControl={
           <RefreshControl
@@ -59,9 +65,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     flex: 1,
   },
-  hearder: {
+  header: {
     marginBottom: 10,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     color: "rgb(59, 108, 212)",
   },
