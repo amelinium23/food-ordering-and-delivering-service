@@ -42,7 +42,6 @@ const LoginScreen: React.FunctionComponent<IProps> = ({ navigation }) => {
   const handleResponse = async (response: Response) => {
     if (response.ok) {
       const json = (await response.json()) as UserLoginType;
-      // RCTNetworking.clearCookies(() => {}); //eslint-disable-line
       setSession({
         id: json.user.id,
         account_type: json.user.account_type,

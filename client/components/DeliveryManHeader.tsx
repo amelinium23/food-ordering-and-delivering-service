@@ -1,4 +1,3 @@
-//I wish I was making this up
 import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -41,7 +40,6 @@ const styles = StyleSheet.create({
     marginVertical: 7,
     marginHorizontal: 20,
     flexDirection: "row",
-    //justifyContent: "center",
     borderRadius: 10,
     backgroundColor: "white",
     shadowColor: "#000",

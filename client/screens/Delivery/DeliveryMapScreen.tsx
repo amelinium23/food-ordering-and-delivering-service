@@ -65,7 +65,7 @@ const DeliveryMapScreen: React.FunctionComponent = () => {
         longitudeDelta: region.longitudeDelta,
       });
     }
-  }, [location]);
+  }, [location]); //eslint-disable-line
 
   return (
     <View style={styles.container}>

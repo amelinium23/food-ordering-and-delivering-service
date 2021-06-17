@@ -111,7 +111,7 @@ const UserRestaurantListScreen: React.FunctionComponent<IProps> = ({
     </View>
   ) : (
     <SafeAreaView style={styles.container}>
-      {/* Część z wyszukiwaniem i filtrowaniem, do wydzielenia jako osobny komponent */}
+      {/* Część z wyszukiwaniem i filtrowaniem */}
       <View style={styles.header}>
         <TextInput
           value={filter}

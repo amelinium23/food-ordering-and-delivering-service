@@ -2,7 +2,6 @@ import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { HistoricalOrder as OrderType } from "../types/ApiResponseTypes";
 
-// ja bym wyrzucil te statusy gdzies zeby ich uzywac globalnie
 const STATUSES: { [index: number]: string } = {
   1: "Zamówione",
   2: "Szukam dostawcy",

@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   },
   listItemText: {
     color: "rgb(59, 108, 212)",
-    // color: "rgb(153, 27, 27)",
     fontSize: 25,
     fontWeight: "400",
     textAlign: "left",
